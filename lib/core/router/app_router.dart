@@ -9,6 +9,9 @@ class AppRouter {
 
   Route generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case RouterStrings.landing:
+        return MaterialPageRoute(builder: (_) => const LandingScreen());
+
       case RouterStrings.login:
         return MaterialPageRoute(builder: (_) => const LoginScreen());
       
