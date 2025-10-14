@@ -45,7 +45,7 @@ class OnBoardingScreen extends StatelessWidget {
                 ),
                 CustomOutlinedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(RouterStrings.signup);
+                    Navigator.of(context).pushNamed(RouterStrings.selectUserType);
                   },
                   foregroundColor: appTheme.surfaceColor,
                   borderSideColor: appTheme.surfaceColor,
