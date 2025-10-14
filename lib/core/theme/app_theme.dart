@@ -4,101 +4,59 @@ class AppTheme extends ThemeExtension<AppTheme> {
   final Color deepDarkBlueColor;
   final Color accentRedColor;
   final Color surfaceColor;
+  final Color accentBlueColor;
 
   final TextStyle headingLargeTextStyle;
   final TextStyle bodyLargeTextStyle;
+  final TextStyle bodyTextStyle;
   final TextStyle buttonLabelTextStyle;
-  
-  // just from copy
-  final Color dividerColor;
-  final Color chipColor;
-  final Color ofWhiteColor;
-  final Color descriptionColor;
-  final Color jobApplicationAllColor;
-  final Color jobApplicationPendingColor;
-  final Color jobApplicationAcceptedColor;
-  final Color jobApplicationRejectedColor;
-
-  final TextStyle bodyStyle;
-  final TextStyle textFieldStyle;
-  final TextStyle hintStyle;
-  final TextStyle richTextTitleStyle;
+  final TextStyle textFieldHintTextStyle;
+  final TextStyle textFieldTextStyle;
+  final TextStyle textFieldLabelTextStyle;
 
   const AppTheme({
     required this.deepDarkBlueColor,
+    required this.accentRedColor,
+    required this.accentBlueColor,
+    required this.surfaceColor,
     required this.headingLargeTextStyle,
     required this.bodyLargeTextStyle,
+    required this.bodyTextStyle,
     required this.buttonLabelTextStyle,
-    required this.bodyStyle,
-    required this.textFieldStyle,
-    required this.hintStyle,
-    required this.accentRedColor,
-    required this.richTextTitleStyle,
-    required this.dividerColor,
-    required this.surfaceColor,
-    required this.chipColor,
-    required this.ofWhiteColor,
-    required this.descriptionColor,
-    required this.jobApplicationAllColor,
-    required this.jobApplicationPendingColor,
-    required this.jobApplicationAcceptedColor,
-    required this.jobApplicationRejectedColor,
+    required this.textFieldLabelTextStyle,
+    required this.textFieldTextStyle,
+    required this.textFieldHintTextStyle,
   });
 
   @override
   ThemeExtension<AppTheme> copyWith({
-    Color? backgroundGradientStart,
-    Color? backgroundGradientEnd,
-    Color? accentBlue,
-    Color? accentCyan,
-    Color? accentPurple,
-    Color? accentGray,
-    Color? accentTeal,
-    Color? accentLighterBlue,
-    Color? accentDarkerPurple,
-    Color? accentLighterCyan,
-    TextStyle? titleStyle,
-    TextStyle? subtitleStyle,
-    TextStyle? labelStyle,
-    TextStyle? bodyStyle,
-    TextStyle? hintStyle,
-    Color? blue,
-    TextStyle? largeTitleStyle,
-    TextStyle? textFieldStyle,
-    TextStyle? richTextTitleStyle,
-    Color? dividerColor,
-    Color? grey,
-    Color? chipColor,
-    Color? ofWhiteColor,
-    Color? descriptionColor,
-    Color? jobApplicationAllColor,
-    Color? jobApplicationPendingColor,
-    Color? jobApplicationAcceptedColor,
-    Color? jobApplicationRejectedColor,
+    Color? deepDarkBlueColor,
+    Color? accentRedColor,
+    Color? surfaceColor,
+    Color? accentBlueColor,
+    TextStyle? headingLargeTextStyle,
+    TextStyle? bodyLargeTextStyle,
+    TextStyle? bodyTextStyle,
+    TextStyle? buttonLabelTextStyle,
+    TextStyle? textFieldLabelTextStyle,
+    TextStyle? textFieldHintTextStyle,
+    TextStyle? textFieldTextStyle,
   }) {
     return AppTheme(
-      deepDarkBlueColor: accentLighterBlue ?? this.deepDarkBlueColor,
-      headingLargeTextStyle: titleStyle ?? this.headingLargeTextStyle,
-      bodyLargeTextStyle: subtitleStyle ?? this.bodyLargeTextStyle,
-      buttonLabelTextStyle: labelStyle ?? this.buttonLabelTextStyle,
-      bodyStyle: bodyStyle ?? this.bodyStyle,
-      hintStyle: hintStyle ?? this.hintStyle,
-      accentRedColor: blue ?? this.accentRedColor,
-      richTextTitleStyle: richTextTitleStyle ?? this.richTextTitleStyle,
-      textFieldStyle: textFieldStyle ?? this.textFieldStyle,
-      dividerColor: dividerColor ?? this.dividerColor,
-      surfaceColor: grey ?? this.surfaceColor,
-      chipColor: chipColor ?? this.chipColor,
-      ofWhiteColor: ofWhiteColor ?? this.ofWhiteColor,
-      descriptionColor: descriptionColor ?? this.descriptionColor,
-      jobApplicationAllColor:
-          jobApplicationAllColor ?? this.jobApplicationAllColor,
-      jobApplicationPendingColor:
-          jobApplicationPendingColor ?? this.jobApplicationPendingColor,
-      jobApplicationAcceptedColor:
-          jobApplicationAcceptedColor ?? this.jobApplicationAcceptedColor,
-      jobApplicationRejectedColor:
-          jobApplicationRejectedColor ?? this.jobApplicationRejectedColor,
+      deepDarkBlueColor: deepDarkBlueColor ?? this.deepDarkBlueColor,
+      accentRedColor: accentRedColor ?? this.accentRedColor,
+      accentBlueColor: accentBlueColor ?? this.accentBlueColor,
+      surfaceColor: surfaceColor ?? this.surfaceColor,
+      headingLargeTextStyle:
+          headingLargeTextStyle ?? this.headingLargeTextStyle,
+      bodyLargeTextStyle: bodyLargeTextStyle ?? this.bodyLargeTextStyle,
+      bodyTextStyle: bodyTextStyle ?? this.bodyTextStyle,
+      buttonLabelTextStyle: buttonLabelTextStyle ?? this.buttonLabelTextStyle,
+      textFieldLabelTextStyle:
+          textFieldLabelTextStyle ?? this.textFieldLabelTextStyle,
+      textFieldHintTextStyle:
+          textFieldHintTextStyle ?? this.textFieldHintTextStyle,
+      textFieldTextStyle: textFieldTextStyle ?? this.textFieldTextStyle,
     );
   }
 
@@ -113,6 +71,10 @@ class AppTheme extends ThemeExtension<AppTheme> {
         other.deepDarkBlueColor,
         t,
       )!,
+      accentRedColor: Color.lerp(accentRedColor, other.accentRedColor, t)!,
+      surfaceColor: Color.lerp(surfaceColor, other.surfaceColor, t)!,
+      accentBlueColor: Color.lerp(accentBlueColor, other.accentBlueColor, t)!,
+
       headingLargeTextStyle: TextStyle.lerp(
         headingLargeTextStyle,
         other.headingLargeTextStyle,
@@ -123,47 +85,26 @@ class AppTheme extends ThemeExtension<AppTheme> {
         other.bodyLargeTextStyle,
         t,
       )!,
+      bodyTextStyle: TextStyle.lerp(bodyTextStyle, other.bodyTextStyle, t)!,
       buttonLabelTextStyle: TextStyle.lerp(
         buttonLabelTextStyle,
         other.buttonLabelTextStyle,
         t,
       )!,
-      bodyStyle: TextStyle.lerp(bodyStyle, other.bodyStyle, t)!,
-      hintStyle: TextStyle.lerp(hintStyle, other.hintStyle, t)!,
-      accentRedColor: Color.lerp(accentRedColor, other.accentRedColor, t)!,
-      richTextTitleStyle: TextStyle.lerp(
-        richTextTitleStyle,
-        other.richTextTitleStyle,
+      textFieldLabelTextStyle: TextStyle.lerp(
+        textFieldLabelTextStyle,
+        other.textFieldLabelTextStyle,
         t,
       )!,
-      textFieldStyle: TextStyle.lerp(textFieldStyle, other.textFieldStyle, t)!,
-      dividerColor: Color.lerp(dividerColor, other.dividerColor, t)!,
-      surfaceColor: Color.lerp(surfaceColor, other.surfaceColor, t)!,
-      chipColor: Color.lerp(chipColor, other.chipColor, t)!,
-      ofWhiteColor: Color.lerp(ofWhiteColor, other.ofWhiteColor, t)!,
-      descriptionColor: Color.lerp(
-        descriptionColor,
-        other.descriptionColor,
+      textFieldHintTextStyle: TextStyle.lerp(
+        textFieldHintTextStyle,
+        other.textFieldHintTextStyle,
         t,
       )!,
-      jobApplicationAllColor: Color.lerp(
-        jobApplicationAllColor,
-        other.jobApplicationAllColor,
-        t,
-      )!,
-      jobApplicationPendingColor: Color.lerp(
-        jobApplicationPendingColor,
-        other.jobApplicationPendingColor,
-        t,
-      )!,
-      jobApplicationAcceptedColor: Color.lerp(
-        jobApplicationAcceptedColor,
-        other.jobApplicationAcceptedColor,
-        t,
-      )!,
-      jobApplicationRejectedColor: Color.lerp(
-        jobApplicationRejectedColor,
-        other.jobApplicationRejectedColor,
+
+      textFieldTextStyle: TextStyle.lerp(
+        textFieldTextStyle,
+        other.textFieldTextStyle,
         t,
       )!,
     );
