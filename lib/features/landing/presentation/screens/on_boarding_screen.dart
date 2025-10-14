@@ -34,9 +34,7 @@ class OnBoardingScreen extends StatelessWidget {
                 const SizedBox(height: 32),
                 CustomElevatedButton(
                   onPressed: () {
-                    Navigator.of(
-                      context,
-                    ).pushReplacementNamed(RouterStrings.login);
+                    Navigator.of(context).pushNamed(RouterStrings.login);
                   },
                   backgroundColor: appTheme.accentRedColor,
                   foregroundColor: appTheme.surfaceColor,
@@ -47,9 +45,7 @@ class OnBoardingScreen extends StatelessWidget {
                 ),
                 CustomOutlinedButton(
                   onPressed: () {
-                    Navigator.of(
-                      context,
-                    ).pushReplacementNamed(RouterStrings.signup);
+                    Navigator.of(context).pushNamed(RouterStrings.signup);
                   },
                   foregroundColor: appTheme.surfaceColor,
                   borderSideColor: appTheme.surfaceColor,
