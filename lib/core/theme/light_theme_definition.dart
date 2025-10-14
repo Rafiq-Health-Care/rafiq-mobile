@@ -13,6 +13,11 @@ const lightThemeDefinition = AppTheme(
     color: Colors.white,
     height: 1.2,
   ),
+  headingTextStyle: TextStyle(
+    fontSize: 32,
+    fontWeight: FontWeight.w600,
+    color: Color(0XFF11325B),
+  ),
   bodyLargeTextStyle: TextStyle(
     fontSize: 18,
     fontWeight: FontWeight.w600,
@@ -31,7 +36,7 @@ const lightThemeDefinition = AppTheme(
   textFieldHintTextStyle: TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w400,
-    color: Color(0xFF909BE0),
+    color: Colors.grey,
   ),
   textFieldTextStyle: TextStyle(
     fontSize: 20,

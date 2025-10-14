@@ -7,6 +7,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
   final Color accentBlueColor;
 
   final TextStyle headingLargeTextStyle;
+  final TextStyle headingTextStyle;
   final TextStyle bodyLargeTextStyle;
   final TextStyle bodyTextStyle;
   final TextStyle buttonLabelTextStyle;
@@ -20,6 +21,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
     required this.accentBlueColor,
     required this.surfaceColor,
     required this.headingLargeTextStyle,
+    required this.headingTextStyle,
     required this.bodyLargeTextStyle,
     required this.bodyTextStyle,
     required this.buttonLabelTextStyle,
@@ -35,6 +37,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
     Color? surfaceColor,
     Color? accentBlueColor,
     TextStyle? headingLargeTextStyle,
+    TextStyle? headingTextStyle,
     TextStyle? bodyLargeTextStyle,
     TextStyle? bodyTextStyle,
     TextStyle? buttonLabelTextStyle,
@@ -49,6 +52,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
       surfaceColor: surfaceColor ?? this.surfaceColor,
       headingLargeTextStyle:
           headingLargeTextStyle ?? this.headingLargeTextStyle,
+      headingTextStyle: headingTextStyle ?? this.headingTextStyle,
       bodyLargeTextStyle: bodyLargeTextStyle ?? this.bodyLargeTextStyle,
       bodyTextStyle: bodyTextStyle ?? this.bodyTextStyle,
       buttonLabelTextStyle: buttonLabelTextStyle ?? this.buttonLabelTextStyle,
@@ -78,6 +82,11 @@ class AppTheme extends ThemeExtension<AppTheme> {
       headingLargeTextStyle: TextStyle.lerp(
         headingLargeTextStyle,
         other.headingLargeTextStyle,
+        t,
+      )!,
+      headingTextStyle: TextStyle.lerp(
+        headingTextStyle,
+        other.headingTextStyle,
         t,
       )!,
       bodyLargeTextStyle: TextStyle.lerp(
