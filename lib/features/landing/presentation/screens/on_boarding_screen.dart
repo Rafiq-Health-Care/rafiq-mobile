@@ -1,98 +1,65 @@
 import 'package:flutter/material.dart';
 import 'package:rafiq/core/router/router_strings.dart';
-import 'package:rafiq/core/utils/colors_manager.dart';
+import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
+import 'package:rafiq/features/landing/presentation/widgets/custom_elevated_button.dart';
+import 'package:rafiq/features/landing/presentation/widgets/custom_outlined_button.dart';
+import 'package:rafiq/features/landing/presentation/widgets/imaged_background.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AppTheme appTheme = Theme.of(context).extension<AppTheme>()!;
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(ImageUrl().img1),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.black.withOpacity(0.3),
-                Colors.black.withOpacity(0.7),
-              ],
-            ),
-          ),
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    'Welcome to\nRafiq',
-                    style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                      color: Colors.white,
-                      height: 1.2,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'All your medical care in one place—start your health journey with us.',
-                    style: Theme.of(
+      body: ImagedBackground(
+        image: ImageUrl().img3,
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              spacing: 16,
+              children: [
+                Text(
+                  'Welcome to\nRafiq',
+                  style: appTheme.headingLargeTextStyle,
+                ),
+                Text(
+                  'All your medical care in one place—start your health journey with us.',
+                  style: appTheme.bodyLargeTextStyle,
+                ),
+                const SizedBox(height: 32),
+                CustomElevatedButton(
+                  onPressed: () {
+                    Navigator.of(
                       context,
-                    ).textTheme.bodyLarge?.copyWith(color: Colors.white),
+                    ).pushReplacementNamed(RouterStrings.login);
+                  },
+                  backgroundColor: appTheme.accentRedColor,
+                  foregroundColor: appTheme.surfaceColor,
+                  child: Text(
+                    'Get Started',
+                    style: appTheme.buttonLabelTextStyle,
                   ),
-                  const SizedBox(height: 48),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacementNamed(RouterStrings.login);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: ColorsManager.accent,
-                      foregroundColor: ColorsManager.surface,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: const Text(
-                      'Get Started',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+                ),
+                CustomOutlinedButton(
+                  onPressed: () {
+                    Navigator.of(
+                      context,
+                    ).pushReplacementNamed(RouterStrings.signup);
+                  },
+                  foregroundColor: appTheme.surfaceColor,
+                  borderSideColor: appTheme.surfaceColor,
+                  child: Text(
+                    'Create Account',
+                    style: appTheme.buttonLabelTextStyle,
                   ),
-                  const SizedBox(height: 16),
-                  OutlinedButton(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacementNamed(RouterStrings.signup);
-                    },
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: ColorsManager.surface,
-                      side: const BorderSide(color: ColorsManager.surface),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: const Text(
-                      'Create Account',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                ],
-              ),
+                ),
+                const SizedBox(),
+              ],
             ),
           ),
         ),
