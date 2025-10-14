@@ -25,7 +25,7 @@ class _LandingScreenState extends State<LandingScreen> {
   Widget build(BuildContext context) {
     final AppTheme appTheme = Theme.of(context).extension<AppTheme>()!;
     return Scaffold(
-      backgroundColor: appTheme.deepDarkBlue,
+      backgroundColor: appTheme.deepDarkBlueColor,
       body: Center(child: Image.asset(ImageUrl().splashLogo)),
     );
   }
