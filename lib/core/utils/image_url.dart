@@ -10,8 +10,6 @@ class ImageUrl {
   final String img1 = 'assets/images/img_1.jpg';
   final String img2 = 'assets/images/img_2.jpg';
   final String img3 = 'assets/images/img_3.jpg';
-  final String doctorLogo = 'assets/images/doctor_logo.svg';
-  final String patientLogo = 'assets/images/patient_logo.svg';
   final String doctorIcon = 'assets/icons/doctor_icon.png';
   final String patientIcon = 'assets/icons/patient_icon.png';
 }
