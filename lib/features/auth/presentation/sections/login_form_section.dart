@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/features/auth/data/service/validation.dart';
 import 'package:rafiq/features/auth/presentation/widgets/custom_labeled_password_field.dart';
 import 'package:rafiq/features/auth/presentation/widgets/custom_labeled_text_field.dart';
 
@@ -23,14 +24,14 @@ class LoginFormSection extends StatelessWidget {
           label: 'Email',
           hint: 'example@example.com',
           controller: emailController,
-          validator: null,
+          validator: Validation.validateEmail,
         ),
         SizedBox(height: 24),
         CustomLabeledPasswordField(
           label: 'Password',
           hint: '1234...',
           controller: passwordController,
-          validator: null,
+          validator: Validation.validatePassword,
         ),
         SizedBox(height: 8),
         Align(

@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/features/auth/data/models/login_request.dart';
 import 'package:rafiq/features/auth/presentation/sections/login_form_section.dart';
 import 'package:rafiq/features/auth/presentation/sections/media_auth_section.dart';
 import 'package:rafiq/features/auth/presentation/widgets/horizontal_text_divider.dart';
@@ -51,7 +53,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 32),
                 CustomElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      final LoginRequest request = LoginRequest(
+                        email: _emailController.text.trim(),
+                        password: _passwordController.text.trim(),
+                      );
+                      
+                      if (kDebugMode) {
+                        print(request.toJson());
+                      }
+                    }
+                  },
                   backgroundColor: appTheme.deepDarkBlueColor,
                   foregroundColor: appTheme.surfaceColor,
                   child: Text('Log In', style: appTheme.buttonLabelTextStyle),
