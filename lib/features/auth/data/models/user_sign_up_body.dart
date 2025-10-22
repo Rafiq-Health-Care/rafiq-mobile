@@ -1,20 +1,20 @@
 class UserSignUpBody {
-  final String email;
-  final String password;
-  final String firstName;
-  final String lastName;
-  final String phone;
-  final int age;
-  final String gender;
+  String? email;
+  String? password;
+  String? firstName;
+  String? lastName;
+  String? phone;
+  int? age;
+  String? gender;
 
   UserSignUpBody({
-    required this.email,
-    required this.password,
-    required this.firstName,
-    required this.lastName,
-    required this.phone,
-    required this.age,
-    required this.gender,
+    this.email,
+    this.password,
+    this.firstName,
+    this.lastName,
+    this.phone,
+    this.age,
+    this.gender,
   });
 
   Map<String, dynamic> toJson() {
