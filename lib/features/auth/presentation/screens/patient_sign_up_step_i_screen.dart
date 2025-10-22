@@ -1,0 +1,112 @@
+import 'package:flutter/material.dart';
+import 'package:rafiq/core/router/router_strings.dart';
+import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
+import 'package:rafiq/features/auth/data/models/patient_sign_up_request.dart';
+import 'package:rafiq/features/auth/data/service/validation.dart';
+import 'package:rafiq/features/auth/presentation/widgets/custom_labeled_password_field.dart';
+import 'package:rafiq/features/auth/presentation/widgets/custom_labeled_text_field.dart';
+import 'package:rafiq/features/landing/presentation/widgets/custom_elevated_button.dart';
+
+class PatientSignUpStepIScreen extends StatefulWidget {
+  const PatientSignUpStepIScreen({super.key});
+
+  @override
+  State<PatientSignUpStepIScreen> createState() =>
+      _PatientSignUpStepIScreenState();
+}
+
+class _PatientSignUpStepIScreenState extends State<PatientSignUpStepIScreen> {
+  final _formKey = GlobalKey<FormState>();
+
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  void _onSubmit() {
+    if (_formKey.currentState!.validate()) {
+      AuthCubit.get(context).userSignUpBody = PatientSignUpRequest(
+        firstName: _firstNameController.text.trim(),
+        lastName: _lastNameController.text.trim(),
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      Navigator.of(context).pushNamed(RouterStrings.signUpPatientStepII);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              spacing: 16,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                CustomLabeledTextField(
+                  label: 'First Name',
+                  hint: 'Enter your first name',
+                  controller: _firstNameController,
+                  validator: (v) =>
+                      Validation.validateNonEmpty(v, 'First Name'),
+                ),
+                CustomLabeledTextField(
+                  label: 'Last Name',
+                  hint: 'Enter your last name',
+                  controller: _lastNameController,
+                  validator: (v) => Validation.validateNonEmpty(v, 'Last Name'),
+                ),
+                CustomLabeledTextField(
+                  label: 'Email',
+                  hint: 'example@email.com',
+                  controller: _emailController,
+                  validator: Validation.validateEmail,
+                ),
+                CustomLabeledPasswordField(
+                  label: 'Password',
+                  hint: 'Enter password',
+                  controller: _passwordController,
+                  validator: Validation.validatePassword,
+                ),
+                CustomLabeledPasswordField(
+                  label: 'Confirm Password',
+                  hint: 'Re-enter password',
+                  controller: _confirmPasswordController,
+                  validator: (v) => Validation.confirmPassword(
+                    v,
+                    _passwordController.text.trim(),
+                  ),
+                ),
+
+                CustomElevatedButton(
+                  onPressed: _onSubmit,
+                  backgroundColor: appTheme.deepDarkBlueColor,
+                  foregroundColor: appTheme.surfaceColor,
+                  child: Text('Next', style: appTheme.buttonLabelTextStyle),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
