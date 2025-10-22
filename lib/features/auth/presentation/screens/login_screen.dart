@@ -1,6 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rafiq/core/functions/snack_bar_message.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/data/models/login_request.dart';
 import 'package:rafiq/features/auth/presentation/sections/login_form_section.dart';
 import 'package:rafiq/features/auth/presentation/sections/media_auth_section.dart';
@@ -19,11 +21,23 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+
   @override
   void dispose() {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  void _onSubmit() {
+    if (_formKey.currentState!.validate()) {
+      final LoginRequest request = LoginRequest(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      AuthCubit.get(context).logIn(request);
+    }
   }
 
   @override
@@ -52,22 +66,33 @@ class _LoginScreenState extends State<LoginScreen> {
                   appTheme: appTheme,
                 ),
                 SizedBox(height: 32),
-                CustomElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      final LoginRequest request = LoginRequest(
-                        email: _emailController.text.trim(),
-                        password: _passwordController.text.trim(),
-                      );
-                      
-                      if (kDebugMode) {
-                        print(request.toJson());
-                      }
+
+                BlocConsumer<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    if (state is AuthSuccess) {
+                      // Navigator.of(context).pushNamed(RouterStrings.otp);
+                    }
+                    if (state is AuthFailure) {
+                      snackBarMessage(context, state.message);
                     }
                   },
-                  backgroundColor: appTheme.deepDarkBlueColor,
-                  foregroundColor: appTheme.surfaceColor,
-                  child: Text('Log In', style: appTheme.buttonLabelTextStyle),
+                  builder: (context, state) {
+                    return CustomElevatedButton(
+                      onPressed: () {
+                        if (state is! AuthLoading) {
+                          _onSubmit();
+                        }
+                      },
+                      backgroundColor: appTheme.deepDarkBlueColor,
+                      foregroundColor: appTheme.surfaceColor,
+                      child: state is AuthLoading
+                          ? const CircularProgressIndicator()
+                          : Text(
+                              'Log In',
+                              style: appTheme.buttonLabelTextStyle,
+                            ),
+                    );
+                  },
                 ),
                 SizedBox(height: 16),
                 HorizontalTextDivider(),
