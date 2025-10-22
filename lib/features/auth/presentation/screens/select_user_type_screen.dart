@@ -35,7 +35,7 @@ class SelectUserTypeScreen extends StatelessWidget {
                         onTap: () {
                           Navigator.of(
                             context,
-                          ).pushNamed(RouterStrings.signUpPatient);
+                          ).pushNamed(RouterStrings.signUpPatientStepI);
                         },
                       ),
                       const SizedBox(width: 16),
@@ -45,7 +45,7 @@ class SelectUserTypeScreen extends StatelessWidget {
                         onTap: () {
                           Navigator.of(
                             context,
-                          ).pushNamed(RouterStrings.signUpDoctor);
+                          ).pushNamed(RouterStrings.doctorIdUploadScreen);
                         },
                       ),
                     ],
