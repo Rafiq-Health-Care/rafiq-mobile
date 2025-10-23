@@ -1,9 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+import 'package:dio/dio.dart';
 import 'package:rafiq/features/auth/data/models/user_sign_up_body.dart';
 
 class DoctorSignUpRequest extends UserSignUpBody {
   String? specialization;
   String? description;
-  String? nationalId;
+  File? nationalId;
 
   DoctorSignUpRequest({
     super.email,
@@ -18,13 +21,21 @@ class DoctorSignUpRequest extends UserSignUpBody {
     this.nationalId,
   });
 
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      ...super.toJson(),
-      'specialization': specialization,
-      'description': description,
-      'nationalId': nationalId,
-    };
+  Future<FormData> toFormData() async {
+    return FormData.fromMap({
+      'doctorData': MultipartFile.fromString(
+        jsonEncode({
+          'user': super.toJson(),
+          'specialization': specialization,
+          'description': description,
+        }),
+        contentType: DioMediaType('application', 'json'),
+      ),
+      'nationalId': await MultipartFile.fromFile(
+        nationalId!.path,
+        filename: nationalId!.uri.pathSegments.last,
+        contentType: DioMediaType('multipart', 'form-data'),
+      ),
+    });
   }
 }

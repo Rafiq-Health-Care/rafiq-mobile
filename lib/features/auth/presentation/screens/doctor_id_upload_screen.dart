@@ -131,7 +131,7 @@ class _DoctorIdUploadScreenState extends State<DoctorIdUploadScreen> {
                     onPressed: () {
                       if (imageFile != null) {
                         AuthCubit.get(context).userSignUpBody =
-                            DoctorSignUpRequest(nationalId: imageFile.path);
+                            DoctorSignUpRequest(nationalId: imageFile);
 
                         Navigator.of(
                           context,
