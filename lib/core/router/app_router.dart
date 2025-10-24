@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
+import 'package:rafiq/features/auth/controllers/specialization_cubit/specialization_cubit.dart';
+import 'package:rafiq/features/auth/data/networking/auth_service.dart';
+import 'package:rafiq/features/auth/data/repository/auth_repository.dart';
 import 'package:rafiq/features/auth/presentation/screens/doctor_id_upload_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/doctor_sign_up_step_i_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/doctor_sign_up_step_ii_screen.dart';
@@ -15,8 +18,13 @@ import 'package:rafiq/features/landing/presentation/screens/on_boarding_screen.d
 
 class AppRouter {
   late AuthCubit authCubit;
+  late AuthService authService;
+  late AuthRepository authRepository;
+
   AppRouter() {
-    authCubit = AuthCubit();
+    authService = AuthService();
+    authRepository = AuthRepository(authService: authService);
+    authCubit = AuthCubit(authService, authRepository);
   }
 
   Route generateRoute(RouteSettings settings) {
@@ -67,8 +75,11 @@ class AppRouter {
 
       case RouterStrings.signUpDoctorStepII:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: authCubit,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: authCubit),
+              BlocProvider(create: (context) => SpecializationCubit(authRepository)),
+            ],
             child: const DoctorSignUpStepIIScreen(),
           ),
         );
