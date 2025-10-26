@@ -9,7 +9,7 @@ import 'package:rafiq/features/auth/data/enum/gender_enum.dart';
 import 'package:rafiq/features/auth/data/models/doctor_sign_up_request.dart';
 import 'package:rafiq/features/auth/data/models/specialization_model.dart';
 import 'package:rafiq/features/auth/data/service/validation.dart';
-import 'package:rafiq/features/auth/presentation/widgets/custom_labeled_text_field.dart';
+import 'package:rafiq/core/widgets/custom_labeled_text_field.dart';
 import 'package:rafiq/features/auth/presentation/widgets/gender_selector.dart';
 import 'package:rafiq/features/auth/presentation/widgets/specialization_selector.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';

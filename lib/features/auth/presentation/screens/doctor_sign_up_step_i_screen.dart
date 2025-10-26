@@ -5,7 +5,7 @@ import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/data/models/doctor_sign_up_request.dart';
 import 'package:rafiq/features/auth/data/service/validation.dart';
 import 'package:rafiq/features/auth/presentation/widgets/custom_labeled_password_field.dart';
-import 'package:rafiq/features/auth/presentation/widgets/custom_labeled_text_field.dart';
+import 'package:rafiq/core/widgets/custom_labeled_text_field.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 
 class DoctorSignUpStepIScreen extends StatefulWidget {

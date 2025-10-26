@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/features/auth/data/service/validation.dart';
 import 'package:rafiq/features/auth/presentation/widgets/custom_labeled_password_field.dart';
-import 'package:rafiq/features/auth/presentation/widgets/custom_labeled_text_field.dart';
+import 'package:rafiq/core/widgets/custom_labeled_text_field.dart';
 
 class LoginFormSection extends StatelessWidget {
   final TextEditingController emailController;
