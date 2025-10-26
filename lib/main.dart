@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/core/router/app_router.dart';
 import 'package:rafiq/core/theme/light_theme_definition.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await ApiService.instance.initialize();
   runApp(Rafiq());
 }
 

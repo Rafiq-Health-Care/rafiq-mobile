@@ -1,52 +1,106 @@
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 import 'api_constants.dart';
 
 class ApiService {
   static final ApiService instance = ApiService._internal();
-  final Dio dio = Dio();
-  String? _token;
+  final Dio _dio = Dio();
+  late final PersistCookieJar _cookieJar;
 
   ApiService._internal() {
-    dio.options = BaseOptions(
+    _dio.options = BaseOptions(
       baseUrl: ApiConstants.baseURL,
       connectTimeout: const Duration(seconds: 20),
       receiveTimeout: const Duration(seconds: 20),
-      // headers: {
-      //   // 'Content-Type': 'application/json',
-      //   'Accept': 'application/json',
-      // },
     );
 
     if (kDebugMode) {
-      dio.interceptors.add(
+      _dio.interceptors.add(
         LogInterceptor(request: true, responseBody: true, error: true),
       );
     }
-
-    _setupAuthInterceptor();
   }
 
-  void _setupAuthInterceptor() {
-    dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          if (_token != null && _token!.isNotEmpty) {
-            options.headers['Authorization'] = 'Bearer $_token';
-          }
-          return handler.next(options);
-        },
-      ),
+  Future<void> initialize() async {
+    final appDocDir = await getApplicationDocumentsDirectory();
+    final cookiePath = '${appDocDir.path}/.cookies/';
+
+    _cookieJar = PersistCookieJar(
+      storage: FileStorage(cookiePath),
+      ignoreExpires: false, // Respect cookie expiration dates
     );
+
+    // Add cookie manager to handle cookies automatically
+    _dio.interceptors.add(CookieManager(_cookieJar));
+
+    if (kDebugMode) {
+      _dio.interceptors.add(
+        LogInterceptor(request: true, responseBody: true, error: true),
+      );
+
+      // This interceptor logs cookie information for debugging purposes
+      _dio.interceptors.add(
+        InterceptorsWrapper(
+          onResponse: (response, handler) async {
+            // Log cookies received from the server
+            final cookies = await _cookieJar.loadForRequest(
+              response.requestOptions.uri,
+            );
+            if (cookies.isNotEmpty) {
+              if (kDebugMode) {
+                print(
+                  '🍪 COOKIES RECEIVED & SAVED: ${cookies.length} cookie(s)',
+                );
+              }
+              for (var cookie in cookies) {
+                if (kDebugMode) {
+                  print('  ├─ Name: ${cookie.name}');
+                  print('  ├─ Value: ${cookie.value}');
+                  print('  ├─ Domain: ${cookie.domain}');
+                  print('  ├─ Path: ${cookie.path}');
+                  print('  └─ Expires: ${cookie.expires}');
+                }
+              }
+            }
+            return handler.next(response);
+          },
+          onRequest: (options, handler) async {
+            // Log cookies being sent with the request
+            final cookies = await _cookieJar.loadForRequest(options.uri);
+            if (cookies.isNotEmpty) {
+              debugPrint(
+                '🍪 COOKIES SENT (from storage): ${cookies.length} cookie(s)',
+              );
+              for (var cookie in cookies) {
+                debugPrint('  ├─ ${cookie.name}: ${cookie.value}');
+              }
+            }
+            return handler.next(options);
+          },
+        ),
+      );
+    }
   }
 
-  void setAuthToken(String token) {
-    _token = token;
+  // Clear all cookies (useful for logout)
+  Future<void> clearCookies() async {
+    await _cookieJar.deleteAll();
+    if (kDebugMode) {
+      print('🍪 ALL COOKIES CLEARED FROM STORAGE');
+    }
   }
 
-  Future<Response> post(String path, {dynamic data ,Options? options}) async {
+  // Get all cookies for debugging
+  Future<List<Cookie>> getCookies(Uri uri) async {
+    return await _cookieJar.loadForRequest(uri);
+  }
+
+  Future<Response> post(String path, {dynamic data, Options? options}) async {
     try {
-      return await dio.post(path, data: data,options: options);
+      return await _dio.post(path, data: data, options: options);
     } on DioException catch (e) {
       throw Exception(_handleError(e));
     }
@@ -57,7 +111,7 @@ class ApiService {
     Map<String, dynamic>? queryParameters,
   }) async {
     try {
-      return await dio.get(path, queryParameters: queryParameters);
+      return await _dio.get(path, queryParameters: queryParameters);
     } on DioException catch (e) {
       throw Exception(_handleError(e));
     }
