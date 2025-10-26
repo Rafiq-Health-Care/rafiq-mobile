@@ -1,11 +1,18 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
+import 'package:rafiq/core/functions/snack_bar_message.dart';
+import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/features/auth/controllers/otp_cubit/otp_cubit.dart';
+import 'package:rafiq/features/auth/data/models/user_verification_request.dart';
 import 'package:rafiq/features/auth/presentation/widgets/text_with_action_link.dart';
 import 'package:rafiq/features/landing/presentation/widgets/custom_elevated_button.dart';
 
 class OtpScreen extends StatefulWidget {
-  const OtpScreen({super.key});
+  final String email;
+  const OtpScreen({super.key, required this.email});
 
   @override
   State<OtpScreen> createState() => _OtpScreenState();
@@ -23,6 +30,9 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final OtpCubit authCubit = OtpCubit.get(context);
+    final String email = widget.email;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -59,23 +69,39 @@ class _OtpScreenState extends State<OtpScreen> {
                 staticText: "Didn't receive a code? ",
                 linkText: 'Resend code',
                 onTap: () {
-                  // call resend OTP endpoint
+                  authCubit.sendNewOtp(email);
                 },
               ),
               const SizedBox(height: 30),
-              CustomElevatedButton(
-                onPressed: () {
-                  final code = _pinController.text;
-                  if (code.length == 6) {
-                    // call send OTP endpoint
-                    // check response
-                    // if it ok -> next
-                    // else show message by snackBar or tost or any other way
+              BlocConsumer<OtpCubit, OtpState>(
+                listener: (context, state) {
+                  if (state is OtpSuccess) {
+                    // Navigator.of(context).pushNamed(RouterStrings.otp);
+                    if (kDebugMode) {
+                      print('Success');
+                    }
+                  } else if (state is OtpFailure) {
+                    snackBarMessage(context, state.message);
                   }
                 },
-                backgroundColor: appTheme.deepDarkBlueColor,
-                foregroundColor: appTheme.surfaceColor,
-                child: Text('Submit', style: appTheme.buttonLabelTextStyle),
+                builder: (context, state) {
+                  bool isLoading = state is OtpLoading;
+                  return CustomElevatedButton(
+                    onPressed: () {
+                      final code = _pinController.text;
+                      if (code.length == 6 && !isLoading) {
+                        authCubit.userVerification(
+                          UserVerificationRequest(email: email, otp: code),
+                        );
+                      }
+                    },
+                    backgroundColor: appTheme.deepDarkBlueColor,
+                    foregroundColor: appTheme.surfaceColor,
+                    child: isLoading
+                        ? const CircularProgressIndicator()
+                        : Text('Submit', style: appTheme.buttonLabelTextStyle),
+                  );
+                },
               ),
             ],
           ),

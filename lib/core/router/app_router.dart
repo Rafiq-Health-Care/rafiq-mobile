@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
+import 'package:rafiq/features/auth/controllers/otp_cubit/otp_cubit.dart';
 import 'package:rafiq/features/auth/controllers/specialization_cubit/specialization_cubit.dart';
 import 'package:rafiq/features/auth/data/networking/auth_service.dart';
 import 'package:rafiq/features/auth/data/repository/auth_repository.dart';
@@ -78,14 +79,22 @@ class AppRouter {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider.value(value: authCubit),
-              BlocProvider(create: (context) => SpecializationCubit(authRepository)),
+              BlocProvider(
+                create: (context) => SpecializationCubit(authRepository),
+              ),
             ],
             child: const DoctorSignUpStepIIScreen(),
           ),
         );
 
       case RouterStrings.otp:
-        return MaterialPageRoute(builder: (_) => const OtpScreen());
+        final String email = settings.arguments as String;
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => OtpCubit(authService, authRepository),
+            child: OtpScreen(email: email),
+          ),
+        );
 
       default:
         return MaterialPageRoute(builder: (_) => const LandingScreen());
