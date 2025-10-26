@@ -21,29 +21,23 @@ class AuthService {
     }
   }
 
-  Future<dynamic> registerPatient(PatientSignUpRequest body) async {
+  Future<void> registerPatient(PatientSignUpRequest body) async {
     try {
-      Response response = await _api.post(
-        ApiConstants.registerPatient,
-        data: body.toJson(),
-      );
-      return response.data;
+      await _api.post(ApiConstants.registerPatient, data: body.toJson());
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<dynamic> registerDoctor(DoctorSignUpRequest body) async {
+  Future<void> registerDoctor(DoctorSignUpRequest body) async {
     final formData = await body.toFormData();
 
     try {
-      Response response = await _api.post(
+      await _api.post(
         ApiConstants.registerDoctor,
         data: formData,
         options: Options(headers: {'Content-Type': 'multipart/form-data'}),
       );
-
-      return response.data;
     } catch (e) {
       rethrow;
     }
@@ -56,6 +50,14 @@ class AuthService {
         data: body.toJson(),
       );
       return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> sendNewOtp(String email) async {
+    try {
+      await _api.post(ApiConstants.newOtp, data: {'email': email});
     } catch (e) {
       rethrow;
     }
