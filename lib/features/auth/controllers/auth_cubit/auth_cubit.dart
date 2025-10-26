@@ -5,7 +5,6 @@ import 'package:rafiq/features/auth/data/models/login_request.dart';
 import 'package:rafiq/features/auth/data/models/patient_sign_up_request.dart';
 import 'package:rafiq/features/auth/data/models/user_response.dart';
 import 'package:rafiq/features/auth/data/models/user_sign_up_body.dart';
-import 'package:rafiq/features/auth/data/models/user_verification_request.dart';
 import 'package:rafiq/features/auth/data/networking/auth_service.dart';
 import 'package:rafiq/features/auth/data/repository/auth_repository.dart';
 part 'auth_state.dart';
@@ -35,19 +34,6 @@ class AuthCubit extends Cubit<AuthState> {
     authService
         .registerPatient(userSignUpBody as PatientSignUpRequest)
         .then((_) {
-          emit(AuthSuccess());
-        })
-        .catchError((e) {
-          emit(AuthFailure(e.toString()));
-        });
-  }
-
-  void userVerification(UserVerificationRequest body) {
-    emit(AuthLoading());
-    authRepository
-        .userVerificationRepository(body)
-        .then((value) {
-          userResponse = value;
           emit(AuthSuccess());
         })
         .catchError((e) {
