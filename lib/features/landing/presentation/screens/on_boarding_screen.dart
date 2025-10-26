@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
-import 'package:rafiq/features/landing/presentation/widgets/custom_elevated_button.dart';
+import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 import 'package:rafiq/features/landing/presentation/widgets/custom_outlined_button.dart';
 import 'package:rafiq/core/widgets/imaged_background.dart';
 

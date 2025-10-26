@@ -8,7 +8,7 @@ import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/features/auth/controllers/otp_cubit/otp_cubit.dart';
 import 'package:rafiq/features/auth/data/models/user_verification_request.dart';
 import 'package:rafiq/features/auth/presentation/widgets/text_with_action_link.dart';
-import 'package:rafiq/features/landing/presentation/widgets/custom_elevated_button.dart';
+import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 
 class OtpScreen extends StatefulWidget {
   final String email;

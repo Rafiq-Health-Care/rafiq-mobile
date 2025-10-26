@@ -5,7 +5,7 @@ import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/data/models/doctor_sign_up_request.dart';
 import 'package:rafiq/features/auth/data/service/pick_image_service.dart';
-import 'package:rafiq/features/landing/presentation/widgets/custom_elevated_button.dart';
+import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 
 class DoctorIdUploadScreen extends StatefulWidget {
   const DoctorIdUploadScreen({super.key});

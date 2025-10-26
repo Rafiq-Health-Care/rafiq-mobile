@@ -8,7 +8,7 @@ import 'package:rafiq/features/auth/presentation/sections/login_form_section.dar
 import 'package:rafiq/features/auth/presentation/sections/media_auth_section.dart';
 import 'package:rafiq/features/auth/presentation/widgets/horizontal_text_divider.dart';
 import 'package:rafiq/features/auth/presentation/widgets/text_with_action_link.dart';
-import 'package:rafiq/features/landing/presentation/widgets/custom_elevated_button.dart';
+import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
