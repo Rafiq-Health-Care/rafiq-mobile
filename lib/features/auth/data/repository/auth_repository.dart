@@ -23,8 +23,11 @@ class AuthRepository {
 
   Future<List<SpecializationModel>> getSpecializationsRepository() async {
     final rawDate = await authService.getSpecialization();
-    return rawDate
-        .map((e) => SpecializationModel.fromJson(e))
-        .toList();
+    return rawDate.map((e) => SpecializationModel.fromJson(e)).toList();
+  }
+
+  Future<String> userVerify(UserVerificationRequest body) async {
+    final rawDate = await authService.userVerify(body);
+    return rawDate['accessToken'] as String;
   }
 }
