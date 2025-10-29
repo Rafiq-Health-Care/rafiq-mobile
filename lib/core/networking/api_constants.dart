@@ -7,9 +7,11 @@ class ApiConstants {
   static const String newOtp = "/user/new-otp";
 
   static const String login = "/auth/login";
-  static const String forgetPassword = "/auth/forget-password";
   static const String authWithGoogle = "/auth/google";
+  
+  static const String forgetPassword = "/auth/forget-password";
+  static const String userVerify = "/auth/verify";
+  static const String changePassword = "/auth/change-password";
 
   static const String specialization = "/specialization";
-
 }
