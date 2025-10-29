@@ -103,10 +103,7 @@ class _DoctorSignUpStepIIScreenState extends State<DoctorSignUpStepIIScreen> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is DoctorSignUpSuccess) {
-          Navigator.of(context).pushNamed(
-            RouterStrings.otp,
-            arguments: AuthCubit.get(context).userSignUpBody!.email,
-          );
+          Navigator.of(context).pushNamed(RouterStrings.otp);
         } else if (state is AuthFailure) {
           snackBarMessage(context, state.message);
         }
