@@ -22,7 +22,7 @@ class AuthCubit extends Cubit<AuthState> {
     authService
         .registerDoctor(userSignUpBody as DoctorSignUpRequest)
         .then((_) {
-          emit(AuthSuccess());
+          emit(DoctorSignUpSuccess());
         })
         .catchError((e) {
           emit(AuthFailure(e.toString()));
@@ -34,7 +34,7 @@ class AuthCubit extends Cubit<AuthState> {
     authService
         .registerPatient(userSignUpBody as PatientSignUpRequest)
         .then((_) {
-          emit(AuthSuccess());
+          emit(PatientSignUpSuccess());
         })
         .catchError((e) {
           emit(AuthFailure(e.toString()));
@@ -47,7 +47,7 @@ class AuthCubit extends Cubit<AuthState> {
         .logInRepository(body)
         .then((value) {
           userResponse = value;
-          emit(AuthSuccess());
+          emit(LogInSuccess());
         })
         .catchError((e) {
           emit(AuthFailure(e.toString()));
@@ -59,7 +59,7 @@ class AuthCubit extends Cubit<AuthState> {
     authService
         .authWithGoogle()
         .then((_) {
-          emit(AuthSuccess());
+          emit(GoogleAuthSuccess());
         })
         .catchError((e) {
           emit(AuthFailure(e.toString()));
