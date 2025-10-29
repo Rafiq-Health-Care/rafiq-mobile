@@ -5,6 +5,7 @@ import 'package:rafiq/features/auth/data/models/login_request.dart';
 import 'package:rafiq/features/auth/data/models/patient_sign_up_request.dart';
 import 'package:rafiq/features/auth/data/models/user_response.dart';
 import 'package:rafiq/features/auth/data/models/user_sign_up_body.dart';
+import 'package:rafiq/features/auth/data/models/user_verification_request.dart';
 import 'package:rafiq/features/auth/data/networking/auth_service.dart';
 import 'package:rafiq/features/auth/data/repository/auth_repository.dart';
 part 'auth_state.dart';
@@ -60,6 +61,33 @@ class AuthCubit extends Cubit<AuthState> {
         .authWithGoogle()
         .then((_) {
           emit(GoogleAuthSuccess());
+        })
+        .catchError((e) {
+          emit(AuthFailure(e.toString()));
+        });
+  }
+
+  void userVerification(String otp) {
+    emit(AuthLoading());
+    authRepository
+        .userVerificationRepository(
+          UserVerificationRequest(email: userSignUpBody!.email!, otp: otp),
+        )
+        .then((value) {
+          userResponse = value;
+          emit(UserVerificationSuccess());
+        })
+        .catchError((e) {
+          emit(AuthFailure(e.toString()));
+        });
+  }
+
+  void sendNewOtp() {
+    emit(AuthLoading());
+    authService
+        .sendNewOtp(userSignUpBody!.email!)
+        .then((_) {
+          emit(UserVerificationSuccess());
         })
         .catchError((e) {
           emit(AuthFailure(e.toString()));

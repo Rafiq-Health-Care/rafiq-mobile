@@ -13,6 +13,8 @@ final class PatientSignUpSuccess extends AuthState {}
 
 final class DoctorSignUpSuccess extends AuthState {}
 
+final class UserVerificationSuccess extends AuthState {}
+
 final class GoogleAuthSuccess extends AuthState {}
 
 final class AuthFailure extends AuthState {
