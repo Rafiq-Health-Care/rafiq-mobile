@@ -9,4 +9,6 @@ abstract class RouterStrings {
   static const String signUpDoctorStepI = "/sign_up_doctor_step_i";
   static const String signUpDoctorStepII = "/sign_up_doctor_step_ii";
   static const String otp = "/otp";
+  static const String forgetPassword = "/forget_password";
+  static const String changePassword = "/change_password";
 }
