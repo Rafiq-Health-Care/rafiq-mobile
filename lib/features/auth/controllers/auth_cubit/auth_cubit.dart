@@ -54,5 +54,17 @@ class AuthCubit extends Cubit<AuthState> {
         });
   }
 
+  void authWithGoogle() {
+    emit(AuthLoading());
+    authService
+        .authWithGoogle()
+        .then((_) {
+          emit(AuthSuccess());
+        })
+        .catchError((e) {
+          emit(AuthFailure(e.toString()));
+        });
+  }
+
   static AuthCubit get(context) => BlocProvider.of(context);
 }

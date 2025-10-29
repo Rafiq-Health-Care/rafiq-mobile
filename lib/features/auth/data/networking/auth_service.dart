@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:rafiq/core/constants/secure.dart';
 import 'package:rafiq/core/networking/api_constants.dart';
 import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/features/auth/data/models/doctor_sign_up_request.dart';
@@ -67,6 +69,34 @@ class AuthService {
     try {
       Response response = await _api.get(ApiConstants.specialization);
       return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> authWithGoogle() async {
+    try {
+      final idToken = await _googleSignIn();
+      await _api.post(ApiConstants.authWithGoogle, data: {'idToken': idToken});
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<String> _googleSignIn() async {
+    try {
+      await GoogleSignIn.instance.initialize(serverClientId: serverClientId);
+
+      final GoogleSignInAccount account = await GoogleSignIn.instance
+          .authenticate();
+
+      final String? idToken = account.authentication.idToken;
+
+      if (idToken == null) {
+        throw Exception('ID token missing from Google response.');
+      }
+
+      return idToken;
     } catch (e) {
       rethrow;
     }
