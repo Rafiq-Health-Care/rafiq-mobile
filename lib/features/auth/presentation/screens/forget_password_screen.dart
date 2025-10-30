@@ -7,6 +7,7 @@ import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 import 'package:rafiq/core/widgets/custom_labeled_text_field.dart';
 import 'package:rafiq/features/auth/controllers/forget_password_cubit/forget_password_cubit.dart';
 import 'package:rafiq/features/auth/data/service/validation.dart';
+import 'package:rafiq/features/auth/presentation/widgets/text_with_action_link.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({super.key});
@@ -95,7 +96,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     if (state is ForgetPasswordEmailSent) {
                       Navigator.of(
                         context,
-                      ).pushNamed(RouterStrings.otp);
+                      ).pushNamed(RouterStrings.otp, arguments: true);
                     } else if (state is ForgetPasswordError) {
                       snackBarMessage(context, state.message);
                     }
@@ -123,24 +124,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 const SizedBox(height: 24),
 
                 // Back to Login
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Remember your password? ',
-                      style: appTheme.bodyTextStyle,
-                    ),
-                    GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                          color: appTheme.accentBlueColor,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
+                TextWithActionLink(
+                  staticText: 'Remember your password? ',
+                  linkText: 'Login',
+                  onTap: () => Navigator.pop(context),
                 ),
               ],
             ),
