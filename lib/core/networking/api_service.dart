@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'api_constants.dart';
 
 class ApiService {
@@ -16,12 +17,6 @@ class ApiService {
       connectTimeout: const Duration(seconds: 20),
       receiveTimeout: const Duration(seconds: 20),
     );
-
-    if (kDebugMode) {
-      _dio.interceptors.add(
-        LogInterceptor(request: true, responseBody: true, error: true),
-      );
-    }
   }
 
   Future<void> initialize() async {
@@ -38,7 +33,15 @@ class ApiService {
 
     if (kDebugMode) {
       _dio.interceptors.add(
-        LogInterceptor(request: true, responseBody: true, error: true),
+        PrettyDioLogger(
+          requestHeader: true,
+          requestBody: true,
+          responseHeader: false,
+          responseBody: true,
+          error: true,
+          compact: true,
+          maxWidth: 90, // keeps lines readable in consoles
+        ),
       );
 
       // This interceptor logs cookie information for debugging purposes
