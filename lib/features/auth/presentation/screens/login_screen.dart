@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/functions/snack_bar_message.dart';
+import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/data/models/login_request.dart';
@@ -101,7 +102,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextWithActionLink(
                   staticText: "Don't have an account? ",
                   linkText: 'Sign up',
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.of(
+                      context,
+                    ).pushReplacementNamed(RouterStrings.selectUserType);
+                  },
                 ),
               ],
             ),
