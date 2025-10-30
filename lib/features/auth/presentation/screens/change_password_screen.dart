@@ -92,10 +92,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                 BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(
                   listener: (context, state) {
                     if (state is ForgetPasswordChanged) {
-                      Navigator.of(context).popUntil((route) {
-                        print(route.settings.name);
-                        return route.settings.name == RouterStrings.login;
-                      });
+                      Navigator.of(context).popUntil(
+                        (route) => route.settings.name == RouterStrings.login,
+                      );
                     } else if (state is ForgetPasswordError) {
                       snackBarMessage(context, state.message);
                     }
