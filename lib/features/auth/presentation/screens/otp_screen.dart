@@ -82,58 +82,57 @@ class _OtpScreenState extends State<OtpScreen> {
                   },
                 ),
               const SizedBox(height: 30),
-              MultiBlocListener(
-                listeners: [
-                  BlocListener<AuthCubit, AuthState>(
-                    listener: (context, state) {
-                      if (state is UserVerificationSuccess) {
-                        // Navigator.of(context).pushNamed(RouterStrings.otp);
-                      } else if (state is AuthFailure) {
-                        snackBarMessage(context, state.message);
-                      }
-                    },
-                  ),
-                  BlocListener<ForgetPasswordCubit, ForgetPasswordState>(
-                    listener: (context, state) {
-                      if (state is ForgetPasswordOtpVerified) {
-                        Navigator.of(
-                          context,
-                        ).pushNamed(RouterStrings.changePassword);
-                      } else if (state is ForgetPasswordError) {
-                        snackBarMessage(context, state.message);
-                      }
-                    },
-                  ),
-                ],
-                child: BlocBuilder<AuthCubit, AuthState>(
-                  builder: (context, authState) =>
-                      BlocBuilder<ForgetPasswordCubit, ForgetPasswordState>(
-                        builder: (context, forgetPasswordState) {
-                          bool isLoading =
-                              authState is AuthLoading ||
-                              forgetPasswordState is ForgetPasswordLoading;
-                          return CustomElevatedButton(
-                            onPressed: () {
-                              if (!isLoading) {
-                                onSubmit();
-                              }
-                            },
-                            backgroundColor: appTheme.deepDarkBlueColor,
-                            foregroundColor: appTheme.surfaceColor,
-                            child: isLoading
-                                ? const CircularProgressIndicator()
-                                : Text(
-                                    'Submit',
-                                    style: appTheme.buttonLabelTextStyle,
-                                  ),
-                          );
-                        },
-                      ),
-                ),
-              ),
+              customButton(appTheme, context),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget customButton(final AppTheme appTheme, final BuildContext context) {
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state is UserVerificationSuccess) {
+              // Navigator.of(context).pushNamed(RouterStrings.otp);
+            } else if (state is AuthFailure) {
+              snackBarMessage(context, state.message);
+            }
+          },
+        ),
+        BlocListener<ForgetPasswordCubit, ForgetPasswordState>(
+          listener: (context, state) {
+            if (state is ForgetPasswordOtpVerified) {
+              Navigator.of(context).pushNamed(RouterStrings.changePassword);
+            } else if (state is ForgetPasswordError) {
+              snackBarMessage(context, state.message);
+            }
+          },
+        ),
+      ],
+      child: BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, authState) =>
+            BlocBuilder<ForgetPasswordCubit, ForgetPasswordState>(
+              builder: (context, forgetPasswordState) {
+                bool isLoading =
+                    authState is AuthLoading ||
+                    forgetPasswordState is ForgetPasswordLoading;
+                return CustomElevatedButton(
+                  onPressed: () {
+                    if (!isLoading) {
+                      onSubmit();
+                    }
+                  },
+                  backgroundColor: appTheme.deepDarkBlueColor,
+                  foregroundColor: appTheme.surfaceColor,
+                  child: isLoading
+                      ? const CircularProgressIndicator()
+                      : Text('Submit', style: appTheme.buttonLabelTextStyle),
+                );
+              },
+            ),
       ),
     );
   }
