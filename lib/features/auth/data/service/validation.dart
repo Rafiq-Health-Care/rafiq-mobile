@@ -10,7 +10,19 @@ class Validation {
   static String? validatePassword(String? value) {
     value = value?.trim();
     if (value == null || value.isEmpty) return 'Password is required';
-    if (value.length < 6) return 'Password must be at least 6 characters';
+    if (value.length < 8) return 'Password is too short';
+    if (value.length > 16) return 'Password is too long';
+    if (!RegExp(r'[A-Z]').hasMatch(value)) {
+      return 'Password must contain uppercase';
+    }
+    if (!RegExp(r'[a-z]').hasMatch(value)) {
+      return 'Password must contain lowercase';
+    }
+    if (!RegExp(r'\d').hasMatch(value)) return 'Password must contain number';
+    final specialPattern = r"""[!@#\$%^&*()_+\-=\[\]{};:'"\\|,.<>/?]""";
+    if (!RegExp(specialPattern).hasMatch(value)) {
+      return 'Password must contain special char';
+    }
     return null;
   }
 
