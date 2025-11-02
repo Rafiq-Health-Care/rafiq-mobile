@@ -1,17 +1,13 @@
 class UserResponse {
-  final List<String> roles;
-  final String refreshToken;
+  final String roles;
 
-  UserResponse({required this.roles, required this.refreshToken});
+  UserResponse({required this.roles});
 
   factory UserResponse.fromJson(Map<String, dynamic> json) {
-    return UserResponse(
-      roles: List<String>.from(json['roles']),
-      refreshToken: json['refreshToken'] as String,
-    );
+    return UserResponse(roles: json['role'] as String);
   }
 
   Map<String, dynamic> toJson() {
-    return {'roles': roles, 'refreshToken': refreshToken};
+    return {'role': roles};
   }
 }
