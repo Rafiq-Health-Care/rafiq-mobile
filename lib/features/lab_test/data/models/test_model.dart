@@ -1,6 +1,6 @@
 class TestModel {
   final String testName;
-  final String result;
+  final double result;
   final String unit;
   final String status;
 
@@ -14,7 +14,9 @@ class TestModel {
   factory TestModel.fromJson(Map<String, dynamic> json) {
     return TestModel(
       testName: json['testName'] as String,
-      result: json['result'] as String,
+      result: json['result'] is double
+          ? json['result'] as double
+          : double.parse(json['result']),
       unit: json['unit'] as String,
       status: json['status'] as String,
     );
