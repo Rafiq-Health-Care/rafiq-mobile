@@ -71,7 +71,7 @@ class LabTestService {
   Future<void> updateLabTestResults(LabTestResultsModel body) async {
     try {
       await _api.put(
-        '${ApiConstants.labTestResults}/${body.testId}',
+        '${ApiConstants.updateLabTest}/${body.testId}',
         data: body.toJson(),
       );
     } catch (e) {
