@@ -15,7 +15,7 @@ class ApiService {
     _dio.options = BaseOptions(
       baseUrl: ApiConstants.baseURL,
       connectTimeout: const Duration(seconds: 20),
-      receiveTimeout: const Duration(seconds: 20),
+      receiveTimeout: const Duration(seconds: 60*5),
     );
   }
 
@@ -115,6 +115,22 @@ class ApiService {
   }) async {
     try {
       return await _dio.get(path, queryParameters: queryParameters);
+    } on DioException catch (e) {
+      throw Exception(_handleError(e));
+    }
+  }
+
+  Future<Response> put(String path, {dynamic data, Options? options}) async {
+    try {
+      return await _dio.put(path, data: data, options: options);
+    } on DioException catch (e) {
+      throw Exception(_handleError(e));
+    }
+  }
+
+  Future<Response> delete(String path, {dynamic data, Options? options}) async {
+    try {
+      return await _dio.delete(path, data: data, options: options);
     } on DioException catch (e) {
       throw Exception(_handleError(e));
     }
