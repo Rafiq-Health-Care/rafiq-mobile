@@ -12,4 +12,6 @@ class ImageUrl {
   final String img3 = 'assets/images/img_3.jpg';
   final String doctorIcon = 'assets/icons/doctor_icon.png';
   final String patientIcon = 'assets/icons/patient_icon.png';
+  final String cloudComputing = 'assets/icons/cloud-computing.svg';
+  final String loading = 'assets/icons/loading.svg';
 }
