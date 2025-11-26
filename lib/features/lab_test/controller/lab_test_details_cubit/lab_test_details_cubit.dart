@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_results_model.dart';
+import 'package:rafiq/features/lab_test/data/models/lab_test_get_details_response.dart';
 import 'package:rafiq/features/lab_test/data/repository/lab_test_repository.dart';
 
 part 'lab_test_details_state.dart';
@@ -13,8 +14,8 @@ class LabTestDetailsCubit extends Cubit<LabTestDetailsState> {
     emit(LabTestDetailsLoading());
     labTestRepository
         .getTestLabDetails(testId)
-        .then((value) {
-          emit(LabTestDetailsSuccess());
+        .then((response) {
+          emit(LabTestDetailsLoaded(response));
         })
         .catchError((error) {
           emit(LabTestDetailsError(error.toString()));
@@ -26,7 +27,7 @@ class LabTestDetailsCubit extends Cubit<LabTestDetailsState> {
     labTestRepository
         .updateLabTestResults(results)
         .then((_) {
-          emit(LabTestDetailsSuccess());
+          emit(LabTestDetailsUpdated());
         })
         .catchError((error) {
           emit(LabTestDetailsError(error.toString()));
