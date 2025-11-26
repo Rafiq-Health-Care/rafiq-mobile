@@ -1,6 +1,7 @@
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -15,7 +16,7 @@ class ApiService {
     _dio.options = BaseOptions(
       baseUrl: ApiConstants.baseURL,
       connectTimeout: const Duration(seconds: 20),
-      receiveTimeout: const Duration(seconds: 60*5),
+      receiveTimeout: const Duration(seconds: 60 * 5),
     );
   }
 
@@ -133,6 +134,35 @@ class ApiService {
       return await _dio.delete(path, data: data, options: options);
     } on DioException catch (e) {
       throw Exception(_handleError(e));
+    }
+  }
+
+  Future<String> downloadFile(String url, String fileName) async {
+    try {
+      Directory? dir;
+      if (Platform.isAndroid) {
+        dir = Directory('/storage/emulated/0/Download');
+        if (!await dir.exists()) {
+          dir = await getExternalStorageDirectory();
+        }
+      } else {
+        dir = await getDownloadsDirectory();
+      }
+
+      dir ??= await getApplicationDocumentsDirectory();
+
+      final rafiqDir = Directory('${dir.path}/rafiq');
+      if (!await rafiqDir.exists()) {
+        await rafiqDir.create(recursive: true);
+      }
+
+      final savePath = '${rafiqDir.path}/$fileName';
+      await _dio.download(url, savePath);
+      return savePath;
+    } on DioException catch (e) {
+      throw Exception(_handleError(e));
+    } catch (e) {
+      throw Exception('Download failed: $e');
     }
   }
 
