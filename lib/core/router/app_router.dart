@@ -18,18 +18,40 @@ import 'package:rafiq/features/auth/presentation/screens/select_user_type_screen
 import 'package:rafiq/features/auth/presentation/screens/patient_sign_up_step_i_screen.dart';
 import 'package:rafiq/features/landing/presentation/screens/landing_screen.dart';
 import 'package:rafiq/features/landing/presentation/screens/on_boarding_screen.dart';
+import 'package:rafiq/features/lab_test/presentation/screens/all_lab_tests_screen.dart';
+import 'package:rafiq/features/lab_test/presentation/screens/lab_test_details_screen.dart';
+import 'package:rafiq/features/lab_test/presentation/screens/lab_test_processing_screen.dart';
+import 'package:rafiq/features/lab_test/presentation/screens/lab_test_uploading_screen.dart';
+import 'package:rafiq/features/lab_test/presentation/screens/lab_test_confirm_screen.dart';
+import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit.dart';
+import 'package:rafiq/features/lab_test/controller/lab_test_details_cubit/lab_test_details_cubit.dart';
+import 'package:rafiq/features/lab_test/controller/lab_test_uploading_cubit/lab_test_uploading_cubit.dart';
+import 'package:rafiq/features/lab_test/data/repository/lab_test_repository.dart';
+import 'package:rafiq/features/lab_test/data/networking/lab_test_service.dart';
+import 'package:rafiq/features/lab_test/data/models/lab_test_upload_response.dart';
+import 'package:rafiq/features/lab_test/data/models/lab_test_upload_request.dart';
 
 class AppRouter {
   late AuthCubit authCubit;
   late AuthService authService;
   late AuthRepository authRepository;
   late ForgetPasswordCubit forgetPasswordCubit;
+  late LabTestService labTestService;
+  late LabTestRepository labTestRepository;
+  late LabTestCubit labTestCubit;
+  late LabTestDetailsCubit labTestDetailsCubit;
+  late LabTestUploadingCubit labTestUploadingCubit;
 
   AppRouter() {
     authService = AuthService();
     authRepository = AuthRepository(authService: authService);
     authCubit = AuthCubit(authService, authRepository);
     forgetPasswordCubit = ForgetPasswordCubit(authService, authRepository);
+    labTestService = LabTestService();
+    labTestRepository = LabTestRepository(labTestService: labTestService);
+    labTestCubit = LabTestCubit(labTestRepository);
+    labTestDetailsCubit = LabTestDetailsCubit(labTestRepository);
+    labTestUploadingCubit = LabTestUploadingCubit(labTestRepository);
   }
 
   Route generateRoute(RouteSettings settings) {
@@ -120,6 +142,51 @@ class AppRouter {
           builder: (_) => BlocProvider.value(
             value: forgetPasswordCubit,
             child: const ChangePasswordScreen(),
+          ),
+        );
+
+      case RouterStrings.allLabTests:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider.value(
+            value: labTestCubit,
+            child: const AllLabTestsScreen(),
+          ),
+        );
+
+      case RouterStrings.labTestDetails:
+        final testId = settings.arguments as String;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider.value(
+            value: labTestDetailsCubit,
+            child: LabTestDetailsScreen(testId: testId),
+          ),
+        );
+
+      case RouterStrings.labTestUploading:
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => const LabTestUploadingScreen(),
+        );
+
+      case RouterStrings.labTestProcessing:
+        final request = settings.arguments as LabTestUploadRequest;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => BlocProvider.value(
+            value: labTestUploadingCubit,
+            child: LabTestProcessingScreen(request: request),
+          ),
+        );
+
+      case RouterStrings.labTestConfirm:
+        final response = settings.arguments as LabTestUploadResponse;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (context) => BlocProvider.value(
+            value: labTestCubit,
+            child: LabTestConfirmScreen(response: response),
           ),
         );
 
