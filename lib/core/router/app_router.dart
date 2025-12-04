@@ -158,8 +158,11 @@ class AppRouter {
         final testId = settings.arguments as String;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => BlocProvider.value(
-            value: labTestDetailsCubit,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: labTestDetailsCubit),
+              BlocProvider.value(value: labTestCubit),
+            ],
             child: LabTestDetailsScreen(testId: testId),
           ),
         );
