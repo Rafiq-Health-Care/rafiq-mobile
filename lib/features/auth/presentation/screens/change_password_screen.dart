@@ -6,7 +6,7 @@ import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 import 'package:rafiq/core/widgets/custom_labeled_text_field.dart';
 import 'package:rafiq/features/auth/controllers/forget_password_cubit/forget_password_cubit.dart';
-import 'package:rafiq/features/auth/data/service/validation.dart';
+import 'package:rafiq/core/services/validation.dart';
 
 class ChangePasswordScreen extends StatefulWidget {
   const ChangePasswordScreen({super.key});
