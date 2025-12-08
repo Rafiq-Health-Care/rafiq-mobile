@@ -17,9 +17,7 @@ class Rafiq extends StatelessWidget {
     return MaterialApp(
       title: 'Rafiq',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.light().copyWith(
-        extensions: const [lightThemeDefinition],
-      ),
+      theme: ThemeData.light().copyWith(extensions: [lightThemeDefinition]),
       onGenerateRoute: AppRouter().generateRoute,
     );
   }

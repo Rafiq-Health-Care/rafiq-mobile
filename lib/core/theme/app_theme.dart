@@ -15,6 +15,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
   final TextStyle textFieldTextStyle;
   final TextStyle textFieldLabelTextStyle;
 
+  final InputBorder textFieldBorder;
   const AppTheme({
     required this.deepDarkBlueColor,
     required this.accentRedColor,
@@ -28,6 +29,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
     required this.textFieldLabelTextStyle,
     required this.textFieldTextStyle,
     required this.textFieldHintTextStyle,
+    required this.textFieldBorder,
   });
 
   @override
@@ -44,6 +46,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
     TextStyle? textFieldLabelTextStyle,
     TextStyle? textFieldHintTextStyle,
     TextStyle? textFieldTextStyle,
+    InputBorder? textFieldBorder,
   }) {
     return AppTheme(
       deepDarkBlueColor: deepDarkBlueColor ?? this.deepDarkBlueColor,
@@ -61,6 +64,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
       textFieldHintTextStyle:
           textFieldHintTextStyle ?? this.textFieldHintTextStyle,
       textFieldTextStyle: textFieldTextStyle ?? this.textFieldTextStyle,
+      textFieldBorder: textFieldBorder ?? this.textFieldBorder,
     );
   }
 
@@ -116,6 +120,8 @@ class AppTheme extends ThemeExtension<AppTheme> {
         other.textFieldTextStyle,
         t,
       )!,
+
+      textFieldBorder: textFieldBorder,
     );
   }
 }

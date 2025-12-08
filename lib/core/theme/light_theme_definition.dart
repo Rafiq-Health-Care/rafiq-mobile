@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 
-const lightThemeDefinition = AppTheme(
+final AppTheme lightThemeDefinition = AppTheme(
   deepDarkBlueColor: Color(0XFF11325B),
   accentRedColor: Color(0xFFEF233C),
   surfaceColor: Colors.white,
@@ -47,5 +47,9 @@ const lightThemeDefinition = AppTheme(
     fontSize: 20,
     fontWeight: FontWeight.w500,
     color: Color(0xFF11325B),
+  ),
+  textFieldBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.circular(12),
+    borderSide: BorderSide(color: Colors.grey[300]!),
   ),
 );
