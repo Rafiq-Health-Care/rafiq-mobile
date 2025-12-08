@@ -54,4 +54,13 @@ class Validation {
     if (!phoneRegex.hasMatch(value)) return 'Enter a valid phone number';
     return null;
   }
+
+  static String? validateTestResult(String? value) {
+    value = value?.trim();
+    if (value == null || value.isEmpty) return 'Test result is required';
+    if (double.tryParse(value) == null) {
+      return 'Invalid number';
+    }
+    return null;
+  }
 }
