@@ -1,14 +1,14 @@
 import 'test_model.dart';
 
 class LabTestResultsModel {
-  final String name;
-  final DateTime date;
+  final String? name;
+  final DateTime? date;
   final List<TestModel> tests;
   final String testId;
 
   const LabTestResultsModel({
-    required this.name,
-    required this.date,
+    this.name,
+    this.date,
     required this.tests,
     required this.testId,
   });
@@ -27,7 +27,7 @@ class LabTestResultsModel {
   Map<String, dynamic> toJson() {
     return {
       'name': name,
-      'date': date.toIso8601String(),
+      'date': date!.toIso8601String(),
       'tests': tests.map((e) => e.toJson()).toList(),
       'testId': testId,
     };
