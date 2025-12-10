@@ -16,19 +16,19 @@ import 'package:rafiq/features/auth/presentation/screens/otp_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/patient_sign_up_step_ii_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/select_user_type_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/patient_sign_up_step_i_screen.dart';
+import 'package:rafiq/features/lab_test/data/models/lab_test_results_model.dart';
 import 'package:rafiq/features/landing/presentation/screens/landing_screen.dart';
 import 'package:rafiq/features/landing/presentation/screens/on_boarding_screen.dart';
 import 'package:rafiq/features/lab_test/presentation/screens/all_lab_tests_screen.dart';
 import 'package:rafiq/features/lab_test/presentation/screens/lab_test_details_screen.dart';
 import 'package:rafiq/features/lab_test/presentation/screens/lab_test_processing_screen.dart';
 import 'package:rafiq/features/lab_test/presentation/screens/lab_test_uploading_screen.dart';
-import 'package:rafiq/features/lab_test/presentation/screens/lab_test_confirm_screen.dart';
+import 'package:rafiq/features/lab_test/presentation/screens/lab_test_confirm_and_update_screen.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_details_cubit/lab_test_details_cubit.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_uploading_cubit/lab_test_uploading_cubit.dart';
 import 'package:rafiq/features/lab_test/data/repository/lab_test_repository.dart';
 import 'package:rafiq/features/lab_test/data/networking/lab_test_service.dart';
-import 'package:rafiq/features/lab_test/data/models/lab_test_upload_response.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_upload_request.dart';
 
 class AppRouter {
@@ -183,13 +183,16 @@ class AppRouter {
           ),
         );
 
-      case RouterStrings.labTestConfirm:
-        final response = settings.arguments as LabTestUploadResponse;
+      case RouterStrings.labTestConfirmAndUpdate:
+        final resultModel = settings.arguments as LabTestResultsModel;
         return MaterialPageRoute(
           settings: settings,
-          builder: (context) => BlocProvider.value(
-            value: labTestCubit,
-            child: LabTestConfirmScreen(response: response),
+          builder: (context) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: labTestCubit),
+              BlocProvider.value(value: labTestDetailsCubit),
+            ],
+            child: LabTestConfirmAndUpdateScreen(resultsModel: resultModel),
           ),
         );
 
