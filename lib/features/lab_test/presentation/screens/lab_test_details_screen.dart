@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/networking/api_service.dart';
+import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_details_cubit/lab_test_details_cubit.dart';
+import 'package:rafiq/features/lab_test/data/models/lab_test_results_model.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/analysis_details_card.dart';
-import 'package:rafiq/features/lab_test/presentation/widgets/download_delete_buttons.dart';
+import 'package:rafiq/features/lab_test/presentation/widgets/file_actions_button.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/lab_test_details_record_card.dart';
 
 class LabTestDetailsScreen extends StatefulWidget {
@@ -66,7 +68,7 @@ class _LabTestDetailsScreenState extends State<LabTestDetailsScreen> {
                           testDate: details.date,
                           laboratory: details.name,
                         ),
-                        DownloadDeleteButtons(
+                        FileActionsButton(
                           onClickDownload: () {
                             _downloadFile(
                               details.fileUrl,
@@ -78,43 +80,19 @@ class _LabTestDetailsScreenState extends State<LabTestDetailsScreen> {
                               context,
                             ).deleteLabTest(widget.testId);
                           },
+                          onClickUpdate: () {
+                            Navigator.of(context).pushNamed(
+                              RouterStrings.labTestConfirmAndUpdate,
+                              arguments: LabTestResultsModel(
+                                name: details.name,
+                                date: details.date,
+                                tests: details.tests,
+                                testId: details.testId,
+                              ),
+                            );
+                          },
                         ),
-                        // Row(
-                        //   spacing: 16,
-                        //   children: [
-                        //     CustomIconButton(
-                        //       onPress: () {
-                        //         _downloadFile(
-                        //           details.fileUrl,
-                        //           '${details.name.replaceAll(' ', '_')}.${details.fileType}',
-                        //         );
-                        //       },
-                        //       label: 'Download File',
-                        //       icon: Icons.download,
-                        //     ),
-                        //     BlocListener<LabTestCubit, LabTestState>(
-                        //       listener: (context, state) {
-                        //         if (state is LabTestSuccess) {
-                        //           Navigator.pop(context);
-                        //         } else if (state is LabTestError) {
-                        //           snackBarMessage(context, state.message);
-                        //         }
-                        //       },
-                        //       child: IconButton(
-                        //         icon: const Icon(
-                        //           Icons.delete,
-                        //           color: Colors.red,
-                        //         ),
-                        //         onPressed: () {
-                        //           LabTestCubit.get(
-                        //             context,
-                        //           ).deleteLabTest(widget.testId);
-                        //         },
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        
+
                         const Divider(thickness: 1.5),
                         if (details.tests.isEmpty)
                           const Text('No results available.'),

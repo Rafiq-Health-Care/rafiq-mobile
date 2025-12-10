@@ -7,6 +7,7 @@ import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_uploading_cubit/lab_test_uploading_cubit.dart';
+import 'package:rafiq/features/lab_test/data/models/lab_test_results_model.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_upload_request.dart';
 
 class LabTestProcessingScreen extends StatefulWidget {
@@ -49,8 +50,11 @@ class _LabTestProcessingScreenState extends State<LabTestProcessingScreen>
           if (state is LabTestUploadingSuccess) {
             Navigator.pushReplacementNamed(
               context,
-              RouterStrings.labTestConfirm,
-              arguments: state.response,
+              RouterStrings.labTestConfirmAndUpdate,
+              arguments: LabTestResultsModel(
+                tests: state.response.tests,
+                testId: state.response.testId,
+              ),
             );
           } else if (state is LabTestUploadingError) {
             snackBarMessage(context, 'Error: ${state.message}');
