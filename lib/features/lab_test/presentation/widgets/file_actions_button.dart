@@ -5,27 +5,39 @@ import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/core/widgets/custom_icon_button.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit.dart';
 
-class DownloadDeleteButtons extends StatelessWidget {
+class FileActionsButton extends StatelessWidget {
   final VoidCallback onClickDownload;
+  final VoidCallback onClickUpdate;
   final VoidCallback onClickDelete;
 
-  const DownloadDeleteButtons({
+  const FileActionsButton({
     super.key,
     required this.onClickDownload,
     required this.onClickDelete,
+    required this.onClickUpdate,
   });
 
   @override
   Widget build(BuildContext context) {
     final AppTheme appTheme = Theme.of(context).extension<AppTheme>()!;
     return Row(
-      spacing: 16,
+      spacing: 8,
       children: [
         Expanded(
           child: CustomIconButton(
             onPress: onClickDownload,
             label: 'Download File',
             icon: Icons.download,
+          ),
+        ),
+        SizedBox(width: 2),
+        Material(
+          color: appTheme.deepDarkBlueColor,
+          borderRadius: BorderRadius.circular(12),
+          child: IconButton(
+            padding: EdgeInsets.zero,
+            onPressed: onClickUpdate,
+            icon: Icon(Icons.edit, color: appTheme.surfaceColor, size: 30),
           ),
         ),
         BlocListener<LabTestCubit, LabTestState>(
@@ -36,9 +48,18 @@ class DownloadDeleteButtons extends StatelessWidget {
               snackBarMessage(context, state.message);
             }
           },
-          child: IconButton(
-            icon: Icon(Icons.delete, color: appTheme.accentRedColor, size: 30),
-            onPressed: onClickDelete,
+          child: Material(
+            color: appTheme.surfaceColor,
+            borderRadius: BorderRadius.circular(12),
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              icon: Icon(
+                Icons.delete,
+                color: appTheme.accentRedColor,
+                size: 30,
+              ),
+              onPressed: onClickDelete,
+            ),
           ),
         ),
       ],
