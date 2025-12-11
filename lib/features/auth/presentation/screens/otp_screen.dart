@@ -96,7 +96,7 @@ class _OtpScreenState extends State<OtpScreen> {
         BlocListener<AuthCubit, AuthState>(
           listener: (context, state) {
             if (state is UserVerificationSuccess) {
-              // Navigator.of(context).pushNamed(RouterStrings.otp);
+              Navigator.of(context).pushNamed(RouterStrings.home);
             } else if (state is AuthFailure) {
               snackBarMessage(context, state.message);
             }

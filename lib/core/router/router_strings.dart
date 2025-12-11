@@ -16,4 +16,5 @@ abstract class RouterStrings {
   static const String labTestUploading = "/lab_test_uploading";
   static const String labTestProcessing = "/lab_test_processing";
   static const String labTestConfirmAndUpdate = "/lab_test_confirm_and_update";
+  static const String home = "/home";
 }

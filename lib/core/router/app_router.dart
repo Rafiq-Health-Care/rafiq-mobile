@@ -19,6 +19,7 @@ import 'package:rafiq/features/auth/presentation/screens/patient_sign_up_step_i_
 import 'package:rafiq/features/lab_test/data/models/lab_test_results_model.dart';
 import 'package:rafiq/features/landing/presentation/screens/landing_screen.dart';
 import 'package:rafiq/features/landing/presentation/screens/on_boarding_screen.dart';
+import 'package:rafiq/features/home/presentation/screens/home_screen.dart';
 import 'package:rafiq/features/lab_test/presentation/screens/all_lab_tests_screen.dart';
 import 'package:rafiq/features/lab_test/presentation/screens/lab_test_details_screen.dart';
 import 'package:rafiq/features/lab_test/presentation/screens/lab_test_processing_screen.dart';
@@ -195,6 +196,9 @@ class AppRouter {
             child: LabTestConfirmAndUpdateScreen(resultsModel: resultModel),
           ),
         );
+
+      case RouterStrings.home:
+        return MaterialPageRoute(builder: (_) => const HomeScreen());
 
       default:
         return MaterialPageRoute(builder: (_) => const LandingScreen());
