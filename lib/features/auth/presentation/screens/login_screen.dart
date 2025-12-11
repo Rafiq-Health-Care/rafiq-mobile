@@ -71,7 +71,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 BlocConsumer<AuthCubit, AuthState>(
                   listener: (context, state) {
                     if (state is LogInSuccess) {
-                      Navigator.of(context).pushNamed(RouterStrings.home);
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        RouterStrings.home,
+                        (route) => false,
+                      );
                     } else if (state is AuthFailure) {
                       snackBarMessage(context, state.message);
                     }
