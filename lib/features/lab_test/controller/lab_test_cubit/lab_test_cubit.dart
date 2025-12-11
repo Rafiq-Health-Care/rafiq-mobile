@@ -10,24 +10,64 @@ part 'lab_test_state.dart';
 class LabTestCubit extends Cubit<LabTestState> {
   final LabTestRepository labTestRepository;
   LabTestCubit(this.labTestRepository) : super(LabTestInitial());
-  List<ContentModel> _labTestsContent = [];
+  final List<ContentModel> _labTestsContent = [];
+  bool _lastPage = false;
+  int _page = 0;
   List<ContentModel> get labTestsContent => _labTestsContent;
+  bool get lastPage => _lastPage;
+  bool _isLoadingMore = false;
+  bool get isLoadingMore => _isLoadingMore;
 
-  void getAllLabTests(LabTestGetAllRequest request) {
-    emit(LabTestLoading());
-    labTestRepository
-        .getAllLabTests(request)
-        .then((value) {
-          if (value.content.isEmpty) {
-            emit(LabTestEmpty());
-          } else {
-            _labTestsContent = value.content;
-            emit(LabTestSuccess());
-          }
-        })
-        .catchError((error) {
-          emit(LabTestError(error.toString()));
-        });
+  Future<void> getAllLabTests({bool isRefresh = false}) async {
+    if (isRefresh) {
+      _page = 0;
+      _lastPage = false;
+      _labTestsContent.clear();
+    }
+
+    if (_lastPage ||
+        (state is LabTestLoading && !isRefresh) ||
+        _isLoadingMore) {
+      return;
+    }
+
+    if (_page == 0) {
+      emit(LabTestLoading(isFirstFetch: true));
+    } else {
+      _isLoadingMore = true;
+      emit(
+        LabTestSuccess(),
+      ); // Emit success to update UI with loading indicator if needed, or just keep current state
+    }
+
+    final LabTestGetAllRequest request = LabTestGetAllRequest(page: _page,size: 20);
+
+    try {
+      final value = await labTestRepository.getAllLabTests(request);
+
+      if (value.content.isEmpty && _page == 0) {
+        emit(LabTestEmpty());
+      } else {
+        _labTestsContent.addAll(value.content);
+        _lastPage = value.lastPage;
+        if (!_lastPage) {
+          _page++;
+        }
+        _isLoadingMore = false;
+        emit(LabTestSuccess());
+      }
+    } catch (error) {
+      _isLoadingMore = false;
+      emit(LabTestError(error.toString()));
+    }
+  }
+
+  Future<void> refreshLabTests() async {
+    await getAllLabTests(isRefresh: true);
+  }
+
+  void loadMoreLabTests() {
+    getAllLabTests();
   }
 
   void deleteAllLabTests() {
@@ -36,7 +76,9 @@ class LabTestCubit extends Cubit<LabTestState> {
         .deleteAllTestLabs()
         .then((_) {
           _labTestsContent.clear();
-          emit(LabTestSuccess());
+          _lastPage = false;
+          _page = 0;
+          emit(LabTestEmpty());
         })
         .catchError((error) {
           emit(LabTestError(error.toString()));
@@ -49,7 +91,13 @@ class LabTestCubit extends Cubit<LabTestState> {
         .deleteTestLab(testId)
         .then((_) {
           _labTestsContent.removeWhere((element) => element.testId == testId);
-          emit(LabTestSuccess());
+          if (_labTestsContent.isEmpty) {
+            _lastPage = false;
+            _page = 0;
+            emit(LabTestEmpty());
+          } else {
+            emit(LabTestSuccess());
+          }
         })
         .catchError((error) {
           emit(LabTestError(error.toString()));
@@ -61,6 +109,7 @@ class LabTestCubit extends Cubit<LabTestState> {
     labTestRepository
         .saveLabTestResults(results)
         .then((_) {
+          // refreshLabTests();
           emit(LabTestSuccess());
         })
         .catchError((error) {

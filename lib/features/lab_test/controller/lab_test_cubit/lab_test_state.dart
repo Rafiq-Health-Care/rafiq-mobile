@@ -5,7 +5,10 @@ sealed class LabTestState {}
 
 final class LabTestInitial extends LabTestState {}
 
-final class LabTestLoading extends LabTestState {}
+final class LabTestLoading extends LabTestState {
+  final bool isFirstFetch;
+  LabTestLoading({this.isFirstFetch = false});
+}
 
 final class LabTestSuccess extends LabTestState {}
 

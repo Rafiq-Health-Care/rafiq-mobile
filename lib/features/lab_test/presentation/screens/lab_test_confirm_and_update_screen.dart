@@ -8,7 +8,6 @@ import 'package:rafiq/features/lab_test/controller/lab_test_form_cubit/lab_test_
 import 'package:rafiq/features/lab_test/data/models/lab_test_item_data.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_results_model.dart';
 import 'package:rafiq/features/lab_test/data/models/test_model.dart';
-import 'package:rafiq/features/lab_test/data/models/lab_test_get_all_request.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/bottom_action.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/error_banner.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/info_card.dart';
@@ -114,7 +113,7 @@ class _LabTestConfirmAndUpdateScreenState
               if (state is LabTestSuccess && !_isUpdate) {
                 LabTestCubit.get(
                   context,
-                ).getAllLabTests(const LabTestGetAllRequest());
+                ).getAllLabTests();
                 Navigator.popUntil(
                   context,
                   ModalRoute.withName(RouterStrings.allLabTests),
@@ -136,7 +135,7 @@ class _LabTestConfirmAndUpdateScreenState
 
                 LabTestCubit.get(
                   context,
-                ).getAllLabTests(const LabTestGetAllRequest());
+                ).getAllLabTests(isRefresh: true);
               } else if (state is LabTestDetailsError) {
                 snackBarMessage(context, 'Error: ${state.message}');
               }
