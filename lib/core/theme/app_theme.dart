@@ -5,6 +5,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
   final Color accentRedColor;
   final Color surfaceColor;
   final Color accentBlueColor;
+  final Color greyColor6;
 
   final TextStyle headingLargeTextStyle;
   final TextStyle headingTextStyle;
@@ -14,6 +15,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
   final TextStyle textFieldHintTextStyle;
   final TextStyle textFieldTextStyle;
   final TextStyle textFieldLabelTextStyle;
+  final TextStyle drawerLabelTextStyle;
 
   final InputBorder textFieldBorder;
   const AppTheme({
@@ -21,6 +23,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
     required this.accentRedColor,
     required this.accentBlueColor,
     required this.surfaceColor,
+    required this.greyColor6,
     required this.headingLargeTextStyle,
     required this.headingTextStyle,
     required this.bodyLargeTextStyle,
@@ -29,6 +32,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
     required this.textFieldLabelTextStyle,
     required this.textFieldTextStyle,
     required this.textFieldHintTextStyle,
+    required this.drawerLabelTextStyle,
     required this.textFieldBorder,
   });
 
@@ -38,6 +42,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
     Color? accentRedColor,
     Color? surfaceColor,
     Color? accentBlueColor,
+    Color? greyColor6,
     TextStyle? headingLargeTextStyle,
     TextStyle? headingTextStyle,
     TextStyle? bodyLargeTextStyle,
@@ -46,6 +51,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
     TextStyle? textFieldLabelTextStyle,
     TextStyle? textFieldHintTextStyle,
     TextStyle? textFieldTextStyle,
+    TextStyle? drawerLabelTextStyle,
     InputBorder? textFieldBorder,
   }) {
     return AppTheme(
@@ -53,6 +59,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
       accentRedColor: accentRedColor ?? this.accentRedColor,
       accentBlueColor: accentBlueColor ?? this.accentBlueColor,
       surfaceColor: surfaceColor ?? this.surfaceColor,
+      greyColor6: greyColor6 ?? this.greyColor6,
       headingLargeTextStyle:
           headingLargeTextStyle ?? this.headingLargeTextStyle,
       headingTextStyle: headingTextStyle ?? this.headingTextStyle,
@@ -64,6 +71,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
       textFieldHintTextStyle:
           textFieldHintTextStyle ?? this.textFieldHintTextStyle,
       textFieldTextStyle: textFieldTextStyle ?? this.textFieldTextStyle,
+      drawerLabelTextStyle: drawerLabelTextStyle ?? this.drawerLabelTextStyle,
       textFieldBorder: textFieldBorder ?? this.textFieldBorder,
     );
   }
@@ -82,6 +90,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
       accentRedColor: Color.lerp(accentRedColor, other.accentRedColor, t)!,
       surfaceColor: Color.lerp(surfaceColor, other.surfaceColor, t)!,
       accentBlueColor: Color.lerp(accentBlueColor, other.accentBlueColor, t)!,
+      greyColor6: Color.lerp(greyColor6, other.greyColor6, t)!,
 
       headingLargeTextStyle: TextStyle.lerp(
         headingLargeTextStyle,
@@ -118,6 +127,11 @@ class AppTheme extends ThemeExtension<AppTheme> {
       textFieldTextStyle: TextStyle.lerp(
         textFieldTextStyle,
         other.textFieldTextStyle,
+        t,
+      )!,
+      drawerLabelTextStyle: TextStyle.lerp(
+        drawerLabelTextStyle,
+        other.drawerLabelTextStyle,
         t,
       )!,
 

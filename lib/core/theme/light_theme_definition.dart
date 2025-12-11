@@ -6,6 +6,7 @@ final AppTheme lightThemeDefinition = AppTheme(
   accentRedColor: Color(0xFFEF233C),
   surfaceColor: Colors.white,
   accentBlueColor: Color(0xFF2977F6),
+  greyColor6: Color(0xFF3A3A3A),
 
   headingLargeTextStyle: TextStyle(
     fontSize: 48,
@@ -47,6 +48,14 @@ final AppTheme lightThemeDefinition = AppTheme(
     fontSize: 20,
     fontWeight: FontWeight.w500,
     color: Color(0xFF11325B),
+  ),
+  drawerLabelTextStyle: TextStyle(
+    fontFamily: 'Inter',
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: Color(0xFF3A3A3A),
+    height: 19 / 16, // line-height / font-size
+    letterSpacing: 0,
   ),
   textFieldBorder: OutlineInputBorder(
     borderRadius: BorderRadius.circular(12),
