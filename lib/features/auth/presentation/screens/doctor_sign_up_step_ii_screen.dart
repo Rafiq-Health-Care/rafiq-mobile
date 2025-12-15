@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/functions/snack_bar_message.dart';
 import 'package:rafiq/core/router/router_strings.dart';
@@ -10,6 +11,7 @@ import 'package:rafiq/features/auth/data/models/doctor_sign_up_request.dart';
 import 'package:rafiq/features/auth/data/models/specialization_model.dart';
 import 'package:rafiq/core/services/validation.dart';
 import 'package:rafiq/core/widgets/custom_labeled_text_field.dart';
+import 'package:rafiq/features/auth/presentation/formatters/birth_date_input_formatter.dart';
 import 'package:rafiq/features/auth/presentation/widgets/gender_selector.dart';
 import 'package:rafiq/features/auth/presentation/widgets/specialization_selector.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
@@ -26,7 +28,7 @@ class _DoctorSignUpStepIIScreenState extends State<DoctorSignUpStepIIScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final _phoneController = TextEditingController();
-  final _ageController = TextEditingController();
+  final _birthDateController = TextEditingController();
   final _descriptionController = TextEditingController();
 
   Gender _selectedGender = Gender.male;
@@ -41,7 +43,7 @@ class _DoctorSignUpStepIIScreenState extends State<DoctorSignUpStepIIScreen> {
   @override
   void dispose() {
     _phoneController.dispose();
-    _ageController.dispose();
+    _birthDateController.dispose();
     _descriptionController.dispose();
     super.dispose();
   }
@@ -54,7 +56,7 @@ class _DoctorSignUpStepIIScreenState extends State<DoctorSignUpStepIIScreen> {
 
     doctorData
       ..phone = _phoneController.text.trim()
-      ..age = int.parse(_ageController.text)
+      ..birthDate = _birthDateController.text
       ..gender = _selectedGender.name
       ..specialization = specialization.id
       ..description = _descriptionController.text.trim();
@@ -73,13 +75,19 @@ class _DoctorSignUpStepIIScreenState extends State<DoctorSignUpStepIIScreen> {
           controller: _phoneController,
           keyboardType: TextInputType.number,
           validator: Validation.validatePhone,
+          prefixText: '+20 ',
+          inputFormatters: [
+            FilteringTextInputFormatter.digitsOnly,
+            LengthLimitingTextInputFormatter(10),
+          ],
         ),
         CustomLabeledTextField(
-          label: 'Age',
-          hint: 'Enter your age',
-          controller: _ageController,
-          keyboardType: TextInputType.number,
-          validator: Validation.validateAge,
+          label: 'Birth Date',
+          hint: 'YYYY-MM-DD',
+          controller: _birthDateController,
+          keyboardType: TextInputType.datetime,
+          validator: Validation.validateBirthDate,
+          inputFormatters: [BirthDateInputFormatter()],
         ),
         GenderSelector(
           initialGender: _selectedGender,

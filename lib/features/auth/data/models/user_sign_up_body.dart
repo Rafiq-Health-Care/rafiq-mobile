@@ -4,7 +4,7 @@ class UserSignUpBody {
   String? firstName;
   String? lastName;
   String? phone;
-  int? age;
+  String? birthDate;
   String? gender;
 
   UserSignUpBody({
@@ -13,7 +13,7 @@ class UserSignUpBody {
     this.firstName,
     this.lastName,
     this.phone,
-    this.age,
+    this.birthDate,
     this.gender,
   });
 
@@ -24,7 +24,7 @@ class UserSignUpBody {
       'firstName': firstName,
       'lastName': lastName,
       'phone': phone,
-      'age': age,
+      'birthDate': birthDate,
       'gender': gender,
     };
   }

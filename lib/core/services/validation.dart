@@ -39,18 +39,40 @@ class Validation {
     return null;
   }
 
-  static String? validateAge(String? value) {
-    value = value?.trim();
-    if (value == null || value.isEmpty) return 'Age is required';
-    final age = int.tryParse(value);
-    if (age == null || age <= 0) return 'Enter a valid age';
+  static String? validateBirthDate(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your birth date';
+    }
+
+    final regex = RegExp(r'^\d{4}-\d{2}-\d{2}$');
+    if (!regex.hasMatch(value)) {
+      return 'Invalid format';
+    }
+
+    final parts = value.split('-');
+    final year = int.parse(parts[0]);
+    final month = int.parse(parts[1]);
+    final day = int.parse(parts[2]);
+
+    if (year < 1900 || year > DateTime.now().year) {
+      return 'Invalid year';
+    }
+
+    if (month < 1 || month > 12) {
+      return 'Invalid month';
+    }
+
+    if (day < 1 || day > 31) {
+      return 'Invalid day';
+    }
+
     return null;
   }
 
   static String? validatePhone(String? value) {
     value = value?.trim();
     if (value == null || value.isEmpty) return 'Phone number is required';
-    final phoneRegex = RegExp(r'^\+?[\d\s]{7,15}$');
+    final phoneRegex = RegExp(r'^(10|11|12|15)\d{8}$');
     if (!phoneRegex.hasMatch(value)) return 'Enter a valid phone number';
     return null;
   }

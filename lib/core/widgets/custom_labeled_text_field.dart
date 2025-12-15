@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 
 class CustomLabeledTextField extends StatelessWidget {
@@ -7,6 +8,8 @@ class CustomLabeledTextField extends StatelessWidget {
   final TextEditingController controller;
   final String? Function(String?)? validator;
   final TextInputType keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  final String? prefixText;
 
   const CustomLabeledTextField({
     super.key,
@@ -15,6 +18,8 @@ class CustomLabeledTextField extends StatelessWidget {
     required this.validator,
     this.keyboardType = TextInputType.text,
     required this.label,
+    this.inputFormatters,
+    this.prefixText,
   });
 
   @override
@@ -30,6 +35,8 @@ class CustomLabeledTextField extends StatelessWidget {
           validator: validator,
           decoration: InputDecoration(
             hintText: hint,
+            prefixText: prefixText,
+            prefixStyle: appTheme.textFieldTextStyle,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
 
             enabledBorder: OutlineInputBorder(
@@ -44,6 +51,7 @@ class CustomLabeledTextField extends StatelessWidget {
           ),
           style: appTheme.textFieldTextStyle,
           keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
         ),
       ],
     );

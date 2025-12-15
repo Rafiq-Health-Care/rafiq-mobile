@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/functions/snack_bar_message.dart';
 import 'package:rafiq/core/router/router_strings.dart';
@@ -8,6 +9,7 @@ import 'package:rafiq/features/auth/data/enum/gender_enum.dart';
 import 'package:rafiq/features/auth/data/models/patient_sign_up_request.dart';
 import 'package:rafiq/core/services/validation.dart';
 import 'package:rafiq/core/widgets/custom_labeled_text_field.dart';
+import 'package:rafiq/features/auth/presentation/formatters/birth_date_input_formatter.dart';
 import 'package:rafiq/features/auth/presentation/widgets/gender_selector.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 
@@ -23,13 +25,13 @@ class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final _phoneController = TextEditingController();
-  final _ageController = TextEditingController();
+  final _birthDateController = TextEditingController();
   Gender _selectedGender = Gender.male;
 
   @override
   void dispose() {
     _phoneController.dispose();
-    _ageController.dispose();
+    _birthDateController.dispose();
     super.dispose();
   }
 
@@ -37,7 +39,7 @@ class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
     if (_formKey.currentState!.validate()) {
       (AuthCubit.get(context).userSignUpBody! as PatientSignUpRequest)
         ..phone = _phoneController.text.trim()
-        ..age = int.parse(_ageController.text)
+        ..birthDate = _birthDateController.text
         ..gender = _selectedGender.name;
 
       AuthCubit.get(context).patientSignUp();
@@ -63,15 +65,20 @@ class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
                 controller: _phoneController,
                 keyboardType: TextInputType.number,
                 validator: Validation.validatePhone,
+                prefixText: '+20 ',
+                inputFormatters: [
+                  FilteringTextInputFormatter.digitsOnly,
+                  LengthLimitingTextInputFormatter(10),
+                ],
               ),
               CustomLabeledTextField(
-                label: 'Age',
-                hint: 'Enter your age',
-                controller: _ageController,
-                keyboardType: TextInputType.number,
-                validator: Validation.validateAge,
+                label: 'Birth Date',
+                hint: 'YYYY-MM-DD',
+                controller: _birthDateController,
+                keyboardType: TextInputType.datetime,
+                validator: Validation.validateBirthDate,
+                inputFormatters: [BirthDateInputFormatter()],
               ),
-
               GenderSelector(
                 initialGender: _selectedGender,
                 onChanged: (gender) {

@@ -14,7 +14,7 @@ class DoctorSignUpRequest extends UserSignUpBody {
     super.firstName,
     super.lastName,
     super.phone,
-    super.age,
+    super.birthDate,
     super.gender,
     this.specialization,
     this.description,
