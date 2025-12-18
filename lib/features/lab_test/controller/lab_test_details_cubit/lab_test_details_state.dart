@@ -8,11 +8,14 @@ final class LabTestDetailsInitial extends LabTestDetailsState {}
 final class LabTestDetailsLoading extends LabTestDetailsState {}
 
 final class LabTestDetailsLoaded extends LabTestDetailsState {
-  final LabTestGetDetailsResponse response;
+  final LabTestDetailsModel response;
   LabTestDetailsLoaded(this.response);
 }
 
-final class LabTestDetailsUpdated extends LabTestDetailsState {}
+final class LabTestDetailsUpdated extends LabTestDetailsState {
+  final LabTestDetailsModel response;
+  LabTestDetailsUpdated(this.response);
+}
 
 final class LabTestDetailsError extends LabTestDetailsState {
   final String message;

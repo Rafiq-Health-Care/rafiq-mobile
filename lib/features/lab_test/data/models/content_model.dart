@@ -1,22 +1,19 @@
 class ContentModel {
   final String name;
   final String testId;
-  final String fileUrl;
-  final String fileType;
+  final String fileId;
 
   const ContentModel({
     required this.name,
     required this.testId,
-    required this.fileUrl,
-    required this.fileType,
+    required this.fileId,
   });
 
   factory ContentModel.fromJson(Map<String, dynamic> json) {
     return ContentModel(
       name: json['name'] as String,
       testId: json['testId'] as String,
-      fileUrl: json['fileUrl'] as String,
-      fileType: json['fileType'] as String,
+      fileId: json['fileId'] as String,
     );
   }
 
@@ -24,8 +21,7 @@ class ContentModel {
     return {
       'name': name,
       'testId': testId,
-      'fileUrl': fileUrl,
-      'fileType': fileType,
+      'fileId': fileId,
     };
   }
 }

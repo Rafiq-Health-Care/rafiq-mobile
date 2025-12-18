@@ -1,6 +1,7 @@
+import 'package:rafiq/features/lab_test/data/models/lab_test_file_response.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_get_all_request.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_get_all_response.dart';
-import 'package:rafiq/features/lab_test/data/models/lab_test_get_details_response.dart';
+import 'package:rafiq/features/lab_test/data/models/lab_test_details_model.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_results_model.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_upload_request.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_upload_response.dart';
@@ -21,9 +22,9 @@ class LabTestRepository {
     await labTestService.deleteAllTestLabs();
   }
 
-  Future<LabTestGetDetailsResponse> getTestLabDetails(String testId) async {
+  Future<LabTestDetailsModel> getTestLabDetails(String testId) async {
     final rowData = await labTestService.getLabTestDetails(testId);
-    return LabTestGetDetailsResponse.fromJson(rowData);
+    return LabTestDetailsModel.fromJson(rowData);
   }
 
   Future<void> deleteTestLab(String testId) async {
@@ -37,11 +38,23 @@ class LabTestRepository {
     return LabTestUploadResponse.fromJson(rowData);
   }
 
-  Future<void> saveLabTestResults(LabTestResultsModel request) async {
-    await labTestService.saveLabTestResults(request);
+  Future<LabTestDetailsModel> saveLabTestResults(
+    LabTestResultsModel request,
+  ) async {
+    final rawData = await labTestService.saveLabTestResults(request);
+    return LabTestDetailsModel.fromJson(rawData);
   }
 
-  Future<void> updateLabTestResults(LabTestResultsModel request) async {
-    await labTestService.updateLabTestResults(request);
+  Future<LabTestDetailsModel> updateLabTestResults(
+    LabTestResultsModel request,
+    String testId,
+  ) async {
+    final rawData = await labTestService.updateLabTestResults(request, testId);
+    return LabTestDetailsModel.fromJson(rawData);
+  }
+
+  Future<LabTestFileResponse> getLAbTestFile(String fileId) async {
+    final rawData = await labTestService.getLabTestFile(fileId);
+    return LabTestFileResponse.fromJson(rawData);
   }
 }

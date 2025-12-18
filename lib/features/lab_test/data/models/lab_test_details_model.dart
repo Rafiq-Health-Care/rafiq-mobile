@@ -1,32 +1,31 @@
 import 'package:rafiq/features/lab_test/data/models/test_model.dart';
 
-class LabTestGetDetailsResponse {
+class LabTestDetailsModel {
   final String name;
   final String testId;
-  final String fileUrl;
-  final String fileType;
+  final String fileId;
   final DateTime date;
   final List<TestModel> tests;
 
-  const LabTestGetDetailsResponse({
+  const LabTestDetailsModel({
     required this.name,
     required this.testId,
-    required this.fileUrl,
-    required this.fileType,
+    required this.fileId,
     required this.date,
     required this.tests,
   });
 
-  factory LabTestGetDetailsResponse.fromJson(Map<String, dynamic> json) {
-    return LabTestGetDetailsResponse(
+  factory LabTestDetailsModel.fromJson(Map<String, dynamic> json) {
+    return LabTestDetailsModel(
       name: json['name'] as String,
       testId: json['testId'] as String,
-      fileUrl: json['fileUrl'] as String,
-      fileType: json['fileType'] as String,
+      fileId: json['fileId'] as String,
       date: DateTime.parse(json['date']),
-      tests: (json['tests'] as List)
-          .map((e) => TestModel.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      tests: json['tests'] == null
+          ? []
+          : (json['tests'] as List)
+                .map((e) => TestModel.fromJson(e as Map<String, dynamic>))
+                .toList(),
     );
   }
 
@@ -34,8 +33,7 @@ class LabTestGetDetailsResponse {
     return {
       'name': name,
       'testId': testId,
-      'fileUrl': fileUrl,
-      'fileType': fileType,
+      'fileId': fileId,
       'date': date.toIso8601String(),
       'tests': tests.map((e) => e.toJson()).toList(),
     };

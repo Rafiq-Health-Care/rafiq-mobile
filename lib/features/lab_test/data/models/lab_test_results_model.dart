@@ -4,13 +4,13 @@ class LabTestResultsModel {
   final String? name;
   final DateTime? date;
   final List<TestModel> tests;
-  final String testId;
+  final String fileId;
 
   const LabTestResultsModel({
     this.name,
     this.date,
     required this.tests,
-    required this.testId,
+    required this.fileId,
   });
 
   factory LabTestResultsModel.fromJson(Map<String, dynamic> json) {
@@ -20,7 +20,7 @@ class LabTestResultsModel {
       tests: (json['tests'] as List)
           .map((e) => TestModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      testId: json['testId'] as String,
+      fileId: json['fileId'] as String,
     );
   }
 
@@ -29,7 +29,7 @@ class LabTestResultsModel {
       'name': name,
       'date': date!.toIso8601String(),
       'tests': tests.map((e) => e.toJson()).toList(),
-      'testId': testId,
+      'fileId': fileId,
     };
   }
 }

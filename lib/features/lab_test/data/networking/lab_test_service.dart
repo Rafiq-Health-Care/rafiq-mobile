@@ -50,7 +50,7 @@ class LabTestService {
 
     try {
       Response response = await _api.post(
-        ApiConstants.uploadLabTest,
+        ApiConstants.extractLabTestFile,
         data: formData,
         options: Options(headers: {'Content-Type': 'multipart/form-data'}),
       );
@@ -60,20 +60,39 @@ class LabTestService {
     }
   }
 
-  Future<void> saveLabTestResults(LabTestResultsModel body) async {
+  Future<dynamic> saveLabTestResults(LabTestResultsModel body) async {
     try {
-      await _api.post(ApiConstants.labTestResults, data: body.toJson());
+      Response response = await _api.post(
+        ApiConstants.labTestResults,
+        data: body.toJson(),
+      );
+      return response.data;
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<void> updateLabTestResults(LabTestResultsModel body) async {
+  Future<dynamic> updateLabTestResults(
+    LabTestResultsModel body,
+    String testId,
+  ) async {
     try {
-      await _api.put(
-        '${ApiConstants.updateLabTest}/${body.testId}',
+      Response response = await _api.put(
+        '${ApiConstants.updateLabTest}/$testId',
         data: body.toJson(),
       );
+      return response.data;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<dynamic> getLabTestFile(String fileId) async {
+    try {
+      Response response = await _api.get(
+        '${ApiConstants.getLabTestFile}/$fileId',
+      );
+      return response.data;
     } catch (e) {
       rethrow;
     }
