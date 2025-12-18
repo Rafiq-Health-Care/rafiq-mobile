@@ -4,6 +4,7 @@ import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'api_constants.dart';
 
@@ -139,24 +140,31 @@ class ApiService {
 
   Future<String> downloadFile(String url, String fileName) async {
     try {
-      Directory? dir;
       if (Platform.isAndroid) {
-        dir = Directory('/storage/emulated/0/Download');
-        if (!await dir.exists()) {
-          dir = await getExternalStorageDirectory();
+        if (await Permission.manageExternalStorage.request().isDenied) {
+          await Permission.storage.request();
         }
-      } else {
-        dir = await getDownloadsDirectory();
       }
 
-      dir ??= await getApplicationDocumentsDirectory();
+      String basePath = "";
+      if (Platform.isAndroid) {
+        basePath = "/storage/emulated/0/Download";
+        if (!await Directory(basePath).exists()) {
+          await getExternalStorageDirectory();
+        }
+      } else {
+        final dir = await getDownloadsDirectory();
+        basePath = dir!.path;
+      }
 
-      final rafiqDir = Directory('${dir.path}/rafiq');
+      final rafiqDir = Directory("$basePath/rafiq");
       if (!await rafiqDir.exists()) {
         await rafiqDir.create(recursive: true);
       }
 
-      final savePath = '${rafiqDir.path}/$fileName';
+      final String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+      final String savePath = "${rafiqDir.path}/${timestamp}_$fileName";
+
       await _dio.download(url, savePath);
       return savePath;
     } on DioException catch (e) {

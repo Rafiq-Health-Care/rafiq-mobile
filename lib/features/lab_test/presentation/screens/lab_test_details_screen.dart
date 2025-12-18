@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_details_cubit/lab_test_details_cubit.dart';
-import 'package:rafiq/features/lab_test/data/models/lab_test_results_model.dart';
+import 'package:rafiq/features/lab_test/controller/lab_test_uploading_cubit/lab_test_uploading_cubit.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/analysis_details_card.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/file_actions_button.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/lab_test_details_record_card.dart';
@@ -24,24 +23,6 @@ class _LabTestDetailsScreenState extends State<LabTestDetailsScreen> {
     LabTestDetailsCubit.get(context).getLabTestDetails(widget.testId);
   }
 
-  Future<void> _downloadFile(String url, String fileName) async {
-    try {
-      final savePath = await ApiService.instance.downloadFile(url, fileName);
-
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('File downloaded to: $savePath')),
-        );
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Download failed: $e')));
-      }
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,8 +33,10 @@ class _LabTestDetailsScreenState extends State<LabTestDetailsScreen> {
             return const Center(child: CircularProgressIndicator());
           } else if (state is LabTestDetailsError) {
             return Center(child: Text('Error: ${state.message}'));
-          } else if (state is LabTestDetailsLoaded) {
-            final details = state.response;
+          } else if (state is LabTestDetailsLoaded || state is LabTestDetailsUpdated) {
+            final details = state is LabTestDetailsLoaded
+                ? (state).response
+                : (state as LabTestDetailsUpdated).response;
             return CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
@@ -70,10 +53,9 @@ class _LabTestDetailsScreenState extends State<LabTestDetailsScreen> {
                         ),
                         FileActionsButton(
                           onClickDownload: () {
-                            _downloadFile(
-                              details.fileUrl,
-                              '${details.name.replaceAll(' ', '_')}.${details.fileType}',
-                            );
+                            LabTestUploadingCubit.get(
+                              context,
+                            ).downloadLabTestFile(details.fileId, context);
                           },
                           onClickDelete: () {
                             LabTestCubit.get(
@@ -83,12 +65,7 @@ class _LabTestDetailsScreenState extends State<LabTestDetailsScreen> {
                           onClickUpdate: () {
                             Navigator.of(context).pushNamed(
                               RouterStrings.labTestConfirmAndUpdate,
-                              arguments: LabTestResultsModel(
-                                name: details.name,
-                                date: details.date,
-                                tests: details.tests,
-                                testId: details.testId,
-                              ),
+                              arguments: details,
                             );
                           },
                         ),

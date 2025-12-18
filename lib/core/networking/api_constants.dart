@@ -16,8 +16,8 @@ class ApiConstants {
   static const String specialization = "/specialization";
 
   static const String labTest = "/lab-test";
-  static const String uploadLabTest = "/lab-test/upload";
+  static const String extractLabTestFile = "/file/extract-lab-test";
+  static const String getLabTestFile = "/file";
   static const String labTestResults = "/lab-test/test-results";
   static const String updateLabTest = "/lab-test/update";
-
 }

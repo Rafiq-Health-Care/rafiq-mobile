@@ -11,7 +11,7 @@ class LabTestUploadRequest {
       'file': await MultipartFile.fromFile(
         file.path,
         filename: file.uri.pathSegments.last,
-        contentType: DioMediaType('multipart', 'form-data'),
+        contentType: DioMediaType('application', 'pdf'),
       ),
     });
   }
