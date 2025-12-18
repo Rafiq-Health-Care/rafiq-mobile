@@ -5,6 +5,7 @@ import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_details_cubit/lab_test_details_cubit.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_form_cubit/lab_test_form_cubit.dart';
+import 'package:rafiq/features/lab_test/data/models/lab_test_details_model.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_item_data.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_results_model.dart';
 import 'package:rafiq/features/lab_test/data/models/test_model.dart';
@@ -14,8 +15,8 @@ import 'package:rafiq/features/lab_test/presentation/widgets/info_card.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/lab_tests_form_section.dart';
 
 class LabTestConfirmAndUpdateScreen extends StatefulWidget {
-  final LabTestResultsModel resultsModel;
-  const LabTestConfirmAndUpdateScreen({super.key, required this.resultsModel});
+  final LabTestDetailsModel detailsModel;
+  const LabTestConfirmAndUpdateScreen({super.key, required this.detailsModel});
 
   @override
   State<LabTestConfirmAndUpdateScreen> createState() =>
@@ -35,14 +36,15 @@ class _LabTestConfirmAndUpdateScreenState
   @override
   void initState() {
     super.initState();
-    _isUpdate = widget.resultsModel.name != null;
-    _nameController = TextEditingController(text: widget.resultsModel.name);
-    _dateNotifier = ValueNotifier(widget.resultsModel.date ?? DateTime.now());
+    // will be handel latter after detail with file system
+    _isUpdate = widget.detailsModel.testId != '';
+    _nameController = TextEditingController(text: widget.detailsModel.name);
+    _dateNotifier = ValueNotifier(widget.detailsModel.date);
     _hasErrorsNotifier = ValueNotifier(false);
     _scrollController = ScrollController();
 
     _testFormCubit = LabTestFormCubit(
-      widget.resultsModel.tests.map((test) {
+      widget.detailsModel.tests.map((test) {
         return LabTestItemData(
           nameController: TextEditingController(text: test.testName),
           valueController: TextEditingController(text: test.result.toString()),
@@ -75,14 +77,17 @@ class _LabTestConfirmAndUpdateScreenState
       }).toList();
 
       final results = LabTestResultsModel(
+        tests: tests,
+        fileId: widget.detailsModel.fileId,
         name: _nameController.text,
         date: _dateNotifier.value,
-        tests: tests,
-        testId: widget.resultsModel.testId,
       );
+      final testId = widget.detailsModel.testId;
 
       _isUpdate
-          ? LabTestDetailsCubit.get(context).updateLabTestResults(results)
+          ? LabTestDetailsCubit.get(
+              context,
+            ).updateLabTestResults(results, testId)
           : LabTestCubit.get(context).saveLabTestResults(results);
 
       _hasErrorsNotifier.value = false;
@@ -111,9 +116,7 @@ class _LabTestConfirmAndUpdateScreenState
           BlocListener<LabTestCubit, LabTestState>(
             listener: (context, state) {
               if (state is LabTestSuccess && !_isUpdate) {
-                LabTestCubit.get(
-                  context,
-                ).getAllLabTests();
+                LabTestCubit.get(context).getAllLabTests(isRefresh: true);
                 Navigator.popUntil(
                   context,
                   ModalRoute.withName(RouterStrings.allLabTests),
@@ -126,16 +129,7 @@ class _LabTestConfirmAndUpdateScreenState
           BlocListener<LabTestDetailsCubit, LabTestDetailsState>(
             listener: (context, state) {
               if (state is LabTestDetailsUpdated) {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  RouterStrings.labTestDetails,
-                  ModalRoute.withName(RouterStrings.allLabTests),
-                  arguments: widget.resultsModel.testId,
-                );
-
-                LabTestCubit.get(
-                  context,
-                ).getAllLabTests(isRefresh: true);
+                LabTestCubit.get(context).getAllLabTests(isRefresh: true);
               } else if (state is LabTestDetailsError) {
                 snackBarMessage(context, 'Error: ${state.message}');
               }
