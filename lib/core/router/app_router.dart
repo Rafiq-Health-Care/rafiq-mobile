@@ -16,7 +16,7 @@ import 'package:rafiq/features/auth/presentation/screens/otp_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/patient_sign_up_step_ii_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/select_user_type_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/patient_sign_up_step_i_screen.dart';
-import 'package:rafiq/features/lab_test/data/models/lab_test_results_model.dart';
+import 'package:rafiq/features/lab_test/data/models/lab_test_details_model.dart';
 import 'package:rafiq/features/landing/presentation/screens/landing_screen.dart';
 import 'package:rafiq/features/landing/presentation/screens/on_boarding_screen.dart';
 import 'package:rafiq/features/home/presentation/screens/home_screen.dart';
@@ -163,6 +163,7 @@ class AppRouter {
             providers: [
               BlocProvider.value(value: labTestDetailsCubit),
               BlocProvider.value(value: labTestCubit),
+              BlocProvider.value(value: labTestUploadingCubit),
             ],
             child: LabTestDetailsScreen(testId: testId),
           ),
@@ -185,7 +186,7 @@ class AppRouter {
         );
 
       case RouterStrings.labTestConfirmAndUpdate:
-        final resultModel = settings.arguments as LabTestResultsModel;
+        final detailsModel = settings.arguments as LabTestDetailsModel;
         return MaterialPageRoute(
           settings: settings,
           builder: (context) => MultiBlocProvider(
@@ -193,7 +194,7 @@ class AppRouter {
               BlocProvider.value(value: labTestCubit),
               BlocProvider.value(value: labTestDetailsCubit),
             ],
-            child: LabTestConfirmAndUpdateScreen(resultsModel: resultModel),
+            child: LabTestConfirmAndUpdateScreen(detailsModel: detailsModel),
           ),
         );
 
