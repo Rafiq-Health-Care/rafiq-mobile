@@ -40,7 +40,10 @@ class LabTestCubit extends Cubit<LabTestState> {
       ); // Emit success to update UI with loading indicator if needed, or just keep current state
     }
 
-    final LabTestGetAllRequest request = LabTestGetAllRequest(page: _page,size: 20);
+    final LabTestGetAllRequest request = LabTestGetAllRequest(
+      page: _page,
+      size: 20,
+    );
 
     try {
       final value = await labTestRepository.getAllLabTests(request);
@@ -109,7 +112,6 @@ class LabTestCubit extends Cubit<LabTestState> {
     labTestRepository
         .saveLabTestResults(results)
         .then((_) {
-          // refreshLabTests();
           emit(LabTestSuccess());
         })
         .catchError((error) {
