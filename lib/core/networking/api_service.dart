@@ -130,6 +130,14 @@ class ApiService {
     }
   }
 
+  Future<Response> patch(String path, {dynamic data, Options? options}) async {
+    try {
+      return await _dio.patch(path, data: data, options: options);
+    } on DioException catch (e) {
+      throw Exception(_handleError(e));
+    }
+  }
+
   Future<Response> delete(String path, {dynamic data, Options? options}) async {
     try {
       return await _dio.delete(path, data: data, options: options);
