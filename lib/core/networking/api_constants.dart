@@ -20,4 +20,13 @@ class ApiConstants {
   static const String getLabTestFile = "/file";
   static const String labTestResults = "/lab-test/test-results";
   static const String updateLabTest = "/lab-test/update";
+
+  static const String drugs = "/drugs";
+  static const String medicines = "/medicines";
+  static const String addMedicines = "/medicines/add";
+
+  static const String group = "/group";
+  static const String addGroup = "/group/add";
+  static const String addMedicinesToGroup = "/group/addMedicines";
+  static const String removeMedicineFromGroup = "/group/removeMedicines";
 }
