@@ -6,6 +6,9 @@ class CustomIconButton extends StatelessWidget {
   final String label;
   final IconData icon;
   final double borderRadius;
+  final Color? labelColor;
+  final double? fontSize;
+  final Color? backgroundColor;
 
   const CustomIconButton({
     super.key,
@@ -13,6 +16,9 @@ class CustomIconButton extends StatelessWidget {
     required this.label,
     required this.icon,
     this.borderRadius = 12,
+    this.labelColor,
+    this.fontSize,
+    this.backgroundColor,
   });
 
   @override
@@ -22,15 +28,17 @@ class CustomIconButton extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       child: ElevatedButton.icon(
         onPressed: onPress,
-        icon: Icon(icon, color: appTheme.deepDarkBlueColor),
+        icon: Icon(icon, color: labelColor ?? appTheme.deepDarkBlueColor),
         label: Text(
           label,
           style: appTheme.buttonLabelTextStyle.copyWith(
-            color: appTheme.deepDarkBlueColor,
+            color: labelColor ?? appTheme.deepDarkBlueColor,
+            fontSize: fontSize,
           ),
         ),
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(vertical: 16),
+          backgroundColor: backgroundColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
           ),
