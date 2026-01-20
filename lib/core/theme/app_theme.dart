@@ -6,6 +6,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
   final Color surfaceColor;
   final Color accentBlueColor;
   final Color greyColor6;
+  final Color cyanColor400;
 
   final TextStyle headingLargeTextStyle;
   final TextStyle headingTextStyle;
@@ -24,6 +25,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
     required this.accentBlueColor,
     required this.surfaceColor,
     required this.greyColor6,
+    required this.cyanColor400,
     required this.headingLargeTextStyle,
     required this.headingTextStyle,
     required this.bodyLargeTextStyle,
@@ -43,6 +45,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
     Color? surfaceColor,
     Color? accentBlueColor,
     Color? greyColor6,
+    Color? cyanColor400,
     TextStyle? headingLargeTextStyle,
     TextStyle? headingTextStyle,
     TextStyle? bodyLargeTextStyle,
@@ -60,6 +63,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
       accentBlueColor: accentBlueColor ?? this.accentBlueColor,
       surfaceColor: surfaceColor ?? this.surfaceColor,
       greyColor6: greyColor6 ?? this.greyColor6,
+      cyanColor400: cyanColor400 ?? this.cyanColor400,
       headingLargeTextStyle:
           headingLargeTextStyle ?? this.headingLargeTextStyle,
       headingTextStyle: headingTextStyle ?? this.headingTextStyle,
@@ -91,6 +95,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
       surfaceColor: Color.lerp(surfaceColor, other.surfaceColor, t)!,
       accentBlueColor: Color.lerp(accentBlueColor, other.accentBlueColor, t)!,
       greyColor6: Color.lerp(greyColor6, other.greyColor6, t)!,
+      cyanColor400: Color.lerp(cyanColor400, other.cyanColor400, t)!,
 
       headingLargeTextStyle: TextStyle.lerp(
         headingLargeTextStyle,
