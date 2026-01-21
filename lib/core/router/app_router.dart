@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/controllers/forget_password_cubit/forget_password_cubit.dart';
@@ -31,8 +32,15 @@ import 'package:rafiq/features/lab_test/controller/lab_test_uploading_cubit/lab_
 import 'package:rafiq/features/lab_test/data/repository/lab_test_repository.dart';
 import 'package:rafiq/features/lab_test/data/networking/lab_test_service.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_upload_request.dart';
+import 'package:rafiq/features/medications/controllers/medication_cubit/medication_cubit.dart';
+import 'package:rafiq/features/medications/controllers/medication_details_cubit/medication_details_cubit.dart';
+import 'package:rafiq/features/medications/controllers/selected_medication_cubit/selected_medication_cubit.dart';
+import 'package:rafiq/features/medications/data/networking/medication_service.dart';
+import 'package:rafiq/features/medications/data/repository/medication_repository.dart';
+import 'package:rafiq/features/medications/presentation/screens/all_medications_screen.dart';
 
 class AppRouter {
+  late ApiService apiService;
   late AuthCubit authCubit;
   late AuthService authService;
   late AuthRepository authRepository;
@@ -42,8 +50,13 @@ class AppRouter {
   late LabTestCubit labTestCubit;
   late LabTestDetailsCubit labTestDetailsCubit;
   late LabTestUploadingCubit labTestUploadingCubit;
+  late MedicationService medicationService;
+  late MedicationRepository medicationRepository;
+  late MedicationCubit medicationCubit;
+  late MedicationDetailsCubit medicationDetailsCubit;
 
   AppRouter() {
+    apiService = ApiService.instance;
     authService = AuthService();
     authRepository = AuthRepository(authService: authService);
     authCubit = AuthCubit(authService, authRepository);
@@ -53,6 +66,10 @@ class AppRouter {
     labTestCubit = LabTestCubit(labTestRepository);
     labTestDetailsCubit = LabTestDetailsCubit(labTestRepository);
     labTestUploadingCubit = LabTestUploadingCubit(labTestRepository);
+    medicationService = MedicationService(api: apiService);
+    medicationRepository = MedicationRepository(medicationService);
+    medicationCubit = MedicationCubit(medicationRepository);
+    medicationDetailsCubit = MedicationDetailsCubit(medicationRepository);
   }
 
   Route generateRoute(RouteSettings settings) {
@@ -200,6 +217,17 @@ class AppRouter {
 
       case RouterStrings.home:
         return MaterialPageRoute(builder: (_) => const HomeScreen());
+
+      case RouterStrings.medications:
+        return MaterialPageRoute(
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: medicationCubit),
+              BlocProvider(create: (context) => SelectedMedicationCubit()),
+            ],
+            child: const AllMedicationsScreen(),
+          ),
+        );
 
       default:
         return MaterialPageRoute(builder: (_) => const LandingScreen());
