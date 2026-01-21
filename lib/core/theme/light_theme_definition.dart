@@ -7,6 +7,7 @@ final AppTheme lightThemeDefinition = AppTheme(
   surfaceColor: Colors.white,
   accentBlueColor: Color(0xFF2977F6),
   greyColor6: Color(0xFF3A3A3A),
+  greyColor7: Color(0xFF6E6E6E),
   cyanColor400: Colors.cyan.shade400,
 
   headingLargeTextStyle: TextStyle(
@@ -57,6 +58,11 @@ final AppTheme lightThemeDefinition = AppTheme(
     color: Color(0xFF3A3A3A),
     height: 19 / 16, // line-height / font-size
     letterSpacing: 0,
+  ),
+  descriptionSmallTextStyle: TextStyle(
+    fontSize: 12,
+    fontWeight: FontWeight.w300,
+    color: Color(0xFF6E6E6E),
   ),
   textFieldBorder: OutlineInputBorder(
     borderRadius: BorderRadius.circular(12),
