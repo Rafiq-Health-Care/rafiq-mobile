@@ -15,4 +15,6 @@ class ImageUrl {
   final String cloudComputing = 'assets/icons/cloud-computing.png';
   final String loading = 'assets/icons/loading.svg';
   final String file = 'assets/icons/file.svg';
+  final String empty = 'assets/icons/empty.svg';
+  final String noSearchResult = 'assets/icons/not_search_result.svg';
 }
