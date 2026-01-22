@@ -38,6 +38,7 @@ import 'package:rafiq/features/medications/controllers/selected_medication_cubit
 import 'package:rafiq/features/medications/data/networking/medication_service.dart';
 import 'package:rafiq/features/medications/data/repository/medication_repository.dart';
 import 'package:rafiq/features/medications/presentation/screens/all_medications_screen.dart';
+import 'package:rafiq/features/medications/presentation/screens/filter_screen.dart';
 
 class AppRouter {
   late ApiService apiService;
@@ -226,6 +227,14 @@ class AppRouter {
               BlocProvider(create: (context) => SelectedMedicationCubit()),
             ],
             child: const AllMedicationsScreen(),
+          ),
+        );
+
+      case RouterStrings.filterMedications:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: medicationCubit,
+            child: const FilterScreen(),
           ),
         );
 
