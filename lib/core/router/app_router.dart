@@ -39,6 +39,10 @@ import 'package:rafiq/features/medications/data/networking/medication_service.da
 import 'package:rafiq/features/medications/data/repository/medication_repository.dart';
 import 'package:rafiq/features/medications/presentation/screens/all_medications_screen.dart';
 import 'package:rafiq/features/medications/presentation/screens/filter_screen.dart';
+import 'package:rafiq/features/groups/controllers/group_cubit/group_cubit.dart';
+import 'package:rafiq/features/groups/data/networking/group_service.dart';
+import 'package:rafiq/features/groups/data/repository/group_repository.dart';
+import 'package:rafiq/features/groups/presentation/screens/all_groups_screen.dart';
 
 class AppRouter {
   late ApiService apiService;
@@ -55,6 +59,9 @@ class AppRouter {
   late MedicationRepository medicationRepository;
   late MedicationCubit medicationCubit;
   late MedicationDetailsCubit medicationDetailsCubit;
+  late GroupService groupService;
+  late GroupRepository groupRepository;
+  late GroupCubit groupCubit;
 
   AppRouter() {
     apiService = ApiService.instance;
@@ -71,6 +78,9 @@ class AppRouter {
     medicationRepository = MedicationRepository(medicationService);
     medicationCubit = MedicationCubit(medicationRepository);
     medicationDetailsCubit = MedicationDetailsCubit(medicationRepository);
+    groupService = GroupService(api: apiService);
+    groupRepository = GroupRepository(groupService);
+    groupCubit = GroupCubit(groupRepository);
   }
 
   Route generateRoute(RouteSettings settings) {
@@ -235,6 +245,14 @@ class AppRouter {
           builder: (_) => BlocProvider.value(
             value: medicationCubit,
             child: const FilterScreen(),
+          ),
+        );
+
+      case RouterStrings.groups:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider.value(
+            value: groupCubit,
+            child: const AllGroupsScreen(),
           ),
         );
 
