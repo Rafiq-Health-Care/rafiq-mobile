@@ -64,7 +64,7 @@ class _OtpScreenState extends State<OtpScreen> {
                   height: 50,
                   textStyle: appTheme.headingTextStyle.copyWith(fontSize: 20),
                   decoration: BoxDecoration(
-                    color: Color(0xFFB8CBE8),
+                    color: appTheme.softBlueColor,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
                       color: appTheme.deepDarkBlueColor.withAlpha(235),
