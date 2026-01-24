@@ -9,6 +9,7 @@ final AppTheme lightThemeDefinition = AppTheme(
   greyColor6: Color(0xFF3A3A3A),
   greyColor7: Color(0xFF6E6E6E),
   cyanColor400: Colors.cyan.shade400,
+  softBlueColor: Color(0xFFB8CBE8),
 
   headingLargeTextStyle: TextStyle(
     fontSize: 48,
