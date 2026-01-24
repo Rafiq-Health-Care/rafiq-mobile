@@ -24,6 +24,7 @@ class ApiConstants {
   static const String drugs = "/drugs";
   static const String medicines = "/medicines";
   static const String addMedicines = "/medicines/add";
+  static const String bulkMedicines = "/medicines/bulk";
 
   static const String group = "/group";
   static const String addGroup = "/group/add";
