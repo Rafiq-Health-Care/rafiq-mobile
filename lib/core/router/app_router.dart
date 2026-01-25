@@ -234,6 +234,7 @@ class AppRouter {
           builder: (_) => MultiBlocProvider(
             providers: [
               BlocProvider.value(value: medicationCubit),
+              BlocProvider.value(value: groupCubit),
               BlocProvider(create: (context) => SelectedMedicationCubit()),
             ],
             child: const AllMedicationsScreen(),
