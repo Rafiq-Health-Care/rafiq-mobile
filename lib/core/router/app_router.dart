@@ -43,6 +43,8 @@ import 'package:rafiq/features/groups/controllers/group_cubit/group_cubit.dart';
 import 'package:rafiq/features/groups/data/networking/group_service.dart';
 import 'package:rafiq/features/groups/data/repository/group_repository.dart';
 import 'package:rafiq/features/groups/presentation/screens/all_groups_screen.dart';
+import 'package:rafiq/features/groups/presentation/screens/upsert_group_screen.dart';
+import 'package:rafiq/features/groups/data/models/group_content_model.dart';
 
 class AppRouter {
   late ApiService apiService;
@@ -254,6 +256,16 @@ class AppRouter {
           builder: (_) => BlocProvider.value(
             value: groupCubit,
             child: const AllGroupsScreen(),
+          ),
+        );
+
+      case RouterStrings.upsertGroup:
+        final group = settings.arguments as GroupContentModel?;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider.value(
+            value: groupCubit,
+            child: UpsertGroupScreen(group: group),
           ),
         );
 
