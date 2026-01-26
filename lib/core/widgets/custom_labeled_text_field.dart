@@ -15,7 +15,7 @@ class CustomLabeledTextField extends StatelessWidget {
     super.key,
     required this.hint,
     required this.controller,
-    required this.validator,
+    this.validator,
     this.keyboardType = TextInputType.text,
     required this.label,
     this.inputFormatters,
