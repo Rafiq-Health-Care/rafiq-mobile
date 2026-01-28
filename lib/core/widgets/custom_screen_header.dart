@@ -50,6 +50,8 @@ class CustomScreenHeader extends StatelessWidget {
             fontSize: 14,
             fontWeight: FontWeight.w700,
           ),
+          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
         ),
       ],
     );
