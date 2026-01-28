@@ -65,6 +65,11 @@ final AppTheme lightThemeDefinition = AppTheme(
     fontWeight: FontWeight.w300,
     color: Color(0xFF6E6E6E),
   ),
+  popupMenuItemTextStyle: TextStyle(
+    fontSize: 16,
+    color: Color(0xFF333333),
+    fontWeight: FontWeight.w400,
+  ),
   textFieldBorder: OutlineInputBorder(
     borderRadius: BorderRadius.circular(12),
     borderSide: BorderSide(color: Colors.grey[300]!),
