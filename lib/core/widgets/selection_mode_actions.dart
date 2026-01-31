@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/widgets/selected_action_button.dart';
-import 'package:rafiq/features/medications/controllers/medication_cubit/medication_cubit.dart';
+import 'package:rafiq/features/groups/data/models/group_content_model.dart';
 import 'package:rafiq/features/medications/controllers/selected_medication_cubit/selected_medication_cubit.dart';
-import 'package:rafiq/core/presentation/dialogs/delete_confirmation_dialog.dart';
-import 'package:rafiq/features/medications/data/enums/medicine_bulk_actions_enum.dart';
-import 'package:rafiq/features/medications/data/models/medicines_bulk_request.dart';
 import 'package:rafiq/core/widgets/move_to_group_button.dart';
 
 class SelectionModeActions extends StatelessWidget {
-  const SelectionModeActions({super.key});
+  final VoidCallback onInactive;
+  final VoidCallback onActive;
+  final VoidCallback onDelete;
+  final Function(GroupContentModel) onMoveToGroup;
+
+  const SelectionModeActions({
+    super.key,
+    required this.onInactive,
+    required this.onActive,
+    required this.onDelete,
+    required this.onMoveToGroup,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final List<String> medicineIds = SelectedMedicationCubit.of(
-      context,
-    ).state.toList();
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: 12,
@@ -35,15 +39,7 @@ class SelectionModeActions extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             children: [
               GestureDetector(
-                onTap: () {
-                  MedicationCubit.of(context).bulkMedicines(
-                    MedicinesBulkRequest(
-                      medicineIds: medicineIds,
-                      action: MedicineBulkActionsEnum.markInactive,
-                    ),
-                  );
-                  SelectedMedicationCubit.of(context).clearSelection();
-                },
+                onTap: () => onInactive(),
                 child: SelectedActionButton(
                   title: 'Inactive',
                   icon: Icons.circle,
@@ -52,15 +48,7 @@ class SelectionModeActions extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               GestureDetector(
-                onTap: () {
-                  MedicationCubit.of(context).bulkMedicines(
-                    MedicinesBulkRequest(
-                      medicineIds: medicineIds,
-                      action: MedicineBulkActionsEnum.markActive,
-                    ),
-                  );
-                  SelectedMedicationCubit.of(context).clearSelection();
-                },
+                onTap: () => onActive(),
                 child: SelectedActionButton(
                   title: 'Active',
                   icon: Icons.circle,
@@ -69,25 +57,7 @@ class SelectionModeActions extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               GestureDetector(
-                onTap: () {
-                  showDeleteConfirmationDialog(
-                    context: context,
-                    title: 'Confirm Deletion',
-                    content:
-                        'Are you sure you want to permanently delete Selected medicines?',
-                    description:
-                        'This action cannot be undone. All related data will be removed.',
-                    onConfirm: () {
-                      MedicationCubit.of(context).bulkMedicines(
-                        MedicinesBulkRequest(
-                          medicineIds: medicineIds,
-                          action: MedicineBulkActionsEnum.delete,
-                        ),
-                      );
-                      SelectedMedicationCubit.of(context).clearSelection();
-                    },
-                  );
-                },
+                onTap: () => onDelete(),
                 child: SelectedActionButton(
                   title: 'Delete',
                   icon: Icons.delete,
@@ -95,7 +65,7 @@ class SelectionModeActions extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              MoveToGroupButton(),
+              MoveToGroupButton(onMoveToGroup: onMoveToGroup),
             ],
           ),
         ),
