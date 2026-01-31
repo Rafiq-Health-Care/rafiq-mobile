@@ -1,0 +1,200 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/formate_names.dart';
+import 'package:rafiq/core/widgets/custom_elevated_button.dart';
+import 'package:rafiq/features/groups/controllers/group_cubit/group_cubit.dart';
+import 'package:rafiq/features/medications/controllers/medication_cubit/medication_cubit.dart';
+import 'package:rafiq/features/medications/data/enums/medicine_status_enum.dart';
+import 'package:rafiq/features/medications/data/enums/medicine_type_enum.dart';
+import 'package:rafiq/features/medications/presentation/widgets/filter_section.dart';
+import 'package:rafiq/features/medications/presentation/widgets/radio_tile.dart';
+
+class FilterScreen extends StatefulWidget {
+  const FilterScreen({super.key});
+
+  @override
+  State<FilterScreen> createState() => _FilterScreenState();
+}
+
+class _FilterScreenState extends State<FilterScreen> {
+  late final ValueNotifier<MedicineStatusEnum?> _statusNotifier;
+  late final ValueNotifier<MedicineTypeEnum?> _typeNotifier;
+  late final ValueNotifier<String?> _groupNotifier;
+
+  @override
+  void initState() {
+    super.initState();
+    final state = MedicationCubit.of(context).state as MedicationLoaded;
+    _statusNotifier = ValueNotifier(
+      state.request.status ?? MedicineStatusEnum.all,
+    );
+    _typeNotifier = ValueNotifier(state.request.type ?? MedicineTypeEnum.all);
+    _groupNotifier = ValueNotifier(state.request.groupId);
+  }
+
+  @override
+  void dispose() {
+    _statusNotifier.dispose();
+    _typeNotifier.dispose();
+    _groupNotifier.dispose();
+    super.dispose();
+  }
+
+  void _clearAll() {
+    MedicationCubit.of(
+      context,
+    ).filter(MedicineStatusEnum.all, MedicineTypeEnum.all, null);
+    Navigator.of(context).pop();
+  }
+
+  void _applyFilters() {
+    MedicationCubit.of(
+      context,
+    ).filter(_statusNotifier.value, _typeNotifier.value, _groupNotifier.value);
+    Navigator.of(context).pop();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context).extension<AppTheme>()!;
+
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        forceMaterialTransparency: true,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: theme.deepDarkBlueColor),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(
+          'Filters',
+          style: TextStyle(
+            color: theme.deepDarkBlueColor,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        centerTitle: true,
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: 24,
+                children: [
+                  ValueListenableBuilder<MedicineStatusEnum?>(
+                    valueListenable: _statusNotifier,
+                    builder: (context, selectedStatus, _) {
+                      return FilterSection(
+                        title: 'Status',
+                        chips: MedicineStatusEnum.values.map((status) {
+                          return RadioTile<MedicineStatusEnum?>(
+                            title: status.name.format(),
+                            value: status,
+                            groupValue: selectedStatus,
+                            onChanged: (val) => _statusNotifier.value = val,
+                          );
+                        }).toList(),
+                      );
+                    },
+                  ),
+                  BlocBuilder<GroupCubit, GroupState>(
+                    builder: (context, state) {
+                      if (state is GroupLoaded) {
+                        return ValueListenableBuilder<String?>(
+                          valueListenable: _groupNotifier,
+                          builder: (context, selectedGroup, _) {
+                            return FilterSection(
+                              title: 'Group',
+                              chips: [
+                                RadioTile<String?>(
+                                  title: 'All',
+                                  value: null,
+                                  groupValue: selectedGroup,
+                                  onChanged: (val) =>
+                                      _groupNotifier.value = val,
+                                ),
+                                ...state.allGroups.map((group) {
+                                  return RadioTile<String?>(
+                                    title: group.name.format(),
+                                    value: group.id,
+                                    groupValue: selectedGroup,
+                                    onChanged: (val) =>
+                                        _groupNotifier.value = val,
+                                  );
+                                }),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                  ValueListenableBuilder<MedicineTypeEnum?>(
+                    valueListenable: _typeNotifier,
+                    builder: (context, selectedType, _) {
+                      return FilterSection(
+                        title: 'Type',
+                        chips: MedicineTypeEnum.values.map((type) {
+                          return RadioTile<MedicineTypeEnum?>(
+                            title: type.name.format(),
+                            value: type,
+                            groupValue: selectedType,
+                            onChanged: (val) => _typeNotifier.value = val,
+                          );
+                        }).toList(),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: CustomElevatedButton(
+                    onPressed: _clearAll,
+                    backgroundColor: theme.softBlueColor,
+                    foregroundColor: theme.deepDarkBlueColor,
+                    child: Text(
+                      'Clear All',
+                      style: theme.buttonLabelTextStyle.copyWith(
+                        color: theme.deepDarkBlueColor,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  flex: 2,
+                  child: CustomElevatedButton(
+                    onPressed: _applyFilters,
+                    backgroundColor: theme.deepDarkBlueColor,
+                    foregroundColor: Colors.white,
+                    child: Text(
+                      'Apply Filters',
+                      style: theme.buttonLabelTextStyle.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
