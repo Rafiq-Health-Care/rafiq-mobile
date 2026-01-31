@@ -17,6 +17,8 @@ import 'package:rafiq/features/auth/presentation/screens/otp_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/patient_sign_up_step_ii_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/select_user_type_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/patient_sign_up_step_i_screen.dart';
+import 'package:rafiq/features/groups/controllers/group_details_cubit/group_details_cubit.dart';
+import 'package:rafiq/features/groups/presentation/screens/group_details_screen.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_details_model.dart';
 import 'package:rafiq/features/landing/presentation/screens/landing_screen.dart';
 import 'package:rafiq/features/landing/presentation/screens/on_boarding_screen.dart';
@@ -64,6 +66,7 @@ class AppRouter {
   late GroupService groupService;
   late GroupRepository groupRepository;
   late GroupCubit groupCubit;
+  late GroupDetailsCubit groupDetailsCubit;
 
   AppRouter() {
     apiService = ApiService.instance;
@@ -83,6 +86,7 @@ class AppRouter {
     groupService = GroupService(api: apiService);
     groupRepository = GroupRepository(groupService);
     groupCubit = GroupCubit(groupRepository);
+    groupDetailsCubit = GroupDetailsCubit(groupRepository);
   }
 
   Route generateRoute(RouteSettings settings) {
@@ -245,8 +249,11 @@ class AppRouter {
 
       case RouterStrings.filterMedications:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: medicationCubit,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: medicationCubit),
+              BlocProvider.value(value: groupCubit),
+            ],
             child: const FilterScreen(),
           ),
         );
@@ -266,6 +273,21 @@ class AppRouter {
           builder: (_) => BlocProvider.value(
             value: groupCubit,
             child: UpsertGroupScreen(group: group),
+          ),
+        );
+
+      case RouterStrings.groupDetails:
+        final groupId = settings.arguments as String;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: groupCubit),
+              BlocProvider.value(value: groupDetailsCubit),
+              BlocProvider.value(value: medicationCubit),
+              BlocProvider(create: (context) => SelectedMedicationCubit()),
+            ],
+            child: GroupDetailsScreen(groupId: groupId),
           ),
         );
 
