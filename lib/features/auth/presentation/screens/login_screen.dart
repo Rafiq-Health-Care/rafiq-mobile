@@ -45,8 +45,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final AppTheme appTheme = Theme.of(context).extension<AppTheme>()!;
     return Scaffold(
+      backgroundColor: appTheme.surfaceColor,
       appBar: AppBar(
         title: Text('Log In', style: appTheme.headingTextStyle),
+        forceMaterialTransparency: true,
         elevation: 0,
         centerTitle: true,
       ),
@@ -59,7 +61,15 @@ class _LoginScreenState extends State<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: 32),
-                Text("Welcome", style: appTheme.headingTextStyle),
+                Text("Welcome Back", style: appTheme.headingTextStyle),
+                Text(
+                  'Please enter your details to sign in.',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0XFF718094),
+                  ),
+                ),
                 SizedBox(height: 32),
                 LoginFormSection(
                   emailController: _emailController,
@@ -91,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: state is AuthLoading
                           ? const CircularProgressIndicator()
                           : Text(
-                              'Log In',
+                              'Submit',
                               style: appTheme.buttonLabelTextStyle,
                             ),
                     );
@@ -110,6 +120,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ).pushReplacementNamed(RouterStrings.selectUserType);
                   },
                 ),
+                const SizedBox(height: 16),
               ],
             ),
           ),
