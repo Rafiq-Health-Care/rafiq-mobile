@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rafiq/core/presentation/dialogs/delete_confirmation_dialog.dart';
+import 'package:rafiq/core/presentation/dialogs/confirmation_dialog.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
 import 'package:rafiq/core/widgets/custom_icon_button.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:rafiq/core/presentation/dialogs/delete_confirmation_dialog.dart';
+import 'package:rafiq/core/presentation/dialogs/confirmation_dialog.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
 import 'package:rafiq/core/widgets/custom_icon_button.dart';
@@ -90,8 +90,10 @@ class GroupDetailsLoadedWidget extends StatelessWidget {
       title: 'Confirm Moving',
       content:
           'Are you sure you want to move Selected medicines to ${value.name}?',
-      description:
-          'This action cannot be undone. All related data will be removed.',
+      description: 'All related data will be removed from the current group.',
+      iconBGColor: const Color(0XFFFFF3CE),
+      iconColor: const Color(0XFFE9B000),
+      confirmLabel: 'Move Medicines',
       onConfirm: () async {
         await MedicationCubit.of(context).bulkMedicines(
           MedicinesBulkRequest(
