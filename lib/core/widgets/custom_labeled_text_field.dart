@@ -10,6 +10,7 @@ class CustomLabeledTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final String? prefixText;
+  final int numberOfLines;
 
   const CustomLabeledTextField({
     super.key,
@@ -20,6 +21,7 @@ class CustomLabeledTextField extends StatelessWidget {
     required this.label,
     this.inputFormatters,
     this.prefixText,
+    this.numberOfLines = 1,
   });
 
   @override
@@ -37,21 +39,20 @@ class CustomLabeledTextField extends StatelessWidget {
             hintText: hint,
             prefixText: prefixText,
             prefixStyle: appTheme.textFieldTextStyle,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Colors.grey),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: appTheme.accentBlueColor, width: 2),
+            border: appTheme.textFieldBorder,
+            enabledBorder: appTheme.textFieldBorder,
+            focusedBorder: appTheme.textFieldBorder.copyWith(
+              borderSide: BorderSide(color: appTheme.deepDarkBlueColor),
             ),
             hintStyle: appTheme.textFieldHintTextStyle,
+            fillColor: Color(0x80F3F6FB),
+            filled: true,
           ),
           style: appTheme.textFieldTextStyle,
           keyboardType: keyboardType,
           inputFormatters: inputFormatters,
+          maxLines: numberOfLines,
+          minLines: numberOfLines,
         ),
       ],
     );
