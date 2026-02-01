@@ -1,26 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:rafiq/core/theme/app_theme.dart';
 
 class UserTypeCard extends StatelessWidget {
   final String label;
   final String imagePath;
+  final Color color;
+  final Color contentColor;
   final VoidCallback onTap;
 
   const UserTypeCard({
     super.key,
     required this.label,
     required this.imagePath,
+    required this.color,
+    required this.contentColor,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final AppTheme appTheme = Theme.of(context).extension<AppTheme>()!;
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(20),
       child: Container(
+        padding: const EdgeInsets.all(36),
+        alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
+          color: color,
+          border: Border.all(color: appTheme.deepDarkBlueColor, width: 2),
+          shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
               color: const Color(0x13000000),
@@ -29,37 +39,22 @@ class UserTypeCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            spacing: 16,
-            children: [_buildIcon(), _buildLabel()],
-          ),
+        child: Column(
+          spacing: 8,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SvgPicture.asset(imagePath, height: 60, width: 60),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w700,
+                fontFamily: 'Inter',
+                color: contentColor,
+              ),
+            ),
+          ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildIcon() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0x0D2196F3),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Image.asset(imagePath, height: 100, width: 100),
-    );
-  }
-
-  Widget _buildLabel() {
-    return Text(
-      label,
-      style: const TextStyle(
-        fontSize: 22,
-        fontWeight: FontWeight.bold,
-        color: Colors.black87,
       ),
     );
   }
