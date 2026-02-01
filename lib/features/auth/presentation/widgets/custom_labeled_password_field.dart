@@ -39,19 +39,20 @@ class _CustomLabeledPasswordFieldState
           decoration: InputDecoration(
             hintText: widget.hint,
             hintStyle: appTheme.textFieldHintTextStyle,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Colors.grey),
+            border: appTheme.textFieldBorder,
+            enabledBorder: appTheme.textFieldBorder,
+            focusedBorder: appTheme.textFieldBorder.copyWith(
+              borderSide: BorderSide(
+                color: appTheme.deepDarkBlueColor,
+                width: 1.5,
+              ),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: appTheme.accentBlueColor, width: 2),
-            ),
+            fillColor: Color(0x80F3F6FB),
+            filled: true,
             suffixIcon: IconButton(
               icon: _obscure
                   ? const Icon(Icons.visibility_off, color: Colors.grey)
-                  : Icon(Icons.visibility, color: appTheme.accentBlueColor),
+                  : Icon(Icons.visibility, color: appTheme.deepDarkBlueColor),
               onPressed: () => setState(() => _obscure = !_obscure),
             ),
           ),

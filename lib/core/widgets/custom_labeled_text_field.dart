@@ -42,7 +42,10 @@ class CustomLabeledTextField extends StatelessWidget {
             border: appTheme.textFieldBorder,
             enabledBorder: appTheme.textFieldBorder,
             focusedBorder: appTheme.textFieldBorder.copyWith(
-              borderSide: BorderSide(color: appTheme.deepDarkBlueColor),
+              borderSide: BorderSide(
+                color: appTheme.deepDarkBlueColor,
+                width: 1.5,
+              ),
             ),
             hintStyle: appTheme.textFieldHintTextStyle,
             fillColor: Color(0x80F3F6FB),
