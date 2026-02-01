@@ -38,9 +38,10 @@ final AppTheme lightThemeDefinition = AppTheme(
     color: Colors.white,
   ),
   textFieldHintTextStyle: TextStyle(
-    fontSize: 20,
+    fontFamily: 'Roboto',
+    fontSize: 16,
     fontWeight: FontWeight.w400,
-    color: Colors.grey,
+    color: Color(0XFF718094),
   ),
   textFieldTextStyle: TextStyle(
     fontSize: 20,
@@ -72,6 +73,6 @@ final AppTheme lightThemeDefinition = AppTheme(
   ),
   textFieldBorder: OutlineInputBorder(
     borderRadius: BorderRadius.circular(12),
-    borderSide: BorderSide(color: Colors.grey[300]!),
+    borderSide: const BorderSide(color: Color(0XFF8BA9D2)),
   ),
 );

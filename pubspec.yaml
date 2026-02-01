@@ -49,6 +49,7 @@ dependencies:
   intl: ^0.20.2
   font_awesome_flutter: ^10.9.1
   permission_handler: ^12.0.1
+  equatable: ^2.0.7
 
 dev_dependencies:
   flutter_test:
@@ -92,7 +93,9 @@ flutter:
     - family: Inter
       fonts:
         - asset: assets/fonts/Inter.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
