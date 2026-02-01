@@ -14,7 +14,7 @@ class OnBoardingScreen extends StatelessWidget {
     final AppTheme appTheme = Theme.of(context).extension<AppTheme>()!;
     return Scaffold(
       body: ImagedBackground(
-        image: ImageUrl().img3,
+        image: ImageUrl().healthCare,
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(24.0),
@@ -24,11 +24,11 @@ class OnBoardingScreen extends StatelessWidget {
               spacing: 16,
               children: [
                 Text(
-                  'Welcome to\nRafiq',
+                  'Professional Care',
                   style: appTheme.headingLargeTextStyle,
                 ),
                 Text(
-                  'All your medical care in one place—start your health journey with us.',
+                  'Access your medical history and schedule appointments instantly with our AI-powered platform.',
                   style: appTheme.bodyLargeTextStyle,
                 ),
                 const SizedBox(height: 32),
@@ -45,7 +45,9 @@ class OnBoardingScreen extends StatelessWidget {
                 ),
                 CustomOutlinedButton(
                   onPressed: () {
-                    Navigator.of(context).pushNamed(RouterStrings.selectUserType);
+                    Navigator.of(
+                      context,
+                    ).pushNamed(RouterStrings.selectUserType);
                   },
                   foregroundColor: appTheme.surfaceColor,
                   borderSideColor: appTheme.surfaceColor,
