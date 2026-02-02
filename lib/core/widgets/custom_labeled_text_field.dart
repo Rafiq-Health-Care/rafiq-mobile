@@ -48,7 +48,7 @@ class CustomLabeledTextField extends StatelessWidget {
               ),
             ),
             hintStyle: appTheme.textFieldHintTextStyle,
-            fillColor: Color(0x80F3F6FB),
+            fillColor: appTheme.fieldFillColor,
             filled: true,
           ),
           style: appTheme.textFieldTextStyle,

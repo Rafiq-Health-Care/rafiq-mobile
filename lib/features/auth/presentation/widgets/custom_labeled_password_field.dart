@@ -47,7 +47,7 @@ class _CustomLabeledPasswordFieldState
                 width: 1.5,
               ),
             ),
-            fillColor: Color(0x80F3F6FB),
+            fillColor: appTheme.fieldFillColor,
             filled: true,
             suffixIcon: IconButton(
               icon: _obscure
