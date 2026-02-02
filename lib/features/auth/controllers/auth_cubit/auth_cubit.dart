@@ -87,7 +87,7 @@ class AuthCubit extends Cubit<AuthState> {
     authService
         .sendNewOtp(userSignUpBody!.email!)
         .then((_) {
-          emit(UserVerificationSuccess());
+          emit(UserVerificationResendSuccess());
         })
         .catchError((e) {
           emit(AuthFailure(e.toString()));

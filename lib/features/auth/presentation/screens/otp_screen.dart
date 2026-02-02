@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pinput/pinput.dart';
 import 'package:rafiq/core/functions/snack_bar_message.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/image_url.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/controllers/forget_password_cubit/forget_password_cubit.dart';
 import 'package:rafiq/features/auth/presentation/widgets/text_with_action_link.dart';
@@ -19,11 +22,28 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   final _pinController = TextEditingController();
+  bool canResend = false;
+  Timer? _timer;
+
+  void resetTimer() {
+    canResend = false;
+    _timer?.cancel();
+    _timer = Timer(const Duration(minutes: 5), () {
+      canResend = true;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    resetTimer();
+  }
 
   @override
   void dispose() {
     super.dispose();
     _pinController.dispose();
+    _timer?.cancel();
   }
 
   void onSubmit() {
@@ -40,19 +60,45 @@ class _OtpScreenState extends State<OtpScreen> {
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context).extension<AppTheme>()!;
     final AuthCubit authCubit = AuthCubit.get(context);
+    final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: SafeArea(
+      backgroundColor: appTheme.surfaceColor,
+      appBar: AppBar(
+        forceMaterialTransparency: true,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+            color: appTheme.deepDarkBlueColor,
+            size: 30,
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text('OTP Verification Code', style: appTheme.headingTextStyle),
-              const Spacer(),
-              const Text(
+              Image.asset(ImageUrl().otpLogo, height: size.height * 0.25),
+              const SizedBox(height: 16),
+              Text(
+                'OTP Verification Code',
+                style: appTheme.headingTextStyle.copyWith(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
                 'Enter the OTP code sent to your email',
+                style: appTheme.bodyTextStyle.copyWith(
+                  color: appTheme.greyColor7,
+                ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 30),
@@ -60,29 +106,42 @@ class _OtpScreenState extends State<OtpScreen> {
                 length: 6,
                 controller: _pinController,
                 focusedPinTheme: PinTheme(
-                  width: 50,
-                  height: 50,
-                  textStyle: appTheme.headingTextStyle.copyWith(fontSize: 20),
+                  width: 40,
+                  height: 54,
+                  textStyle: appTheme.headingTextStyle.copyWith(fontSize: 24),
                   decoration: BoxDecoration(
-                    color: appTheme.softBlueColor,
+                    color: appTheme.fieldFillColor,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: appTheme.deepDarkBlueColor.withAlpha(235),
-                    ),
+                    border: Border.all(color: Color(0x268AA9D2)),
                   ),
                 ),
               ),
-              const Spacer(),
+              const SizedBox(height: 16),
               if (!widget.isForgetPassword)
                 TextWithActionLink(
                   staticText: "Didn't receive a code? ",
-                  linkText: 'Resend code',
+                  linkText: 'Click here to resend.',
+                  staticTextStyle: appTheme.bodyTextStyle.copyWith(
+                    color: appTheme.greyColor7,
+                    fontSize: 15,
+                  ),
+                  linkTextStyle: appTheme.bodyTextStyle.copyWith(
+                    color: appTheme.accentRedColor,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 15,
+                  ),
                   onTap: () {
-                    authCubit.sendNewOtp();
+                    if (canResend) {
+                      authCubit.sendNewOtp();
+                    }
                   },
                 ),
+              SizedBox(height: size.height * 0.25),
+              SizedBox(
+                width: size.width * 0.8,
+                child: customButton(appTheme, context),
+              ),
               const SizedBox(height: 30),
-              customButton(appTheme, context),
             ],
           ),
         ),
@@ -101,6 +160,8 @@ class _OtpScreenState extends State<OtpScreen> {
               ).pushNamedAndRemoveUntil(RouterStrings.home, (route) => false);
             } else if (state is AuthFailure) {
               snackBarMessage(context, state.message);
+            } else if (state is UserVerificationResendSuccess) {
+              resetTimer();
             }
           },
         ),
@@ -131,7 +192,10 @@ class _OtpScreenState extends State<OtpScreen> {
                   foregroundColor: appTheme.surfaceColor,
                   child: isLoading
                       ? const CircularProgressIndicator()
-                      : Text('Submit', style: appTheme.buttonLabelTextStyle),
+                      : Text(
+                          'Verify Account',
+                          style: appTheme.buttonLabelTextStyle,
+                        ),
                 );
               },
             ),

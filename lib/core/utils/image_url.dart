@@ -15,4 +15,5 @@ class ImageUrl {
   final String file = 'assets/icons/file.svg';
   final String empty = 'assets/icons/empty.svg';
   final String noSearchResult = 'assets/icons/not_search_result.svg';
+  final String otpLogo = 'assets/icons/authentication.png';
 }
