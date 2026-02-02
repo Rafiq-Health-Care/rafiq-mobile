@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/functions/snack_bar_message.dart';
 import 'package:rafiq/core/router/router_strings.dart';
@@ -10,8 +9,11 @@ import 'package:rafiq/features/auth/data/models/patient_sign_up_request.dart';
 import 'package:rafiq/core/services/validation.dart';
 import 'package:rafiq/core/widgets/custom_labeled_text_field.dart';
 import 'package:rafiq/features/auth/presentation/formatters/birth_date_input_formatter.dart';
+import 'package:rafiq/features/auth/presentation/sections/media_auth_section.dart';
+import 'package:rafiq/features/auth/presentation/widgets/custom_labeled_password_field.dart';
 import 'package:rafiq/features/auth/presentation/widgets/gender_selector.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
+import 'package:rafiq/features/auth/presentation/widgets/horizontal_text_divider.dart';
 
 class PatientSignUpStepIIScreen extends StatefulWidget {
   const PatientSignUpStepIIScreen({super.key});
@@ -23,14 +25,15 @@ class PatientSignUpStepIIScreen extends StatefulWidget {
 
 class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
   final _formKey = GlobalKey<FormState>();
-
-  final _phoneController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   final _birthDateController = TextEditingController();
   Gender _selectedGender = Gender.male;
 
   @override
   void dispose() {
-    _phoneController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
     _birthDateController.dispose();
     super.dispose();
   }
@@ -38,7 +41,7 @@ class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
   void _onSubmit() {
     if (_formKey.currentState!.validate()) {
       (AuthCubit.get(context).userSignUpBody! as PatientSignUpRequest)
-        ..phone = _phoneController.text.trim()
+        ..password = _passwordController.text.trim()
         ..birthDate = _birthDateController.text
         ..gender = _selectedGender.name;
 
@@ -50,26 +53,43 @@ class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context).extension<AppTheme>()!;
     return Scaffold(
-      appBar: AppBar(title: const Text('Patient Sign Up')),
+      backgroundColor: appTheme.surfaceColor,
+      appBar: AppBar(
+        title: Text('New Account', style: appTheme.headingTextStyle),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+            color: appTheme.deepDarkBlueColor,
+            size: 30,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
+        forceMaterialTransparency: true,
+        elevation: 0,
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Form(
           key: _formKey,
           child: Column(
             spacing: 16,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CustomLabeledTextField(
-                label: 'Phone',
-                hint: 'Enter phone number',
-                controller: _phoneController,
-                keyboardType: TextInputType.number,
-                validator: Validation.validatePhone,
-                prefixText: '+20 ',
-                inputFormatters: [
-                  FilteringTextInputFormatter.digitsOnly,
-                  LengthLimitingTextInputFormatter(10),
-                ],
+              CustomLabeledPasswordField(
+                label: 'Password',
+                hint: 'Enter password',
+                controller: _passwordController,
+                validator: Validation.validatePassword,
+              ),
+              CustomLabeledPasswordField(
+                label: 'Confirm Password',
+                hint: 'Re-enter password',
+                controller: _confirmPasswordController,
+                validator: (v) => Validation.confirmPassword(
+                  v,
+                  _passwordController.text.trim(),
+                ),
               ),
               CustomLabeledTextField(
                 label: 'Birth Date',
@@ -85,7 +105,7 @@ class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
                   _selectedGender = gender;
                 },
               ),
-
+              SizedBox(height: 16),
               BlocConsumer<AuthCubit, AuthState>(
                 listener: (context, state) {
                   if (state is PatientSignUpSuccess) {
@@ -106,10 +126,16 @@ class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
                     foregroundColor: appTheme.surfaceColor,
                     child: state is AuthLoading
                         ? const CircularProgressIndicator()
-                        : Text('Sign Up', style: appTheme.buttonLabelTextStyle),
+                        : Text(
+                            'Create Account',
+                            style: appTheme.buttonLabelTextStyle,
+                          ),
                   );
                 },
               ),
+              HorizontalTextDivider(),
+              MediaAuthSection(),
+              const SizedBox(height: 4),
             ],
           ),
         ),

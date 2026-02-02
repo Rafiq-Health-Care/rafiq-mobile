@@ -48,6 +48,14 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: appTheme.surfaceColor,
       appBar: AppBar(
         title: Text('Log In', style: appTheme.headingTextStyle),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+            color: appTheme.deepDarkBlueColor,
+            size: 30,
+          ),
+          onPressed: () => Navigator.pop(context),
+        ),
         forceMaterialTransparency: true,
         elevation: 0,
         centerTitle: true,

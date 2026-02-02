@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/formate_names.dart';
 import 'package:rafiq/features/auth/data/enum/gender_enum.dart';
 
 class GenderSelector extends StatefulWidget {
@@ -37,19 +38,18 @@ class _GenderSelectorState extends State<GenderSelector> {
           value: _selectedGender,
           decoration: InputDecoration(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Colors.grey),
-            ),
-            disabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Colors.grey),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: appTheme.accentBlueColor, width: 2),
+            fillColor: appTheme.fieldFillColor,
+            filled: true,
+            enabledBorder: appTheme.textFieldBorder,
+            disabledBorder: appTheme.textFieldBorder,
+            focusedBorder: appTheme.textFieldBorder.copyWith(
+              borderSide: BorderSide(
+                color: appTheme.deepDarkBlueColor,
+                width: 1.5,
+              ),
             ),
           ),
+          dropdownColor: appTheme.surfaceColor,
           style: appTheme.textFieldTextStyle,
           onChanged: (Gender? newValue) {
             if (newValue != null) {
@@ -63,7 +63,8 @@ class _GenderSelectorState extends State<GenderSelector> {
             return DropdownMenuItem(
               value: gender,
               child: Text(
-                gender.name[0].toUpperCase() + gender.name.substring(1),
+                gender.name.format(),
+                style: appTheme.textFieldTextStyle,
               ),
             );
           }).toList(),
