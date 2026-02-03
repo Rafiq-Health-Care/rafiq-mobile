@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
+import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit.dart';
 
 class AllLabTestsScreen extends StatefulWidget {
@@ -40,7 +41,7 @@ class _AllLabTestsScreenState extends State<AllLabTestsScreen> {
   Widget build(BuildContext context) {
     final AppTheme appTheme = Theme.of(context).extension<AppTheme>()!;
     return Scaffold(
-      appBar: AppBar(title: const Text('All Lab Tests')),
+      appBar: CustomAppBar(title: const Text('All Lab Tests')),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(context, RouterStrings.labTestUploading);

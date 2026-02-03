@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/data/models/patient_sign_up_request.dart';
 import 'package:rafiq/core/services/validation.dart';
@@ -51,20 +52,8 @@ class _PatientSignUpStepIScreenState extends State<PatientSignUpStepIScreen> {
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context).extension<AppTheme>()!;
     return Scaffold(
-      backgroundColor: appTheme.surfaceColor,
-      appBar: AppBar(
+      appBar: CustomAppBar(
         title: Text('New Account', style: appTheme.headingTextStyle),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            color: appTheme.deepDarkBlueColor,
-            size: 30,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        forceMaterialTransparency: true,
-        elevation: 0,
-        centerTitle: true,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

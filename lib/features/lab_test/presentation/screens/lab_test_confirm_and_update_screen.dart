@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/functions/snack_bar_message.dart';
 import 'package:rafiq/core/router/router_strings.dart';
+import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_details_cubit/lab_test_details_cubit.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_form_cubit/lab_test_form_cubit.dart';
@@ -101,15 +102,12 @@ class _LabTestConfirmAndUpdateScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        elevation: 0,
+      appBar: CustomAppBar(
         backgroundColor: Colors.white,
-        foregroundColor: const Color(0xFF1A3B5D),
         title: const Text(
-          'Review Patient Data',
+          'Review Lab Test Data',
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
-        centerTitle: true,
       ),
       body: MultiBlocListener(
         listeners: [

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
+import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 import 'package:rafiq/core/widgets/custom_icon_button.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_upload_request.dart';
@@ -32,7 +33,7 @@ class _LabTestUploadingScreenState extends State<LabTestUploadingScreen> {
     final appTheme = Theme.of(context).extension<AppTheme>()!;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Upload Lab Test')),
+      appBar: CustomAppBar(title: const Text('Upload Lab Test')),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -66,7 +67,7 @@ class _LabTestUploadingScreenState extends State<LabTestUploadingScreen> {
                         subTitle: file.size.toString(),
                         onCancel: () => selectedFileNotifier.value = null,
                       ),
-                      
+
                     const SizedBox(height: 24),
                     CustomIconButton(
                       onPress: () async {

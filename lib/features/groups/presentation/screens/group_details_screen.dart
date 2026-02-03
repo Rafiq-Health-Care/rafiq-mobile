@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/features/groups/controllers/group_details_cubit/group_details_cubit.dart';
 import 'package:rafiq/features/groups/presentation/widgets/group_detail_loaded.dart';
 
@@ -29,19 +29,8 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).extension<AppTheme>()!;
-
     return Scaffold(
-      backgroundColor: theme.surfaceColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        forceMaterialTransparency: true,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: theme.deepDarkBlueColor),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-      ),
+      appBar: CustomAppBar(),
       body: BlocBuilder<GroupDetailsCubit, GroupDetailsState>(
         builder: (context, state) {
           if (state is GroupDetailsLoading) {
@@ -54,7 +43,7 @@ class _GroupDetailsScreenState extends State<GroupDetailsScreen> {
           } else if (state is GroupDetailsError) {
             return Center(child: Text(state.message));
           }
-          return Container();
+          return const SizedBox();
         },
       ),
     );

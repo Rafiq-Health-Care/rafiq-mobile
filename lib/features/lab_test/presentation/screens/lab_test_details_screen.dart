@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/router/router_strings.dart';
+import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_details_cubit/lab_test_details_cubit.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_uploading_cubit/lab_test_uploading_cubit.dart';
@@ -26,14 +27,15 @@ class _LabTestDetailsScreenState extends State<LabTestDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Lab Test Details')),
+      appBar: CustomAppBar(title: const Text('Lab Test Details')),
       body: BlocBuilder<LabTestDetailsCubit, LabTestDetailsState>(
         builder: (context, state) {
           if (state is LabTestDetailsLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is LabTestDetailsError) {
             return Center(child: Text('Error: ${state.message}'));
-          } else if (state is LabTestDetailsLoaded || state is LabTestDetailsUpdated) {
+          } else if (state is LabTestDetailsLoaded ||
+              state is LabTestDetailsUpdated) {
             final details = state is LabTestDetailsLoaded
                 ? (state).response
                 : (state as LabTestDetailsUpdated).response;

@@ -14,10 +14,14 @@ class Rafiq extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lightTheme = lightThemeDefinition;
     return MaterialApp(
       title: 'Rafiq',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.light().copyWith(extensions: [lightThemeDefinition]),
+      theme: ThemeData.light().copyWith(
+        scaffoldBackgroundColor: lightTheme.surfaceColor,
+        extensions: [lightTheme],
+      ),
       onGenerateRoute: AppRouter().generateRoute,
     );
   }

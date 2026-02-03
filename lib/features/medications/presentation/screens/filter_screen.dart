@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/core/utils/extensions/formate_names.dart';
+import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 import 'package:rafiq/features/groups/controllers/group_cubit/group_cubit.dart';
 import 'package:rafiq/features/medications/controllers/medication_cubit/medication_cubit.dart';
@@ -60,24 +61,11 @@ class _FilterScreenState extends State<FilterScreen> {
     final theme = Theme.of(context).extension<AppTheme>()!;
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        forceMaterialTransparency: true,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: theme.deepDarkBlueColor),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+      appBar: CustomAppBar(
         title: Text(
           'Filters',
-          style: TextStyle(
-            color: theme.deepDarkBlueColor,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+          style: theme.headingTextStyle.copyWith(fontSize: 20),
         ),
-        centerTitle: true,
       ),
       body: Column(
         children: [

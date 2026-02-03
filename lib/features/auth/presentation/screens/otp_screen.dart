@@ -7,6 +7,7 @@ import 'package:rafiq/core/functions/snack_bar_message.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
+import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/controllers/forget_password_cubit/forget_password_cubit.dart';
 import 'package:rafiq/features/auth/presentation/widgets/text_with_action_link.dart';
@@ -63,20 +64,7 @@ class _OtpScreenState extends State<OtpScreen> {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: appTheme.surfaceColor,
-      appBar: AppBar(
-        forceMaterialTransparency: true,
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            color: appTheme.deepDarkBlueColor,
-            size: 30,
-          ),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
+      appBar: CustomAppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8),

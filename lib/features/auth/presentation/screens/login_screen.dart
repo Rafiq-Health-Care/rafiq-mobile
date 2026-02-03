@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/functions/snack_bar_message.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/data/models/login_request.dart';
 import 'package:rafiq/features/auth/presentation/sections/login_form_section.dart';
@@ -45,20 +46,8 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final AppTheme appTheme = Theme.of(context).extension<AppTheme>()!;
     return Scaffold(
-      backgroundColor: appTheme.surfaceColor,
-      appBar: AppBar(
+      appBar: CustomAppBar(
         title: Text('Log In', style: appTheme.headingTextStyle),
-        leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back_ios_new,
-            color: appTheme.deepDarkBlueColor,
-            size: 30,
-          ),
-          onPressed: () => Navigator.pop(context),
-        ),
-        forceMaterialTransparency: true,
-        elevation: 0,
-        centerTitle: true,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24),

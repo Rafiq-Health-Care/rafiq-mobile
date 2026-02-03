@@ -16,7 +16,6 @@ class SelectUserTypeScreen extends StatelessWidget {
     final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: appTheme.surfaceColor,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
