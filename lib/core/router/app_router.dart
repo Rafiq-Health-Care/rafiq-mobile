@@ -8,6 +8,7 @@ import 'package:rafiq/features/auth/controllers/specialization_cubit/specializat
 import 'package:rafiq/features/auth/data/networking/auth_service.dart';
 import 'package:rafiq/features/auth/data/repository/auth_repository.dart';
 import 'package:rafiq/features/auth/presentation/screens/change_password_screen.dart';
+import 'package:rafiq/features/auth/presentation/screens/check_email_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/doctor_id_upload_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/doctor_sign_up_step_i_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/doctor_sign_up_step_ii_screen.dart';
@@ -170,6 +171,9 @@ class AppRouter {
             child: const ForgetPasswordScreen(),
           ),
         );
+
+      case RouterStrings.checkEmail:
+        return MaterialPageRoute(builder: (_) => const CheckEmailScreen());
 
       case RouterStrings.changePassword:
         return MaterialPageRoute(

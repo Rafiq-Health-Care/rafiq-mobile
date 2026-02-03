@@ -16,4 +16,6 @@ class ImageUrl {
   final String empty = 'assets/icons/empty.svg';
   final String noSearchResult = 'assets/icons/not_search_result.svg';
   final String otpLogo = 'assets/icons/authentication.png';
+  final String forgetPassword = 'assets/icons/forget_password.png';
+  final String checkMail = 'assets/icons/check_mail.png';
 }
