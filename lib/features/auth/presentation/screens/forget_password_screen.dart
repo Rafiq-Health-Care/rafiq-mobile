@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/functions/snack_bar_message.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/image_url.dart';
+import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 import 'package:rafiq/core/widgets/custom_labeled_text_field.dart';
 import 'package:rafiq/features/auth/controllers/forget_password_cubit/forget_password_cubit.dart';
@@ -37,100 +40,91 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context).extension<AppTheme>()!;
-
     return Scaffold(
-      appBar: AppBar(title: const Text('Forgot Password'), centerTitle: true),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 20),
-
-                // Icon
-                Icon(
-                  Icons.lock_reset_rounded,
-                  size: 80,
+      appBar: CustomAppBar(),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 20),
+              Image.asset(
+                ImageUrl().forgetPassword,
+                width: 204.r,
+                height: 204.r,
+              ),
+              const SizedBox(height: 24),
+              Text(
+                'Forget Your Password?',
+                style: appTheme.headingTextStyle.copyWith(
+                  fontSize: 24.sp,
+                  fontWeight: FontWeight.w700,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'No worries! Enter your registered email\naddress below and we will send you a link to\nreset your password.',
+                style: appTheme.bodyTextStyle.copyWith(
+                  color: appTheme.greyColor7,
+                  fontSize: 14.sp,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 40),
+              CustomLabeledTextField(
+                label: 'Email Address',
+                hint: 'Enter your email',
+                controller: _emailController,
+                validator: Validation.validateEmail,
+                keyboardType: TextInputType.emailAddress,
+                prefixIcon: Icon(
+                  Icons.email,
                   color: appTheme.deepDarkBlueColor,
                 ),
+              ),
+              const SizedBox(height: 32),
+              BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(
+                listener: (context, state) {
+                  if (state is ForgetPasswordEmailSent) {
+                    Navigator.of(
+                      context,
+                    ).pushReplacementNamed(RouterStrings.checkEmail);
+                  } else if (state is ForgetPasswordError) {
+                    snackBarMessage(context, state.message);
+                  }
+                },
+                builder: (context, state) {
+                  bool isLoading = state is ForgetPasswordLoading;
+                  return CustomElevatedButton(
+                    onPressed: () {
+                      if (!isLoading) {
+                        onSubmit();
+                      }
+                    },
+                    backgroundColor: appTheme.deepDarkBlueColor,
+                    foregroundColor: appTheme.surfaceColor,
+                    child: isLoading
+                        ? const CircularProgressIndicator()
+                        : Text(
+                            'Send Reset Link',
+                            style: appTheme.buttonLabelTextStyle,
+                          ),
+                  );
+                },
+              ),
 
-                const SizedBox(height: 24),
+              const SizedBox(height: 24),
 
-                // Title
-                Text(
-                  'Reset Password',
-                  style: appTheme.bodyLargeTextStyle,
-                  textAlign: TextAlign.center,
-                ),
-
-                const SizedBox(height: 12),
-
-                // Description
-                Text(
-                  'Enter your email address and we\'ll send you a link to reset your password.',
-                  style: appTheme.bodyTextStyle.copyWith(
-                    color: Colors.grey[600],
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-
-                const SizedBox(height: 40),
-
-                // Email Field
-                CustomLabeledTextField(
-                  label: 'Email Address',
-                  hint: 'Enter your email',
-                  controller: _emailController,
-                  validator: Validation.validateEmail,
-                  keyboardType: TextInputType.emailAddress,
-                ),
-
-                const SizedBox(height: 32),
-
-                // Submit Button
-                BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(
-                  listener: (context, state) {
-                    if (state is ForgetPasswordEmailSent) {
-                      Navigator.of(
-                        context,
-                      ).pushNamed(RouterStrings.otp, arguments: true);
-                    } else if (state is ForgetPasswordError) {
-                      snackBarMessage(context, state.message);
-                    }
-                  },
-                  builder: (context, state) {
-                    bool isLoading = state is ForgetPasswordLoading;
-                    return CustomElevatedButton(
-                      onPressed: () {
-                        if (!isLoading) {
-                          onSubmit();
-                        }
-                      },
-                      backgroundColor: appTheme.deepDarkBlueColor,
-                      foregroundColor: appTheme.surfaceColor,
-                      child: isLoading
-                          ? const CircularProgressIndicator()
-                          : Text(
-                              'Submit',
-                              style: appTheme.buttonLabelTextStyle,
-                            ),
-                    );
-                  },
-                ),
-
-                const SizedBox(height: 24),
-
-                // Back to Login
-                TextWithActionLink(
-                  staticText: 'Remember your password? ',
-                  linkText: 'Login',
-                  onTap: () => Navigator.pop(context),
-                ),
-              ],
-            ),
+              // Back to Login
+              TextWithActionLink(
+                staticText: 'Remember your password? ',
+                linkText: 'Login',
+                onTap: () => Navigator.pop(context),
+              ),
+            ],
           ),
         ),
       ),

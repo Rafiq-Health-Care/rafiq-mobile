@@ -11,6 +11,7 @@ class CustomLabeledTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final String? prefixText;
   final int numberOfLines;
+  final Widget? prefixIcon;
 
   const CustomLabeledTextField({
     super.key,
@@ -22,6 +23,7 @@ class CustomLabeledTextField extends StatelessWidget {
     this.inputFormatters,
     this.prefixText,
     this.numberOfLines = 1,
+    this.prefixIcon,
   });
 
   @override
@@ -50,6 +52,7 @@ class CustomLabeledTextField extends StatelessWidget {
             hintStyle: appTheme.textFieldHintTextStyle,
             fillColor: appTheme.fieldFillColor,
             filled: true,
+            prefixIcon: prefixIcon,
           ),
           style: appTheme.textFieldTextStyle,
           keyboardType: keyboardType,
