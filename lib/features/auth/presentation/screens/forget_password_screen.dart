@@ -8,7 +8,7 @@ import 'package:rafiq/core/utils/image_url.dart';
 import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 import 'package:rafiq/core/widgets/custom_labeled_text_field.dart';
-import 'package:rafiq/features/auth/controllers/forget_password_cubit/forget_password_cubit.dart';
+import 'package:rafiq/features/auth/controllers/password_management_cubit/password_management_cubit.dart';
 import 'package:rafiq/core/services/validation.dart';
 import 'package:rafiq/features/auth/presentation/widgets/text_with_action_link.dart';
 
@@ -31,7 +31,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   void onSubmit() {
     if (_formKey.currentState!.validate()) {
-      ForgetPasswordCubit.get(
+      PasswordManagementCubit.get(
         context,
       ).forgetPassword(_emailController.text.trim());
     }
@@ -86,18 +86,18 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 ),
               ),
               const SizedBox(height: 32),
-              BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(
+              BlocConsumer<PasswordManagementCubit, PasswordManagementState>(
                 listener: (context, state) {
                   if (state is ForgetPasswordEmailSent) {
                     Navigator.of(
                       context,
                     ).pushReplacementNamed(RouterStrings.checkEmail);
-                  } else if (state is ForgetPasswordError) {
+                  } else if (state is PasswordManagementError) {
                     snackBarMessage(context, state.message);
                   }
                 },
                 builder: (context, state) {
-                  bool isLoading = state is ForgetPasswordLoading;
+                  bool isLoading = state is PasswordManagementLoading;
                   return CustomElevatedButton(
                     onPressed: () {
                       if (!isLoading) {

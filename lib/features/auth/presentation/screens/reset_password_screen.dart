@@ -5,7 +5,7 @@ import 'package:rafiq/core/functions/snack_bar_message.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
-import 'package:rafiq/features/auth/controllers/forget_password_cubit/forget_password_cubit.dart';
+import 'package:rafiq/features/auth/controllers/password_management_cubit/password_management_cubit.dart';
 import 'package:rafiq/core/services/validation.dart';
 import 'package:rafiq/features/auth/data/models/reset_password_request.dart';
 import 'package:rafiq/features/auth/presentation/widgets/custom_labeled_password_field.dart';
@@ -33,7 +33,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   void onSubmit() {
     if (_formKey.currentState!.validate()) {
-      ForgetPasswordCubit.get(context).resetPassword(
+      PasswordManagementCubit.get(context).resetPassword(
         ResetPasswordRequest(
           oldPassword: _oldPasswordController.text.trim(),
           newPassword: _newPasswordController.text.trim(),
@@ -104,16 +104,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 },
               ),
               const SizedBox(height: 32),
-              BlocConsumer<ForgetPasswordCubit, ForgetPasswordState>(
+              BlocConsumer<PasswordManagementCubit, PasswordManagementState>(
                 listener: (context, state) {
-                  if (state is ForgetPasswordChanged) {
+                  if (state is PasswordChanged) {
                     Navigator.of(context).pop();
-                  } else if (state is ForgetPasswordError) {
+                  } else if (state is PasswordManagementError) {
                     snackBarMessage(context, state.message);
                   }
                 },
                 builder: (context, state) {
-                  bool isLoading = state is ForgetPasswordLoading;
+                  bool isLoading = state is PasswordManagementLoading;
                   return SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: CustomElevatedButton(

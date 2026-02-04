@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
-import 'package:rafiq/features/auth/controllers/forget_password_cubit/forget_password_cubit.dart';
+import 'package:rafiq/features/auth/controllers/password_management_cubit/password_management_cubit.dart';
 import 'package:rafiq/features/auth/controllers/specialization_cubit/specialization_cubit.dart';
 import 'package:rafiq/features/auth/data/networking/auth_service.dart';
 import 'package:rafiq/features/auth/data/repository/auth_repository.dart';
@@ -54,7 +54,7 @@ class AppRouter {
   late AuthCubit authCubit;
   late AuthService authService;
   late AuthRepository authRepository;
-  late ForgetPasswordCubit forgetPasswordCubit;
+  late PasswordManagementCubit forgetPasswordCubit;
   late LabTestService labTestService;
   late LabTestRepository labTestRepository;
   late LabTestCubit labTestCubit;
@@ -74,7 +74,7 @@ class AppRouter {
     authService = AuthService();
     authRepository = AuthRepository(authService: authService);
     authCubit = AuthCubit(authService, authRepository);
-    forgetPasswordCubit = ForgetPasswordCubit(authService, authRepository);
+    forgetPasswordCubit = PasswordManagementCubit(authService, authRepository);
     labTestService = LabTestService();
     labTestRepository = LabTestRepository(labTestService: labTestService);
     labTestCubit = LabTestCubit(labTestRepository);
