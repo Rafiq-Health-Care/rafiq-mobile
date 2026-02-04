@@ -7,7 +7,7 @@ import 'package:rafiq/features/auth/controllers/forget_password_cubit/forget_pas
 import 'package:rafiq/features/auth/controllers/specialization_cubit/specialization_cubit.dart';
 import 'package:rafiq/features/auth/data/networking/auth_service.dart';
 import 'package:rafiq/features/auth/data/repository/auth_repository.dart';
-import 'package:rafiq/features/auth/presentation/screens/change_password_screen.dart';
+import 'package:rafiq/features/auth/presentation/screens/reset_password_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/check_email_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/doctor_id_upload_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/doctor_sign_up_step_i_screen.dart';
@@ -151,16 +151,10 @@ class AppRouter {
         );
 
       case RouterStrings.otp:
-        final bool isForgetPassword = settings.arguments as bool? ?? false;
         return MaterialPageRoute(
           settings: settings,
-          builder: (_) => MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: authCubit),
-              BlocProvider.value(value: forgetPasswordCubit),
-            ],
-            child: OtpScreen(isForgetPassword: isForgetPassword),
-          ),
+          builder: (_) =>
+              BlocProvider.value(value: authCubit, child: OtpScreen()),
         );
 
       case RouterStrings.forgetPassword:
@@ -175,12 +169,12 @@ class AppRouter {
       case RouterStrings.checkEmail:
         return MaterialPageRoute(builder: (_) => const CheckEmailScreen());
 
-      case RouterStrings.changePassword:
+      case RouterStrings.resetPassword:
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => BlocProvider.value(
             value: forgetPasswordCubit,
-            child: const ChangePasswordScreen(),
+            child: const ResetPasswordScreen(),
           ),
         );
 

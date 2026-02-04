@@ -11,7 +11,7 @@ abstract class RouterStrings {
   static const String otp = "/otp";
   static const String forgetPassword = "/forget_password";
   static const String checkEmail = "/check_email";
-  static const String changePassword = "/change_password";
+  static const String resetPassword = "/reset_password";
   static const String allLabTests = "/all_lab_tests";
   static const String labTestDetails = "/lab_test_details";
   static const String labTestUploading = "/lab_test_uploading";

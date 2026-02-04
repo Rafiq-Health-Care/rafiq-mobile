@@ -3,7 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rafiq/core/constants/secure.dart';
 import 'package:rafiq/core/networking/api_constants.dart';
 import 'package:rafiq/core/networking/api_service.dart';
-import 'package:rafiq/features/auth/data/models/change_password_request.dart';
+import 'package:rafiq/features/auth/data/models/reset_password_request.dart';
 import 'package:rafiq/features/auth/data/models/doctor_sign_up_request.dart';
 import 'package:rafiq/features/auth/data/models/login_request.dart';
 import 'package:rafiq/features/auth/data/models/patient_sign_up_request.dart';
@@ -111,21 +111,9 @@ class AuthService {
     }
   }
 
-  Future<dynamic> userVerify(UserVerificationRequest body) async {
+  Future<void> resetPassword(ResetPasswordRequest body) async {
     try {
-      Response response = await _api.post(
-        ApiConstants.userVerify,
-        data: body.toJson(),
-      );
-      return response.data;
-    } catch (e) {
-      rethrow;
-    }
-  }
-
-  Future<void> changePassword(ChangePasswordRequest body) async {
-    try {
-      await _api.post(ApiConstants.changePassword, data: body.toJson());
+      await _api.post(ApiConstants.resetPassword, data: body.toJson());
     } catch (e) {
       rethrow;
     }
