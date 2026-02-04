@@ -28,7 +28,7 @@ class Validation {
 
   static String? confirmPassword(String? value, String password) {
     value = value?.trim();
-    if (value == null || value.isEmpty) return 'Required';
+    if (value == null || value.isEmpty) return 'This field is required';
     if (value != password) return 'Passwords do not match';
     return null;
   }
@@ -83,6 +83,13 @@ class Validation {
     if (double.tryParse(value) == null) {
       return 'Invalid number';
     }
+    return null;
+  }
+
+  static String? validateOtp(String? value) {
+    value = value?.trim();
+    if (value == null || value.isEmpty) return 'OTP is required';
+    if (value.length != 6) return 'OTP must be 6 digits';
     return null;
   }
 }
