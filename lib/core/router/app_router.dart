@@ -21,6 +21,8 @@ import 'package:rafiq/features/auth/presentation/screens/patient_sign_up_step_i_
 import 'package:rafiq/features/groups/controllers/group_details_cubit/group_details_cubit.dart';
 import 'package:rafiq/features/groups/presentation/screens/group_details_screen.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_details_model.dart';
+import 'package:rafiq/features/landing/controller/landing_cubit/landing_cubit.dart';
+import 'package:rafiq/features/landing/data/networking/landing_service.dart';
 import 'package:rafiq/features/landing/presentation/screens/landing_screen.dart';
 import 'package:rafiq/features/landing/presentation/screens/on_boarding_screen.dart';
 import 'package:rafiq/features/home/presentation/screens/home_screen.dart';
@@ -290,7 +292,13 @@ class AppRouter {
         );
 
       default:
-        return MaterialPageRoute(builder: (_) => const LandingScreen());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) =>
+                LandingCubit(LandingService(apiService: apiService)),
+            child: const LandingScreen(),
+          ),
+        );
     }
   }
 }
