@@ -7,7 +7,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:rafiq/core/errors/server_failure.dart';
-import 'package:rafiq/core/networking/refresh_interceptors.dart';
+import 'package:rafiq/core/networking/interceptors/cookie_logger_interceptor.dart';
+import 'package:rafiq/core/networking/interceptors/refresh_interceptor.dart';
 import 'api_constants.dart';
 
 class ApiService {
@@ -51,47 +52,7 @@ class ApiService {
         ),
       );
 
-      // This interceptor logs cookie information for debugging purposes
-      _dio.interceptors.add(
-        InterceptorsWrapper(
-          onResponse: (response, handler) async {
-            // Log cookies received from the server
-            final cookies = await _cookieJar.loadForRequest(
-              response.requestOptions.uri,
-            );
-            if (cookies.isNotEmpty) {
-              if (kDebugMode) {
-                print(
-                  '🍪 COOKIES RECEIVED & SAVED: ${cookies.length} cookie(s)',
-                );
-              }
-              for (var cookie in cookies) {
-                if (kDebugMode) {
-                  print('  ├─ Name: ${cookie.name}');
-                  print('  ├─ Value: ${cookie.value}');
-                  print('  ├─ Domain: ${cookie.domain}');
-                  print('  ├─ Path: ${cookie.path}');
-                  print('  └─ Expires: ${cookie.expires}');
-                }
-              }
-            }
-            return handler.next(response);
-          },
-          onRequest: (options, handler) async {
-            // Log cookies being sent with the request
-            final cookies = await _cookieJar.loadForRequest(options.uri);
-            if (cookies.isNotEmpty) {
-              debugPrint(
-                '🍪 COOKIES SENT (from storage): ${cookies.length} cookie(s)',
-              );
-              for (var cookie in cookies) {
-                debugPrint('  ├─ ${cookie.name}: ${cookie.value}');
-              }
-            }
-            return handler.next(options);
-          },
-        ),
-      );
+      _dio.interceptors.add(CookieLoggerInterceptor(_cookieJar));
     }
   }
 
