@@ -6,6 +6,8 @@ import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:rafiq/core/errors/server_failure.dart';
+import 'package:rafiq/core/networking/refresh_interceptors.dart';
 import 'api_constants.dart';
 
 class ApiService {
@@ -32,6 +34,9 @@ class ApiService {
 
     // Add cookie manager to handle cookies automatically
     _dio.interceptors.add(CookieManager(_cookieJar));
+
+    // add refresh interceptor to handle 401 errors and execute the request again
+    _dio.interceptors.add(RefreshInterceptor(dio: _dio));
 
     if (kDebugMode) {
       _dio.interceptors.add(
@@ -98,16 +103,13 @@ class ApiService {
     }
   }
 
-  // Get all cookies for debugging
-  Future<List<Cookie>> getCookies(Uri uri) async {
-    return await _cookieJar.loadForRequest(uri);
-  }
-
   Future<Response> post(String path, {dynamic data, Options? options}) async {
     try {
       return await _dio.post(path, data: data, options: options);
     } on DioException catch (e) {
-      throw Exception(_handleError(e));
+      throw ServerFailure.fromDioError(e);
+    } catch (e) {
+      throw ServerFailure(e.toString());
     }
   }
 
@@ -118,7 +120,9 @@ class ApiService {
     try {
       return await _dio.get(path, queryParameters: queryParameters);
     } on DioException catch (e) {
-      throw Exception(_handleError(e));
+      throw ServerFailure.fromDioError(e);
+    } catch (e) {
+      throw ServerFailure(e.toString());
     }
   }
 
@@ -126,7 +130,9 @@ class ApiService {
     try {
       return await _dio.put(path, data: data, options: options);
     } on DioException catch (e) {
-      throw Exception(_handleError(e));
+      throw ServerFailure.fromDioError(e);
+    } catch (e) {
+      throw ServerFailure(e.toString());
     }
   }
 
@@ -134,7 +140,9 @@ class ApiService {
     try {
       return await _dio.patch(path, data: data, options: options);
     } on DioException catch (e) {
-      throw Exception(_handleError(e));
+      throw ServerFailure.fromDioError(e);
+    } catch (e) {
+      throw ServerFailure(e.toString());
     }
   }
 
@@ -142,7 +150,9 @@ class ApiService {
     try {
       return await _dio.delete(path, data: data, options: options);
     } on DioException catch (e) {
-      throw Exception(_handleError(e));
+      throw ServerFailure.fromDioError(e);
+    } catch (e) {
+      throw ServerFailure(e.toString());
     }
   }
 
@@ -176,20 +186,9 @@ class ApiService {
       await _dio.download(url, savePath);
       return savePath;
     } on DioException catch (e) {
-      throw Exception(_handleError(e));
+      throw ServerFailure.fromDioError(e);
     } catch (e) {
-      throw Exception('Download failed: $e');
+      throw ServerFailure(e.toString());
     }
-  }
-
-  String _handleError(DioException e) {
-    if (e.response?.statusCode == 401) {
-      return 'Unauthorized. Please login again.';
-    }
-    if (e.response?.statusCode == 404) return 'Endpoint not found.';
-    if (e.type == DioExceptionType.connectionTimeout) {
-      return 'Connection timeout.';
-    }
-    return e.message ?? 'Unexpected error.';
   }
 }
