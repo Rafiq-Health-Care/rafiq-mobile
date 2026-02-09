@@ -94,5 +94,15 @@ class AuthCubit extends Cubit<AuthState> {
         });
   }
 
+  void logout() {
+    emit(AuthLoading());
+    authService.logout().then((value) {
+      value.fold(
+        (failure) => emit(AuthFailure(failure.message)),
+        (success) => emit(LogoutSuccess()),
+      );
+    });
+  }
+
   static AuthCubit get(context) => BlocProvider.of(context);
 }

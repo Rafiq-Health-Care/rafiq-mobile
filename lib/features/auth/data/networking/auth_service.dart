@@ -1,6 +1,8 @@
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rafiq/core/constants/secure.dart';
+import 'package:rafiq/core/errors/failure.dart';
 import 'package:rafiq/core/networking/api_constants.dart';
 import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/features/auth/data/models/reset_password_request.dart';
@@ -116,6 +118,16 @@ class AuthService {
       await _api.post(ApiConstants.resetPassword, data: body.toJson());
     } catch (e) {
       rethrow;
+    }
+  }
+
+  Future<Either<Failure, void>> logout() async {
+    try {
+      await _api.post(ApiConstants.authLogout);
+      await _api.clearCookies();
+      return right(null);
+    } catch (e) {
+      return left(e as Failure);
     }
   }
 }

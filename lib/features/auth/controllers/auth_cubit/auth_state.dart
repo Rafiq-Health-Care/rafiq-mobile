@@ -19,6 +19,8 @@ final class UserVerificationResendSuccess extends AuthState {}
 
 final class GoogleAuthSuccess extends AuthState {}
 
+final class LogoutSuccess extends AuthState {}
+
 final class AuthFailure extends AuthState {
   final String message;
   AuthFailure(this.message);
