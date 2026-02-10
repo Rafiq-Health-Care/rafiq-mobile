@@ -18,7 +18,7 @@ class ImageUrl {
   final String otpLogo = 'assets/icons/authentication.png';
   final String forgetPassword = 'assets/icons/forget_password.png';
   final String checkMail = 'assets/icons/check_mail.png';
-  final String drugs = 'assets/icons/drugs.svg';
-  final String medicine = 'assets/icons/medicine.svg';
-  final String hourglass = 'assets/icons/hourglass.svg';
+  final String drugs = 'assets/icons/drugs.png';
+  final String medicine = 'assets/icons/medicine.png';
+  final String hourglass = 'assets/icons/hourglass.png';
 }
