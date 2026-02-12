@@ -57,6 +57,7 @@ class _CustomLabeledPasswordFieldState
             ),
           ),
           style: appTheme.textFieldTextStyle,
+          onTapOutside: (_) => FocusScope.of(context).unfocus(),
         ),
       ],
     );

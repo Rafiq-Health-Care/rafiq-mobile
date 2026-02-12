@@ -101,6 +101,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       border: Border.all(color: Color(0x268AA9D2)),
                     ),
                   ),
+                  onTapOutside: (_) => FocusScope.of(context).unfocus(),
                 ),
                 const SizedBox(height: 16),
                 TextWithActionLink(
@@ -148,7 +149,7 @@ class _OtpScreenState extends State<OtpScreen> {
           resetTimer();
         }
       },
-      
+
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, authState) {
           bool isLoading = authState is AuthLoading;

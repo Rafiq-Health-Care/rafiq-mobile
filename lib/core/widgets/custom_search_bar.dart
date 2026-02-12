@@ -60,6 +60,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           icon: Icon(Icons.search, color: Colors.grey.shade400),
           suffixIcon: widget.suffixIcon,
         ),
+        onTapOutside: (_) => FocusScope.of(context).unfocus(),
       ),
     );
   }
