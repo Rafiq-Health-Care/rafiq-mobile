@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 final AppTheme lightThemeDefinition = AppTheme(
   deepDarkBlueColor: Color(0XFF11325B),
@@ -71,6 +72,12 @@ final AppTheme lightThemeDefinition = AppTheme(
     fontSize: 16,
     color: Color(0xFF333333),
     fontWeight: FontWeight.w400,
+  ),
+  infoLabelTextStyle: TextStyle(
+    color: Color(0xFF6E6E6E),
+    fontWeight: FontWeight.w600,
+    fontSize: 16.sp,
+    fontFamily: 'Inter',
   ),
   textFieldBorder: OutlineInputBorder(
     borderRadius: BorderRadius.circular(12),

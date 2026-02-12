@@ -22,6 +22,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
   final TextStyle drawerLabelTextStyle;
   final TextStyle descriptionSmallTextStyle;
   final TextStyle popupMenuItemTextStyle;
+  final TextStyle infoLabelTextStyle;
 
   final InputBorder textFieldBorder;
   const AppTheme({
@@ -45,6 +46,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
     required this.drawerLabelTextStyle,
     required this.descriptionSmallTextStyle,
     required this.popupMenuItemTextStyle,
+    required this.infoLabelTextStyle,
     required this.textFieldBorder,
   });
 
@@ -70,6 +72,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
     TextStyle? drawerLabelTextStyle,
     TextStyle? descriptionSmallTextStyle,
     TextStyle? popupMenuItemTextStyle,
+    TextStyle? infoLabelTextStyle,
     InputBorder? textFieldBorder,
   }) {
     return AppTheme(
@@ -98,6 +101,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
           descriptionSmallTextStyle ?? this.descriptionSmallTextStyle,
       popupMenuItemTextStyle:
           popupMenuItemTextStyle ?? this.popupMenuItemTextStyle,
+      infoLabelTextStyle: infoLabelTextStyle ?? this.infoLabelTextStyle,
       textFieldBorder: textFieldBorder ?? this.textFieldBorder,
     );
   }
@@ -172,6 +176,11 @@ class AppTheme extends ThemeExtension<AppTheme> {
       popupMenuItemTextStyle: TextStyle.lerp(
         popupMenuItemTextStyle,
         other.popupMenuItemTextStyle,
+        t,
+      )!,
+      infoLabelTextStyle: TextStyle.lerp(
+        infoLabelTextStyle,
+        other.infoLabelTextStyle,
         t,
       )!,
 
