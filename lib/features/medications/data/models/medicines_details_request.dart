@@ -30,8 +30,8 @@ class MedicinesDetailsRequest {
       'frequency': frequency,
       'reminderFrequency': reminderFrequency,
       'customDays': customDays,
-      'startDate': startDate.toIso8601String(),
-      'endDate': endDate?.toIso8601String(),
+      'startDate': startDate.toUtc().toIso8601String(),
+      'endDate': endDate?.toUtc().toIso8601String(),
       'notes': notes,
       'type': type.typeStr(),
     };
