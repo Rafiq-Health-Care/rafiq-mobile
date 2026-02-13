@@ -47,6 +47,14 @@ final class MedicationLoaded extends MedicationState {
   List<Object?> get props => [medications, hasReachedMax, request];
 }
 
+final class MedicationAdded extends MedicationState {
+  final AllMedicinesContentModel newMedicine;
+
+  MedicationAdded({required this.newMedicine});
+  @override
+  List<Object?> get props => [newMedicine];
+}
+
 final class MedicationError extends MedicationState {
   final String message;
   final List<AllMedicinesContentModel>? medications;

@@ -82,6 +82,7 @@ class MedicationCubit extends Cubit<MedicationState> {
       final newMedicine = await medicationRepository.addMedicines(
         medicineDetails,
       );
+      emit(MedicationAdded(newMedicine: newMedicine));
       emit(
         MedicationLoaded(
           medications: {...currentState.medications, newMedicine}.toList(),
