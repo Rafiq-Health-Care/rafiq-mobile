@@ -15,20 +15,22 @@ class Rafiq extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lightTheme = lightThemeDefinition;
     return ScreenUtilInit(
       designSize: const Size(390, 844),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, child) => MaterialApp(
-        title: 'Rafiq',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData.light().copyWith(
-          scaffoldBackgroundColor: lightTheme.surfaceColor,
-          extensions: [lightTheme],
-        ),
-        onGenerateRoute: AppRouter().generateRoute,
-      ),
+      builder: (context, child) {
+        final lightTheme = lightThemeDefinition;
+        return MaterialApp(
+          title: 'Rafiq',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData.light().copyWith(
+            scaffoldBackgroundColor: lightTheme.surfaceColor,
+            extensions: [lightTheme],
+          ),
+          onGenerateRoute: AppRouter().generateRoute,
+        );
+      },
     );
   }
 }
