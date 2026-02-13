@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/core/router/app_router.dart';
-import 'package:rafiq/core/theme/light_theme_definition.dart';
+import 'package:rafiq/core/theme/app_themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +20,7 @@ class Rafiq extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
-        final lightTheme = lightThemeDefinition;
+        final lightTheme = AppThemes().lightTheme;
         return MaterialApp(
           title: 'Rafiq',
           debugShowCheckedModeBanner: false,
