@@ -16,17 +16,25 @@ class AllMedicationsScreen extends StatefulWidget {
 
 class _AllMedicationsScreenState extends State<AllMedicationsScreen> {
   final TextEditingController searchController = TextEditingController();
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     MedicationCubit.of(context).loadMedications(AllMedicinesRequest());
     GroupCubit.of(context).loadGroups(AllGroupsRequest());
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        MedicationCubit.of(context).loadMoreMedications();
+      }
+    });
   }
 
   @override
   void dispose() {
     searchController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -35,6 +43,11 @@ class _AllMedicationsScreenState extends State<AllMedicationsScreen> {
     return Scaffold(
       appBar: CustomAppBar(),
       body: BlocBuilder<MedicationCubit, MedicationState>(
+        buildWhen: (previous, current) {
+          return current is MedicationLoading ||
+              current is MedicationLoaded ||
+              current is MedicationError;
+        },
         builder: (context, state) {
           if (state is MedicationLoading) {
             return const Center(child: CircularProgressIndicator());
@@ -42,6 +55,7 @@ class _AllMedicationsScreenState extends State<AllMedicationsScreen> {
             return AllMedicationsLoaded(
               state: state,
               searchController: searchController,
+              scrollController: scrollController,
             );
           } else if (state is MedicationError) {
             return Center(child: Text(state.message));
