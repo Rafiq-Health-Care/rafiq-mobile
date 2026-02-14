@@ -5,6 +5,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
   final Color accentRedColor;
   final Color surfaceColor;
   final Color accentBlueColor;
+  final Color greyColor4;
   final Color greyColor6;
   final Color greyColor7;
   final Color cyanColor400;
@@ -30,6 +31,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
     required this.accentRedColor,
     required this.accentBlueColor,
     required this.surfaceColor,
+    required this.greyColor4,
     required this.greyColor6,
     required this.greyColor7,
     required this.cyanColor400,
@@ -56,6 +58,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
     Color? accentRedColor,
     Color? surfaceColor,
     Color? accentBlueColor,
+    Color? greyColor4,
     Color? greyColor6,
     Color? greyColor7,
     Color? cyanColor400,
@@ -80,6 +83,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
       accentRedColor: accentRedColor ?? this.accentRedColor,
       accentBlueColor: accentBlueColor ?? this.accentBlueColor,
       surfaceColor: surfaceColor ?? this.surfaceColor,
+      greyColor4: greyColor4 ?? this.greyColor4,
       greyColor6: greyColor6 ?? this.greyColor6,
       greyColor7: greyColor7 ?? this.greyColor7,
       cyanColor400: cyanColor400 ?? this.cyanColor400,
@@ -120,6 +124,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
       accentRedColor: Color.lerp(accentRedColor, other.accentRedColor, t)!,
       surfaceColor: Color.lerp(surfaceColor, other.surfaceColor, t)!,
       accentBlueColor: Color.lerp(accentBlueColor, other.accentBlueColor, t)!,
+      greyColor4: Color.lerp(greyColor4, other.greyColor4, t)!,
       greyColor6: Color.lerp(greyColor6, other.greyColor6, t)!,
       greyColor7: Color.lerp(greyColor7, other.greyColor7, t)!,
       cyanColor400: Color.lerp(cyanColor400, other.cyanColor400, t)!,

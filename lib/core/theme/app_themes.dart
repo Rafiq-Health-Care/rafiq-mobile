@@ -8,6 +8,7 @@ class AppThemes {
     accentRedColor: Color(0xFFEF233C),
     surfaceColor: Colors.white,
     accentBlueColor: Color(0xFF2977F6),
+    greyColor4: Color(0XFFA7A7A7),
     greyColor6: Color(0xFF3A3A3A),
     greyColor7: Color(0xFF6E6E6E),
     cyanColor400: Colors.cyan.shade400,
