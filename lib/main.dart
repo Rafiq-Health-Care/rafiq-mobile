@@ -24,7 +24,7 @@ class Rafiq extends StatelessWidget {
         return MaterialApp(
           title: 'Rafiq',
           debugShowCheckedModeBanner: false,
-          theme: ThemeData.light().copyWith(
+          theme: ThemeData(fontFamily: 'Inter').copyWith(
             scaffoldBackgroundColor: lightTheme.surfaceColor,
             extensions: [lightTheme],
           ),
