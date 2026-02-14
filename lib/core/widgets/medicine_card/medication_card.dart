@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/features/medications/controllers/selected_medication_cubit/selected_medication_cubit.dart';
 import 'package:rafiq/features/medications/data/models/all_medicines_content_model.dart';
@@ -33,6 +34,11 @@ class MedicationCard extends StatelessWidget {
               SelectedMedicationCubit.of(
                 context,
               ).toggleSelection(medication.id);
+            } else {
+              Navigator.of(context).pushNamed(
+                RouterStrings.medicationDetails,
+                arguments: medication.id,
+              );
             }
           },
           child: Container(
