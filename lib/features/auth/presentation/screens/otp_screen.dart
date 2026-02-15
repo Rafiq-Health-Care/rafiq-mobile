@@ -103,7 +103,10 @@ class _OtpScreenState extends State<OtpScreen> {
                     ),
                   ),
                   onTapOutside: (_) => FocusScope.of(context).unfocus(),
-                  onSubmitted: (_) => onSubmit(),
+                  onCompleted: (_) {
+                    FocusScope.of(context).unfocus();
+                    onSubmit();
+                  },
                 ),
                 const SizedBox(height: 16),
                 TextWithActionLink(

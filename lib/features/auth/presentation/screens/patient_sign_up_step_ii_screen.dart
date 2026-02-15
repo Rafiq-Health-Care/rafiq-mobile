@@ -71,6 +71,7 @@ class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
                 controller: _passwordController,
                 validator: Validation.validatePassword,
                 textInputAction: TextInputAction.next,
+                onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
               ),
               CustomLabeledPasswordField(
                 label: 'Confirm Password',
@@ -81,6 +82,7 @@ class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
                   _passwordController.text.trim(),
                 ),
                 textInputAction: TextInputAction.next,
+                onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
               ),
               CustomLabeledTextField(
                 label: 'Birth Date',

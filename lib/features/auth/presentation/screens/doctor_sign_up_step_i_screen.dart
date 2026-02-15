@@ -88,6 +88,7 @@ class _DoctorSignUpStepIScreenState extends State<DoctorSignUpStepIScreen> {
                   controller: _passwordController,
                   validator: Validation.validatePassword,
                   textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
                 ),
                 CustomLabeledPasswordField(
                   label: 'Confirm Password',

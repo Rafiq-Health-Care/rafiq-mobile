@@ -84,6 +84,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 controller: _oldPasswordController,
                 validator: Validation.validatePassword,
                 textInputAction: TextInputAction.next,
+                onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
               ),
               const SizedBox(height: 16),
               CustomLabeledPasswordField(
@@ -92,6 +93,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 controller: _newPasswordController,
                 validator: Validation.validatePassword,
                 textInputAction: TextInputAction.next,
+                onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),
               ),
               const SizedBox(height: 16),
               CustomLabeledPasswordField(
