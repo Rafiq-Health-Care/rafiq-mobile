@@ -5,6 +5,7 @@ import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
 import 'package:rafiq/core/widgets/custom_app_bar.dart';
+import 'package:rafiq/core/widgets/custom_refresh_indicator.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit.dart';
 
 class AllLabTestsScreen extends StatefulWidget {
@@ -58,7 +59,7 @@ class _AllLabTestsScreenState extends State<AllLabTestsScreen> {
             } else if (state is LabTestError && cubit.labTestsContent.isEmpty) {
               return Center(child: Text('Error: ${state.message}'));
             } else if (state is LabTestEmpty) {
-              return RefreshIndicator(
+              return CustomRefreshIndicator(
                 onRefresh: () async {
                   await cubit.refreshLabTests();
                 },
@@ -90,7 +91,7 @@ class _AllLabTestsScreenState extends State<AllLabTestsScreen> {
               );
             } else {
               final labTests = cubit.labTestsContent;
-              return RefreshIndicator(
+              return CustomRefreshIndicator(
                 onRefresh: () async {
                   await cubit.refreshLabTests();
                 },

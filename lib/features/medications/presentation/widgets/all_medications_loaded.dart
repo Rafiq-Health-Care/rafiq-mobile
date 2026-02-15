@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rafiq/core/presentation/dialogs/confirmation_dialog.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
 import 'package:rafiq/core/widgets/custom_icon_button.dart';
+import 'package:rafiq/core/widgets/custom_refresh_indicator.dart';
 import 'package:rafiq/core/widgets/custom_screen_header.dart';
 import 'package:rafiq/core/widgets/empty_state_widget.dart';
 import 'package:rafiq/features/groups/data/models/group_content_model.dart';
@@ -105,11 +105,8 @@ class AllMedicationsLoaded extends StatelessWidget {
     final isNoSearchResults =
         state.medications.isEmpty && searchController.text.isNotEmpty;
 
-    return RefreshIndicator(
+    return CustomRefreshIndicator(
       onRefresh: () async => await MedicationCubit.of(context).refresh(),
-      color: appTheme.deepDarkBlueColor,
-      backgroundColor: appTheme.surfaceColor,
-      displacement: 80.h,
       child: Column(
         spacing: 16,
         crossAxisAlignment: CrossAxisAlignment.start,
