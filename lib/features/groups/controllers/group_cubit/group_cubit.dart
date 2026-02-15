@@ -110,7 +110,7 @@ class GroupCubit extends Cubit<GroupState> {
         }
         return group;
       }).toList();
-      
+
       final currentGroups = currentState.currentGroups.map((group) {
         if (group.id == id) {
           return group.copyWith(
@@ -191,6 +191,10 @@ class GroupCubit extends Cubit<GroupState> {
         currentGroups: _getCurrentGroups(query, currentState.allGroups),
       ),
     );
+  }
+
+  Future<void> refresh() async {
+    await loadGroups(AllGroupsRequest(), needLoading: false);
   }
 
   List<GroupContentModel> _getCurrentGroups(
