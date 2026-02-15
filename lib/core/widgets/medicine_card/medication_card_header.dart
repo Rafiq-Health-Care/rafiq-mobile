@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/features/medications/data/models/all_medicines_content_model.dart';
 
@@ -26,7 +27,7 @@ class MedicationCardHeader extends StatelessWidget {
         Expanded(
           child: Text(
             medication.name,
-            style: theme.headingTextStyle.copyWith(fontSize: 20),
+            style: theme.headingTextStyle.copyWith(fontSize: 18.sp),
             overflow: TextOverflow.ellipsis,
           ),
         ),
@@ -46,8 +47,8 @@ class MedicationCardHeader extends StatelessWidget {
                   medication.groupName!,
                   style: TextStyle(
                     color: Colors.orange.shade800,
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ],
