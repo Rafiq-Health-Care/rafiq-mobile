@@ -194,7 +194,7 @@ class GroupCubit extends Cubit<GroupState> {
   }
 
   Future<void> refresh() async {
-    await loadGroups(AllGroupsRequest(), needLoading: false);
+    await loadGroups(AllGroupsRequest());
   }
 
   List<GroupContentModel> _getCurrentGroups(
