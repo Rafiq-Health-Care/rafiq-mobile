@@ -6,13 +6,15 @@ class CustomLabeledPasswordField extends StatefulWidget {
   final String hint;
   final TextEditingController controller;
   final String? Function(String?)? validator;
+  final void Function(String)? onFieldSubmitted;
 
   const CustomLabeledPasswordField({
     super.key,
     required this.label,
     required this.hint,
     required this.controller,
-    required this.validator,
+    this.validator,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -36,6 +38,7 @@ class _CustomLabeledPasswordFieldState
           controller: widget.controller,
           obscureText: _obscure,
           validator: widget.validator,
+          onFieldSubmitted: widget.onFieldSubmitted,
           decoration: InputDecoration(
             hintText: widget.hint,
             hintStyle: appTheme.textFieldHintTextStyle,
