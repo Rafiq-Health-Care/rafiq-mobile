@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 
 class CustomScreenHeader extends StatelessWidget {
   final String title;
   final String description;
-  final int total;
+  final String? total;
 
   const CustomScreenHeader({
     super.key,
     required this.title,
     required this.description,
-    required this.total,
+    this.total,
   });
 
   @override
@@ -25,30 +26,38 @@ class CustomScreenHeader extends StatelessWidget {
           children: [
             Text(
               title,
-              style: appTheme.headingTextStyle.copyWith(fontSize: 24),
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.blue.shade50,
-                borderRadius: BorderRadius.circular(16),
+              style: appTheme.headingTextStyle.copyWith(
+                fontSize: 24.sp,
+                fontWeight: FontWeight.w700,
               ),
-              child: Text(
-                'Total Medicines : $total',
-                style: TextStyle(
-                  color: Colors.blue.shade400,
-                  fontWeight: FontWeight.bold,
+            ),
+            if (total != null)
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade50,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Text(
+                  total!,
+                  style: TextStyle(
+                    color: Colors.blue.shade400,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13.sp,
+                  ),
                 ),
               ),
-            ),
           ],
         ),
         const SizedBox(height: 8),
         Text(
           description,
           style: appTheme.descriptionSmallTextStyle.copyWith(
-            fontSize: 14,
-            fontWeight: FontWeight.w700,
+            fontSize: 13.sp,
+            fontWeight: FontWeight.w400,
           ),
           overflow: TextOverflow.ellipsis,
           maxLines: 2,

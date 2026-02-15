@@ -123,7 +123,7 @@ class GroupDetailsLoadedWidget extends StatelessWidget {
           child: CustomScreenHeader(
             title: state.group.name,
             description: state.group.description,
-            total: state.medications.length,
+            total: 'Total Medicines: ${state.medications.length}',
           ),
         ),
 
