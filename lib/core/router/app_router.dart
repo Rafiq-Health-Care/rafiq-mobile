@@ -39,7 +39,9 @@ import 'package:rafiq/features/lab_test/data/networking/lab_test_service.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_upload_request.dart';
 import 'package:rafiq/features/medications/controllers/medication_cubit/medication_cubit.dart';
 import 'package:rafiq/features/medications/controllers/medication_details_cubit/medication_details_cubit.dart';
+import 'package:rafiq/features/medications/controllers/search_medicine_name_cubit/search_medicine_name_cubit.dart';
 import 'package:rafiq/features/medications/controllers/selected_medication_cubit/selected_medication_cubit.dart';
+import 'package:rafiq/features/medications/data/models/medicines_details_model.dart';
 import 'package:rafiq/features/medications/data/networking/medication_service.dart';
 import 'package:rafiq/features/medications/data/repository/medication_repository.dart';
 import 'package:rafiq/features/medications/presentation/screens/all_medications_screen.dart';
@@ -50,6 +52,8 @@ import 'package:rafiq/features/groups/data/repository/group_repository.dart';
 import 'package:rafiq/features/groups/presentation/screens/all_groups_screen.dart';
 import 'package:rafiq/features/groups/presentation/screens/upsert_group_screen.dart';
 import 'package:rafiq/features/groups/data/models/group_content_model.dart';
+import 'package:rafiq/features/medications/presentation/screens/medicine_upsert_screen.dart';
+import 'package:rafiq/features/medications/presentation/screens/medication_details_screen.dart';
 
 class AppRouter {
   late ApiService apiService;
@@ -288,6 +292,36 @@ class AppRouter {
               BlocProvider(create: (context) => SelectedMedicationCubit()),
             ],
             child: GroupDetailsScreen(groupId: groupId),
+          ),
+        );
+
+      case RouterStrings.upsertMedicine:
+        final medicineDetails = settings.arguments as MedicinesDetailsModel?;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider.value(value: medicationCubit),
+              BlocProvider.value(value: medicationDetailsCubit),
+              BlocProvider(
+                create: (_) {
+                  return SearchMedicineNameCubit(
+                    medicationRepository: medicationRepository,
+                  );
+                },
+              ),
+            ],
+            child: MedicineUpsertScreen(medicineDetails: medicineDetails),
+          ),
+        );
+
+      case RouterStrings.medicationDetails:
+        final medicineId = settings.arguments as String;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => MultiBlocProvider(
+            providers: [BlocProvider.value(value: medicationDetailsCubit)],
+            child: MedicationDetailsScreen(medicineId: medicineId),
           ),
         );
 
