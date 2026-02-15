@@ -9,12 +9,14 @@ class LoginFormSection extends StatefulWidget {
   final TextEditingController emailController;
   final TextEditingController passwordController;
   final AppTheme appTheme;
+  final void Function(String)? onFieldSubmitted;
 
   const LoginFormSection({
     super.key,
     required this.emailController,
     required this.passwordController,
     required this.appTheme,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -39,6 +41,7 @@ class _LoginFormSectionState extends State<LoginFormSection> {
           hint: 'Enter your email address',
           controller: widget.emailController,
           validator: Validation.validateEmail,
+          textInputAction: TextInputAction.next,
         ),
         SizedBox(height: 24),
         CustomLabeledPasswordField(
@@ -46,6 +49,8 @@ class _LoginFormSectionState extends State<LoginFormSection> {
           hint: 'Enter your password',
           controller: widget.passwordController,
           validator: Validation.validatePassword,
+          textInputAction: TextInputAction.done,
+          onFieldSubmitted: widget.onFieldSubmitted,
         ),
         SizedBox(height: 8),
         Row(

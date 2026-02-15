@@ -70,6 +70,7 @@ class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
                 hint: 'Enter password',
                 controller: _passwordController,
                 validator: Validation.validatePassword,
+                textInputAction: TextInputAction.next,
               ),
               CustomLabeledPasswordField(
                 label: 'Confirm Password',
@@ -79,6 +80,7 @@ class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
                   v,
                   _passwordController.text.trim(),
                 ),
+                textInputAction: TextInputAction.next,
               ),
               CustomLabeledTextField(
                 label: 'Birth Date',
@@ -87,6 +89,8 @@ class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
                 keyboardType: TextInputType.datetime,
                 validator: Validation.validateBirthDate,
                 inputFormatters: [BirthDateInputFormatter()],
+                textInputAction: TextInputAction.done,
+                onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
               ),
               GenderSelector(
                 initialGender: _selectedGender,

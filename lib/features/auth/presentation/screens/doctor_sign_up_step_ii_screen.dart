@@ -77,10 +77,8 @@ class _DoctorSignUpStepIIScreenState extends State<DoctorSignUpStepIIScreen> {
           keyboardType: TextInputType.number,
           validator: Validation.validatePhone,
           prefixText: '+20 ',
-          inputFormatters: [
-            FilteringTextInputFormatter.digitsOnly,
-            LengthLimitingTextInputFormatter(10),
-          ],
+          inputFormatters: [LengthLimitingTextInputFormatter(10)],
+          textInputAction: TextInputAction.next,
         ),
         CustomLabeledTextField(
           label: 'Birth Date',
@@ -89,6 +87,7 @@ class _DoctorSignUpStepIIScreenState extends State<DoctorSignUpStepIIScreen> {
           keyboardType: TextInputType.datetime,
           validator: Validation.validateBirthDate,
           inputFormatters: [BirthDateInputFormatter()],
+          textInputAction: TextInputAction.next,
         ),
         GenderSelector(
           initialGender: _selectedGender,
@@ -99,6 +98,8 @@ class _DoctorSignUpStepIIScreenState extends State<DoctorSignUpStepIIScreen> {
           hint: 'Short bio or details',
           controller: _descriptionController,
           validator: (v) => Validation.validateNonEmpty(v, 'Description'),
+          textInputAction: TextInputAction.done,
+          onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
         ),
       ],
     );
@@ -164,7 +165,6 @@ class _DoctorSignUpStepIIScreenState extends State<DoctorSignUpStepIIScreen> {
   @override
   Widget build(BuildContext context) {
     final appTheme = context.appTheme;
-
     return Scaffold(
       body: SafeArea(
         child: BlocBuilder<SpecializationCubit, SpecializationState>(

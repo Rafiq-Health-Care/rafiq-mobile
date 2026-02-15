@@ -66,24 +66,28 @@ class _DoctorSignUpStepIScreenState extends State<DoctorSignUpStepIScreen> {
                   controller: _firstNameController,
                   validator: (v) =>
                       Validation.validateNonEmpty(v, 'First Name'),
+                  textInputAction: TextInputAction.next,
                 ),
                 CustomLabeledTextField(
                   label: 'Last Name',
                   hint: 'Enter your last name',
                   controller: _lastNameController,
                   validator: (v) => Validation.validateNonEmpty(v, 'Last Name'),
+                  textInputAction: TextInputAction.next,
                 ),
                 CustomLabeledTextField(
                   label: 'Email',
                   hint: 'example@email.com',
                   controller: _emailController,
                   validator: Validation.validateEmail,
+                  textInputAction: TextInputAction.next,
                 ),
                 CustomLabeledPasswordField(
                   label: 'Password',
                   hint: 'Enter password',
                   controller: _passwordController,
                   validator: Validation.validatePassword,
+                  textInputAction: TextInputAction.next,
                 ),
                 CustomLabeledPasswordField(
                   label: 'Confirm Password',
@@ -93,6 +97,8 @@ class _DoctorSignUpStepIScreenState extends State<DoctorSignUpStepIScreen> {
                     v,
                     _passwordController.text.trim(),
                   ),
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (_) => _onSubmit(),
                 ),
 
                 CustomElevatedButton(

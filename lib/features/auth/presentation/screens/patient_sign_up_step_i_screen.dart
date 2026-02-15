@@ -68,18 +68,21 @@ class _PatientSignUpStepIScreenState extends State<PatientSignUpStepIScreen> {
                 hint: 'Enter your first name',
                 controller: _firstNameController,
                 validator: (v) => Validation.validateNonEmpty(v, 'First Name'),
+                textInputAction: TextInputAction.next,
               ),
               CustomLabeledTextField(
                 label: 'Last Name',
                 hint: 'Enter your last name',
                 controller: _lastNameController,
                 validator: (v) => Validation.validateNonEmpty(v, 'Last Name'),
+                textInputAction: TextInputAction.next,
               ),
               CustomLabeledTextField(
                 label: 'Email',
                 hint: 'example@email.com',
                 controller: _emailController,
                 validator: Validation.validateEmail,
+                textInputAction: TextInputAction.next,
               ),
               CustomLabeledTextField(
                 label: 'Phone',
@@ -92,6 +95,8 @@ class _PatientSignUpStepIScreenState extends State<PatientSignUpStepIScreen> {
                   FilteringTextInputFormatter.digitsOnly,
                   LengthLimitingTextInputFormatter(10),
                 ],
+                textInputAction: TextInputAction.done,
+                onFieldSubmitted: (_) => _onSubmit(),
               ),
               SizedBox(height: 16),
               CustomElevatedButton(

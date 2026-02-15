@@ -84,6 +84,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   Icons.email,
                   color: appTheme.deepDarkBlueColor,
                 ),
+                textInputAction: TextInputAction.done,
+                onFieldSubmitted: (_) => onSubmit(),
               ),
               const SizedBox(height: 32),
               BlocConsumer<PasswordManagementCubit, PasswordManagementState>(

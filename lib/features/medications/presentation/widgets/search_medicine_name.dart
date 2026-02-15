@@ -46,6 +46,7 @@ class _SearchMedicineNameState extends State<SearchMedicineName> {
       onSelected: (drug) {
         widget.searchController.text = drug.name;
         SearchMedicineNameCubit.get(context).drugId = drug.drugId;
+        FocusScope.of(context).nextFocus();
       },
       fieldViewBuilder: (_, autoCompleteController, focusNode, _) {
         return CustomLabeledTextField(
@@ -62,9 +63,6 @@ class _SearchMedicineNameState extends State<SearchMedicineName> {
             return null;
           },
           textInputAction: TextInputAction.next,
-          onFieldSubmitted: (_) {
-            FocusScope.of(context).nextFocus();
-          },
         );
       },
       optionsViewBuilder: (_, onSelected, options) {

@@ -61,6 +61,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
           suffixIcon: widget.suffixIcon,
         ),
         onTapOutside: (_) => FocusScope.of(context).unfocus(),
+        onSubmitted: (_) => FocusScope.of(context).unfocus(),
       ),
     );
   }

@@ -72,6 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   emailController: _emailController,
                   passwordController: _passwordController,
                   appTheme: appTheme,
+                  onFieldSubmitted: (_) => _onSubmit(),
                 ),
                 SizedBox(height: 32),
 

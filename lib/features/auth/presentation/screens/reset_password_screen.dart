@@ -83,6 +83,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 hint: 'Enter your old password',
                 controller: _oldPasswordController,
                 validator: Validation.validatePassword,
+                textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 16),
               CustomLabeledPasswordField(
@@ -90,6 +91,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 hint: 'Enter your new password',
                 controller: _newPasswordController,
                 validator: Validation.validatePassword,
+                textInputAction: TextInputAction.next,
               ),
               const SizedBox(height: 16),
               CustomLabeledPasswordField(
@@ -102,6 +104,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     _newPasswordController.text,
                   );
                 },
+                textInputAction: TextInputAction.done,
+                onFieldSubmitted: (_) => onSubmit(),
               ),
               const SizedBox(height: 32),
               BlocConsumer<PasswordManagementCubit, PasswordManagementState>(
