@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 
 class CustomLabeledTextField extends StatelessWidget {
   final String label;
   final String hint;
+  final bool isOptional;
   final TextEditingController controller;
   final String? Function(String?)? validator;
   final TextInputType keyboardType;
@@ -12,6 +14,11 @@ class CustomLabeledTextField extends StatelessWidget {
   final String? prefixText;
   final int numberOfLines;
   final Widget? prefixIcon;
+  final Widget? labelIcon;
+  final void Function(String)? onChanged;
+  final FocusNode? focusNode;
+  final TextInputAction? textInputAction;
+  final void Function(String)? onFieldSubmitted;
 
   const CustomLabeledTextField({
     super.key,
@@ -20,10 +27,16 @@ class CustomLabeledTextField extends StatelessWidget {
     this.validator,
     this.keyboardType = TextInputType.text,
     required this.label,
+    this.isOptional = false,
     this.inputFormatters,
     this.prefixText,
     this.numberOfLines = 1,
     this.prefixIcon,
+    this.labelIcon,
+    this.onChanged,
+    this.focusNode,
+    this.textInputAction,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -33,10 +46,28 @@ class CustomLabeledTextField extends StatelessWidget {
       spacing: 10,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label, style: appTheme.textFieldLabelTextStyle),
+        Row(
+          spacing: 5,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            if (labelIcon != null) labelIcon!,
+            Text(label, style: appTheme.textFieldLabelTextStyle),
+            if (isOptional)
+              Text(
+                '(Optional)',
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: appTheme.greyColor4,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+          ],
+        ),
         TextFormField(
           controller: controller,
           validator: validator,
+          onChanged: onChanged,
+          focusNode: focusNode,
           decoration: InputDecoration(
             hintText: hint,
             prefixText: prefixText,
@@ -59,6 +90,9 @@ class CustomLabeledTextField extends StatelessWidget {
           inputFormatters: inputFormatters,
           maxLines: numberOfLines,
           minLines: numberOfLines,
+          textInputAction: textInputAction,
+          onFieldSubmitted: onFieldSubmitted,
+          onTapOutside: (_) => FocusScope.of(context).unfocus(),
         ),
       ],
     );
