@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
 import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
@@ -10,7 +10,7 @@ class CheckEmailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return Scaffold(
       appBar: CustomAppBar(),
       body: Column(

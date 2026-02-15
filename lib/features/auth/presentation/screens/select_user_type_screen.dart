@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rafiq/core/router/router_strings.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 import 'package:rafiq/features/auth/presentation/clippers/bottom_curve_clipper.dart';
@@ -11,7 +11,7 @@ class SelectUserTypeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppTheme appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 
 class RadioTile<T> extends StatelessWidget {
   final String title;
@@ -17,17 +17,19 @@ class RadioTile<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return RadioListTile<T>(
       title: Text(
         title,
-        style: theme.bodyTextStyle.copyWith(color: theme.deepDarkBlueColor),
+        style: appTheme.bodyTextStyle.copyWith(
+          color: appTheme.deepDarkBlueColor,
+        ),
       ),
       value: value,
       groupValue: groupValue,
       onChanged: onChanged,
       contentPadding: EdgeInsets.zero,
-      activeColor: theme.accentBlueColor,
+      activeColor: appTheme.accentBlueColor,
       dense: true,
     );
   }

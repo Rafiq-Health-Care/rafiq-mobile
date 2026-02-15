@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/router/router_strings.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
 import 'package:rafiq/features/landing/controller/landing_cubit/landing_cubit.dart';
 
@@ -21,7 +21,7 @@ class _LandingScreenState extends State<LandingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AppTheme appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return BlocListener<LandingCubit, LandingState>(
       listener: (context, state) {
         if (state is LandingSuccess) {

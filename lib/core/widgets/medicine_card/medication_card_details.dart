@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 
 class MedicationCardDetails extends StatelessWidget {
   final String frequency;
@@ -25,8 +26,7 @@ class MedicationCardDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).extension<AppTheme>()!;
-
+    final appTheme = context.appTheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -35,14 +35,14 @@ class MedicationCardDetails extends StatelessWidget {
           children: [
             Text(
               'Frequency',
-              style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+              style: TextStyle(color: Colors.grey.shade500, fontSize: 12.sp),
             ),
             const SizedBox(height: 4),
             Text(
               frequency,
-              style: theme.bodyTextStyle.copyWith(
+              style: appTheme.bodyTextStyle.copyWith(
                 color: Colors.black87,
-                fontSize: 14,
+                fontSize: 14.sp,
               ),
             ),
           ],
@@ -52,14 +52,14 @@ class MedicationCardDetails extends StatelessWidget {
           children: [
             Text(
               'Next Dose',
-              style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+              style: TextStyle(color: Colors.grey.shade500, fontSize: 12.sp),
             ),
             const SizedBox(height: 4),
             Text(
               _formatNextDose(nextReminder),
-              style: theme.bodyTextStyle.copyWith(
+              style: appTheme.bodyTextStyle.copyWith(
                 color: Colors.black87,
-                fontSize: 14,
+                fontSize: 14.sp,
               ),
             ),
           ],

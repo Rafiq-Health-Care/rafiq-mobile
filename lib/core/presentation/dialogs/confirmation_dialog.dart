@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 
 void showConfirmationDialog({
@@ -16,10 +16,10 @@ void showConfirmationDialog({
   showDialog(
     context: context,
     builder: (BuildContext dialogContext) {
-      final theme = Theme.of(context).extension<AppTheme>()!;
+      final appTheme = context.appTheme;
       return AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        backgroundColor: theme.surfaceColor,
+        backgroundColor: appTheme.surfaceColor,
         contentPadding: const EdgeInsets.all(24),
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -39,26 +39,26 @@ void showConfirmationDialog({
             const SizedBox(height: 16),
             Text(
               title,
-              style: theme.headingTextStyle.copyWith(
+              style: appTheme.headingTextStyle.copyWith(
                 fontSize: 22,
-                color: theme.deepDarkBlueColor,
+                color: appTheme.deepDarkBlueColor,
               ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Text(
               content,
-              style: theme.bodyTextStyle.copyWith(
+              style: appTheme.bodyTextStyle.copyWith(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: theme.deepDarkBlueColor,
+                color: appTheme.deepDarkBlueColor,
               ),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 8),
             Text(
               description,
-              style: theme.descriptionSmallTextStyle,
+              style: appTheme.descriptionSmallTextStyle,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
@@ -68,12 +68,12 @@ void showConfirmationDialog({
                   flex: 1,
                   child: CustomElevatedButton(
                     onPressed: () => Navigator.of(dialogContext).pop(),
-                    backgroundColor: theme.softBlueColor,
-                    foregroundColor: theme.deepDarkBlueColor,
+                    backgroundColor: appTheme.softBlueColor,
+                    foregroundColor: appTheme.deepDarkBlueColor,
                     child: Text(
                       cancelLabel,
-                      style: theme.buttonLabelTextStyle.copyWith(
-                        color: theme.deepDarkBlueColor,
+                      style: appTheme.buttonLabelTextStyle.copyWith(
+                        color: appTheme.deepDarkBlueColor,
                       ),
                     ),
                   ),
@@ -86,12 +86,12 @@ void showConfirmationDialog({
                       onConfirm();
                       Navigator.of(dialogContext).pop();
                     },
-                    backgroundColor: theme.deepDarkBlueColor,
-                    foregroundColor: theme.surfaceColor,
+                    backgroundColor: appTheme.deepDarkBlueColor,
+                    foregroundColor: appTheme.surfaceColor,
                     child: Text(
                       confirmLabel,
-                      style: theme.buttonLabelTextStyle.copyWith(
-                        color: theme.surfaceColor,
+                      style: appTheme.buttonLabelTextStyle.copyWith(
+                        color: appTheme.surfaceColor,
                       ),
                     ),
                   ),

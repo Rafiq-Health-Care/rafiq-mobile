@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/services/validation.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_form_cubit/lab_test_form_cubit.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_item_data.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/lab_test_text_field.dart';
@@ -18,7 +18,7 @@ class LabTestFormCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(

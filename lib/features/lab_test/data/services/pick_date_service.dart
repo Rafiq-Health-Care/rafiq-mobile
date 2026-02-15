@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 
 class PickDateService {
   Future<DateTime?> pickDate(BuildContext context, DateTime initialDate) async {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return await showDatePicker(
       context: context,
       initialDate: initialDate,

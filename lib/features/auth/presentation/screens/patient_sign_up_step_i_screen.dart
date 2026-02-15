@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rafiq/core/router/router_strings.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/data/models/patient_sign_up_request.dart';
@@ -50,7 +50,7 @@ class _PatientSignUpStepIScreenState extends State<PatientSignUpStepIScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return Scaffold(
       appBar: CustomAppBar(
         title: Text('New Account', style: appTheme.headingTextStyle),

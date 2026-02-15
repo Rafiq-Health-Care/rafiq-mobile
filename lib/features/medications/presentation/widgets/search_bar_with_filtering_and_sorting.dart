@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/widgets/custom_popup_menu_button.dart';
 import 'package:rafiq/core/widgets/custom_search_bar.dart';
 import 'package:rafiq/features/medications/controllers/medication_cubit/medication_cubit.dart';
@@ -16,7 +16,7 @@ class SearchBarWithFilteringAndSorting extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
 
     return CustomSearchBar(
       searchController: searchController,

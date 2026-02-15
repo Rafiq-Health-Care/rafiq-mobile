@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/services/date_time_service.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 
 class CustomTimePicker extends StatelessWidget {
   final String label;
@@ -14,7 +14,7 @@ class CustomTimePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

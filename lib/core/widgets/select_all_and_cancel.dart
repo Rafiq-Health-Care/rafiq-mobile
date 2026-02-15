@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/features/medications/controllers/selected_medication_cubit/selected_medication_cubit.dart';
 import 'package:rafiq/features/medications/data/models/all_medicines_content_model.dart';
 
@@ -10,8 +10,7 @@ class SelectAllAndCancel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
-
+    final appTheme = context.appTheme;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       decoration: BoxDecoration(

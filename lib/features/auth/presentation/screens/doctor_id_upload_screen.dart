@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:rafiq/core/router/router_strings.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/data/models/doctor_sign_up_request.dart';
 import 'package:rafiq/features/auth/data/service/pick_image_service.dart';
@@ -32,7 +32,7 @@ class _DoctorIdUploadScreenState extends State<DoctorIdUploadScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     final size = MediaQuery.of(context).size;
     final imageHeight = size.height * 0.25;
     final imageWidth = size.width * 0.8;

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/utils/extensions/formate_names.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 import 'package:rafiq/features/groups/controllers/group_cubit/group_cubit.dart';
@@ -58,13 +59,13 @@ class _FilterScreenState extends State<FilterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
 
     return Scaffold(
       appBar: CustomAppBar(
         title: Text(
           'Filters',
-          style: theme.headingTextStyle.copyWith(fontSize: 20),
+          style: appTheme.headingTextStyle.copyWith(fontSize: 20.sp),
         ),
       ),
       body: Column(
@@ -153,12 +154,12 @@ class _FilterScreenState extends State<FilterScreen> {
                   flex: 1,
                   child: CustomElevatedButton(
                     onPressed: _clearAll,
-                    backgroundColor: theme.softBlueColor,
-                    foregroundColor: theme.deepDarkBlueColor,
+                    backgroundColor: appTheme.softBlueColor,
+                    foregroundColor: appTheme.deepDarkBlueColor,
                     child: Text(
                       'Clear All',
-                      style: theme.buttonLabelTextStyle.copyWith(
-                        color: theme.deepDarkBlueColor,
+                      style: appTheme.buttonLabelTextStyle.copyWith(
+                        color: appTheme.deepDarkBlueColor,
                       ),
                     ),
                   ),
@@ -168,11 +169,11 @@ class _FilterScreenState extends State<FilterScreen> {
                   flex: 2,
                   child: CustomElevatedButton(
                     onPressed: _applyFilters,
-                    backgroundColor: theme.deepDarkBlueColor,
+                    backgroundColor: appTheme.deepDarkBlueColor,
                     foregroundColor: Colors.white,
                     child: Text(
                       'Apply Filters',
-                      style: theme.buttonLabelTextStyle.copyWith(
+                      style: appTheme.buttonLabelTextStyle.copyWith(
                         color: Colors.white,
                       ),
                     ),

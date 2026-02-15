@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rafiq/core/router/router_strings.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
 import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/core/widgets/custom_refresh_indicator.dart';
@@ -40,7 +40,7 @@ class _AllLabTestsScreenState extends State<AllLabTestsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AppTheme appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return Scaffold(
       appBar: CustomAppBar(title: const Text('All Lab Tests')),
       floatingActionButton: FloatingActionButton(

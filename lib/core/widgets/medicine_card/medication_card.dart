@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/router/router_strings.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/features/medications/controllers/selected_medication_cubit/selected_medication_cubit.dart';
 import 'package:rafiq/features/medications/data/models/all_medicines_content_model.dart';
 import 'package:rafiq/core/widgets/medicine_card/medication_card_details.dart';
 import 'package:rafiq/core/widgets/medicine_card/medication_card_footer.dart';
 import 'package:rafiq/core/widgets/medicine_card/medication_card_header.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 
 class MedicationCard extends StatelessWidget {
   final AllMedicinesContentModel medication;
@@ -14,8 +14,7 @@ class MedicationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).extension<AppTheme>()!;
-
+    final appTheme = context.appTheme;
     return BlocSelector<SelectedMedicationCubit, Set<String>, bool>(
       selector: (state) {
         return state.contains(medication.id);
@@ -49,7 +48,7 @@ class MedicationCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: isSelected
-                    ? theme.accentBlueColor
+                    ? appTheme.accentBlueColor
                     : Colors.grey.shade300,
                 width: isSelected ? 2 : 1,
               ),

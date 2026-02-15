@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 
 class DateTimeService {
   static final DateTimeService _instance = DateTimeService._();
@@ -14,7 +14,7 @@ class DateTimeService {
       firstDate: DateTime(DateTime.now().year - 100),
       lastDate: DateTime(DateTime.now().year + 100),
       builder: (context, child) {
-        final appTheme = Theme.of(context).extension<AppTheme>()!;
+        final appTheme = context.appTheme;
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: ColorScheme.light(
@@ -42,7 +42,7 @@ class DateTimeService {
       context: context,
       initialTime: time,
       builder: (context, child) {
-        final appTheme = Theme.of(context).extension<AppTheme>()!;
+        final appTheme = context.appTheme;
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: ColorScheme.light(

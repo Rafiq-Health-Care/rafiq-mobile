@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rafiq/core/presentation/dialogs/confirmation_dialog.dart';
 import 'package:rafiq/core/router/router_strings.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
 import 'package:rafiq/core/widgets/custom_icon_button.dart';
 import 'package:rafiq/core/widgets/custom_refresh_indicator.dart';
@@ -99,7 +99,7 @@ class AllMedicationsLoaded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     final isNoMedicationsAdded =
         state.medications.isEmpty && searchController.text.isEmpty;
     final isNoSearchResults =

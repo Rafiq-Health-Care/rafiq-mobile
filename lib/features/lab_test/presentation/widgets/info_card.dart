@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rafiq/core/services/validation.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/date_field.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/lab_test_text_field.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/label_with_icon.dart';
@@ -17,7 +17,7 @@ class InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return Container(
       decoration: BoxDecoration(
         color: appTheme.surfaceColor,

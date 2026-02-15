@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/functions/snack_bar_message.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/controllers/specialization_cubit/specialization_cubit.dart';
 import 'package:rafiq/features/auth/data/enum/gender_enum.dart';
@@ -162,7 +163,7 @@ class _DoctorSignUpStepIIScreenState extends State<DoctorSignUpStepIIScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
 
     return Scaffold(
       body: SafeArea(

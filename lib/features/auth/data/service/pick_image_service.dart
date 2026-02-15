@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 
 class PickImageService {
   PickImageService._internal();
@@ -98,7 +98,7 @@ class _PickerOptionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext ctx) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return ListTile(
       leading: Icon(icon, color: appTheme.deepDarkBlueColor),
       title: Text(label, style: Theme.of(context).textTheme.titleMedium),

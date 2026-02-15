@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rafiq/core/presentation/dialogs/confirmation_dialog.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
 import 'package:rafiq/core/widgets/custom_icon_button.dart';
 import 'package:rafiq/core/widgets/custom_screen_header.dart';
@@ -112,7 +113,7 @@ class GroupDetailsLoadedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
 
     return Column(
       spacing: 16,
@@ -200,7 +201,7 @@ class GroupDetailsLoadedWidget extends StatelessWidget {
                   onPress: () {},
                   label: 'Add Medicine to Group',
                   icon: Icons.add,
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   labelColor: Colors.white,
                   borderRadius: 16,
                   backgroundColor: appTheme.cyanColor400,

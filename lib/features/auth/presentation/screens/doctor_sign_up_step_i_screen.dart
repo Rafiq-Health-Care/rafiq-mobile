@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rafiq/core/router/router_strings.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/data/models/doctor_sign_up_request.dart';
 import 'package:rafiq/core/services/validation.dart';
@@ -49,7 +49,7 @@ class _DoctorSignUpStepIScreenState extends State<DoctorSignUpStepIScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(

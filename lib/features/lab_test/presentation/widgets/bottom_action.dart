@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 import 'package:rafiq/core/widgets/custom_outlined_button.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit.dart';
@@ -11,7 +11,7 @@ class BottomActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppTheme appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -52,10 +52,12 @@ class BottomActions extends StatelessWidget {
                     },
                     backgroundColor: appTheme.deepDarkBlueColor,
                     foregroundColor: appTheme.surfaceColor,
-                    child: isLoading? const CircularProgressIndicator() : Text(
-                      'Save & Continue',
-                      style: appTheme.buttonLabelTextStyle,
-                    ),
+                    child: isLoading
+                        ? const CircularProgressIndicator()
+                        : Text(
+                            'Save & Continue',
+                            style: appTheme.buttonLabelTextStyle,
+                          ),
                   );
                 },
               ),

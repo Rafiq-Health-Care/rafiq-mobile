@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/features/groups/data/models/group_content_model.dart';
 
 class GroupDates extends StatelessWidget {
@@ -10,7 +10,7 @@ class GroupDates extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     final dateFormat = DateFormat('yyyy-MM-dd');
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

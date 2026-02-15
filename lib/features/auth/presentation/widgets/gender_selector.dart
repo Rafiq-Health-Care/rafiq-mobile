@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/utils/extensions/formate_names.dart';
 import 'package:rafiq/features/auth/data/enum/gender_enum.dart';
 
@@ -28,7 +28,7 @@ class _GenderSelectorState extends State<GenderSelector> {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return Column(
       spacing: 10,
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/widgets/custom_popup_menu_button.dart';
 import 'package:rafiq/core/widgets/selected_action_button.dart';
 import 'package:rafiq/features/groups/controllers/group_cubit/group_cubit.dart';
@@ -12,7 +12,7 @@ class MoveToGroupButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
 
     return BlocBuilder<GroupCubit, GroupState>(
       builder: (context, state) {

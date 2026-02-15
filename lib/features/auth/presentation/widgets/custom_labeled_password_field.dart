@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 
 class CustomLabeledPasswordField extends StatefulWidget {
   final String label;
@@ -26,7 +26,7 @@ class _CustomLabeledPasswordFieldState
 
   @override
   Widget build(BuildContext context) {
-    final AppTheme appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return Column(
       spacing: 10,
       crossAxisAlignment: CrossAxisAlignment.start,

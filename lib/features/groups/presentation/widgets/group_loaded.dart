@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rafiq/core/router/router_strings.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
 import 'package:rafiq/core/widgets/custom_icon_button.dart';
 import 'package:rafiq/core/widgets/custom_refresh_indicator.dart';
@@ -23,7 +24,7 @@ class GroupLoadedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return CustomRefreshIndicator(
       onRefresh: () async {
         GroupCubit.of(context).refresh();
@@ -86,7 +87,7 @@ class GroupLoadedWidget extends StatelessWidget {
               },
               label: 'Create New Group',
               icon: Icons.add,
-              fontSize: 18,
+              fontSize: 18.sp,
               labelColor: Colors.white,
               borderRadius: 16,
               backgroundColor: appTheme.cyanColor400,

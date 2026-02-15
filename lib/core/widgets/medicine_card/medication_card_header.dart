@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/features/medications/data/models/all_medicines_content_model.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 
 class MedicationCardHeader extends StatelessWidget {
   final AllMedicinesContentModel medication;
@@ -19,7 +19,7 @@ class MedicationCardHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
 
     return Row(
       spacing: 8,
@@ -27,7 +27,7 @@ class MedicationCardHeader extends StatelessWidget {
         Expanded(
           child: Text(
             medication.name,
-            style: theme.headingTextStyle.copyWith(fontSize: 18.sp),
+            style: appTheme.headingTextStyle.copyWith(fontSize: 18.sp),
             overflow: TextOverflow.ellipsis,
           ),
         ),
@@ -58,10 +58,10 @@ class MedicationCardHeader extends StatelessWidget {
           Checkbox(
             value: isSelected,
             onChanged: (value) => onSelectionToggle(),
-            activeColor: theme.accentBlueColor,
+            activeColor: appTheme.accentBlueColor,
           )
         else
-          Icon(Icons.notifications, color: theme.accentBlueColor, size: 20),
+          Icon(Icons.notifications, color: appTheme.accentBlueColor, size: 20),
       ],
     );
   }

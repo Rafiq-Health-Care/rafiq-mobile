@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/router/router_strings.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/features/groups/data/models/group_content_model.dart';
 import 'package:rafiq/features/groups/presentation/widgets/group_card/group_actions.dart';
 import 'package:rafiq/features/groups/presentation/widgets/group_card/group_dates.dart';
@@ -13,7 +13,7 @@ class GroupCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(

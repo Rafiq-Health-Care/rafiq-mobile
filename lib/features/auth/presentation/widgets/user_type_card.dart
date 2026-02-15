@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 
 class UserTypeCard extends StatelessWidget {
   final String label;
@@ -20,7 +20,7 @@ class UserTypeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppTheme appTheme = Theme.of(context).extension<AppTheme>()!;
+    final appTheme = context.appTheme;
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(20),
