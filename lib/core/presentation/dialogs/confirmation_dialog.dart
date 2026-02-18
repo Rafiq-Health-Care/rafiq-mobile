@@ -71,6 +71,9 @@ void showConfirmationDialog({
               cancelText: cancelLabel,
               cancelBackgroundColor: appTheme.softBlueColor,
               cancelForegroundColor: appTheme.deepDarkBlueColor,
+              cancelTextStyle: appTheme.buttonLabelTextStyle.copyWith(
+                color: appTheme.deepDarkBlueColor,
+              ),
             ),
           ],
         ),
