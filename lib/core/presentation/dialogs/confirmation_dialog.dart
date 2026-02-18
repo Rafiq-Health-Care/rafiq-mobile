@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
-import 'package:rafiq/core/widgets/custom_elevated_button.dart';
+import 'package:rafiq/core/widgets/take_action_or_cancel_button.dart';
 
 void showConfirmationDialog({
   required BuildContext context,
@@ -62,41 +62,15 @@ void showConfirmationDialog({
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: CustomElevatedButton(
-                    onPressed: () => Navigator.of(dialogContext).pop(),
-                    backgroundColor: appTheme.softBlueColor,
-                    foregroundColor: appTheme.deepDarkBlueColor,
-                    child: Text(
-                      cancelLabel,
-                      style: appTheme.buttonLabelTextStyle.copyWith(
-                        color: appTheme.deepDarkBlueColor,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  flex: 2,
-                  child: CustomElevatedButton(
-                    onPressed: () {
-                      onConfirm();
-                      Navigator.of(dialogContext).pop();
-                    },
-                    backgroundColor: appTheme.deepDarkBlueColor,
-                    foregroundColor: appTheme.surfaceColor,
-                    child: Text(
-                      confirmLabel,
-                      style: appTheme.buttonLabelTextStyle.copyWith(
-                        color: appTheme.surfaceColor,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+            TakeActionOrCancelButton(
+              action: () {
+                onConfirm();
+                Navigator.of(dialogContext).pop();
+              },
+              actionText: confirmLabel,
+              cancelText: cancelLabel,
+              cancelBackgroundColor: appTheme.softBlueColor,
+              cancelForegroundColor: appTheme.deepDarkBlueColor,
             ),
           ],
         ),

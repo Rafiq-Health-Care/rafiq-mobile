@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/utils/extensions/formate_names.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/widgets/custom_app_bar.dart';
-import 'package:rafiq/core/widgets/custom_elevated_button.dart';
+import 'package:rafiq/core/widgets/take_action_or_cancel_button.dart';
 import 'package:rafiq/features/groups/controllers/group_cubit/group_cubit.dart';
 import 'package:rafiq/features/medications/controllers/medication_cubit/medication_cubit.dart';
 import 'package:rafiq/features/medications/data/enums/medicine_status_enum.dart';
@@ -148,38 +148,16 @@ class _FilterScreenState extends State<FilterScreen> {
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: CustomElevatedButton(
-                    onPressed: _clearAll,
-                    backgroundColor: appTheme.softBlueColor,
-                    foregroundColor: appTheme.deepDarkBlueColor,
-                    child: Text(
-                      'Clear All',
-                      style: appTheme.buttonLabelTextStyle.copyWith(
-                        color: appTheme.deepDarkBlueColor,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  flex: 2,
-                  child: CustomElevatedButton(
-                    onPressed: _applyFilters,
-                    backgroundColor: appTheme.deepDarkBlueColor,
-                    foregroundColor: Colors.white,
-                    child: Text(
-                      'Apply Filters',
-                      style: appTheme.buttonLabelTextStyle.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+            child: TakeActionOrCancelButton(
+              action: _applyFilters,
+              actionText: 'Apply Filters',
+              cancelText: 'Clear All',
+              cancelAction: _clearAll,
+              cancelBackgroundColor: appTheme.softBlueColor,
+              cancelForegroundColor: appTheme.deepDarkBlueColor,
+              cancelTextStyle: appTheme.buttonLabelTextStyle.copyWith(
+                color: appTheme.deepDarkBlueColor,
+              ),
             ),
           ),
         ],
