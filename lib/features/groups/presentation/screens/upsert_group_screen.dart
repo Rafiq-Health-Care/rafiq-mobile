@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/services/validation.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/widgets/custom_app_bar.dart';
@@ -119,7 +120,7 @@ class _UpsertGroupScreenState extends State<UpsertGroupScreen> {
                 hint: 'e.g Medications to be taken after breakfast',
                 isOptional: true,
                 controller: _descriptionController,
-                numberOfLines: 4,
+                height: 128.h,
                 keyboardType: TextInputType.multiline,
                 textInputAction: TextInputAction.newline,
               ),
