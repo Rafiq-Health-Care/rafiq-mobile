@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/functions/snack_bar_message.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
+import 'package:rafiq/core/utils/extensions/formate_names.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
+import 'package:rafiq/core/widgets/custom_dropdown_button.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/controllers/specialization_cubit/specialization_cubit.dart';
 import 'package:rafiq/features/auth/data/enum/gender_enum.dart';
@@ -13,7 +15,6 @@ import 'package:rafiq/features/auth/data/models/specialization_model.dart';
 import 'package:rafiq/core/services/validation.dart';
 import 'package:rafiq/core/widgets/custom_labeled_text_field.dart';
 import 'package:rafiq/features/auth/presentation/formatters/birth_date_input_formatter.dart';
-import 'package:rafiq/features/auth/presentation/widgets/gender_selector.dart';
 import 'package:rafiq/features/auth/presentation/widgets/specialization_selector.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 
@@ -31,8 +32,7 @@ class _DoctorSignUpStepIIScreenState extends State<DoctorSignUpStepIIScreen> {
   final _phoneController = TextEditingController();
   final _birthDateController = TextEditingController();
   final _descriptionController = TextEditingController();
-
-  Gender _selectedGender = Gender.male;
+  final _genderNotifier = ValueNotifier<Gender>(Gender.male);
   int _selectedSpecializationIndex = 0;
 
   @override
@@ -58,7 +58,7 @@ class _DoctorSignUpStepIIScreenState extends State<DoctorSignUpStepIIScreen> {
     doctorData
       ..phone = _phoneController.text.trim()
       ..birthDate = _birthDateController.text
-      ..gender = _selectedGender.name
+      ..gender = _genderNotifier.value.name
       ..specialization = specialization.id
       ..description = _descriptionController.text.trim();
 
@@ -89,9 +89,18 @@ class _DoctorSignUpStepIIScreenState extends State<DoctorSignUpStepIIScreen> {
           inputFormatters: [BirthDateInputFormatter()],
           textInputAction: TextInputAction.next,
         ),
-        GenderSelector(
-          initialGender: _selectedGender,
-          onChanged: (gender) => _selectedGender = gender,
+        CustomDropdownButton<Gender>(
+          label: 'Gender',
+          items: Gender.values.map((gender) {
+            return DropdownMenuItem(
+              value: gender,
+              child: Text(
+                gender.name.format(),
+                style: appTheme.textFieldTextStyle,
+              ),
+            );
+          }).toList(),
+          valueNotifier: _genderNotifier,
         ),
         CustomLabeledTextField(
           label: 'Description',

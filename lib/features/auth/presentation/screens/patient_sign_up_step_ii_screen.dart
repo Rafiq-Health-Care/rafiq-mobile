@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/functions/snack_bar_message.dart';
 import 'package:rafiq/core/router/router_strings.dart';
+import 'package:rafiq/core/utils/extensions/formate_names.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
@@ -12,9 +13,9 @@ import 'package:rafiq/core/widgets/custom_labeled_text_field.dart';
 import 'package:rafiq/features/auth/presentation/formatters/birth_date_input_formatter.dart';
 import 'package:rafiq/features/auth/presentation/sections/media_auth_section.dart';
 import 'package:rafiq/features/auth/presentation/widgets/custom_labeled_password_field.dart';
-import 'package:rafiq/features/auth/presentation/widgets/gender_selector.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 import 'package:rafiq/features/auth/presentation/widgets/horizontal_text_divider.dart';
+import 'package:rafiq/core/widgets/custom_dropdown_button.dart';
 
 class PatientSignUpStepIIScreen extends StatefulWidget {
   const PatientSignUpStepIIScreen({super.key});
@@ -29,13 +30,14 @@ class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
   final _birthDateController = TextEditingController();
-  Gender _selectedGender = Gender.male;
+  final _genderNotifier = ValueNotifier<Gender>(Gender.male);
 
   @override
   void dispose() {
     _passwordController.dispose();
     _confirmPasswordController.dispose();
     _birthDateController.dispose();
+    _genderNotifier.dispose();
     super.dispose();
   }
 
@@ -44,7 +46,7 @@ class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
       (AuthCubit.get(context).userSignUpBody! as PatientSignUpRequest)
         ..password = _passwordController.text.trim()
         ..birthDate = _birthDateController.text
-        ..gender = _selectedGender.name;
+        ..gender = _genderNotifier.value.name;
 
       AuthCubit.get(context).patientSignUp();
     }
@@ -94,11 +96,18 @@ class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
                 textInputAction: TextInputAction.done,
                 onFieldSubmitted: (_) => FocusScope.of(context).unfocus(),
               ),
-              GenderSelector(
-                initialGender: _selectedGender,
-                onChanged: (gender) {
-                  _selectedGender = gender;
-                },
+              CustomDropdownButton<Gender>(
+                label: 'Gender',
+                items: Gender.values.map((gender) {
+                  return DropdownMenuItem(
+                    value: gender,
+                    child: Text(
+                      gender.name.format(),
+                      style: appTheme.textFieldTextStyle,
+                    ),
+                  );
+                }).toList(),
+                valueNotifier: _genderNotifier,
               ),
               SizedBox(height: 16),
               BlocConsumer<AuthCubit, AuthState>(
