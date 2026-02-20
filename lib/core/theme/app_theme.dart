@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppTheme extends ThemeExtension<AppTheme> {
   final Color deepDarkBlueColor;
   final Color accentRedColor;
+  final Color accentGreenColor;
   final Color surfaceColor;
   final Color accentBlueColor;
   final Color greyColor4;
@@ -29,6 +30,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
   const AppTheme({
     required this.deepDarkBlueColor,
     required this.accentRedColor,
+    required this.accentGreenColor,
     required this.accentBlueColor,
     required this.surfaceColor,
     required this.greyColor4,
@@ -56,6 +58,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
   ThemeExtension<AppTheme> copyWith({
     Color? deepDarkBlueColor,
     Color? accentRedColor,
+    Color? accentGreenColor,
     Color? surfaceColor,
     Color? accentBlueColor,
     Color? greyColor4,
@@ -81,6 +84,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
     return AppTheme(
       deepDarkBlueColor: deepDarkBlueColor ?? this.deepDarkBlueColor,
       accentRedColor: accentRedColor ?? this.accentRedColor,
+      accentGreenColor: accentGreenColor ?? this.accentGreenColor,
       accentBlueColor: accentBlueColor ?? this.accentBlueColor,
       surfaceColor: surfaceColor ?? this.surfaceColor,
       greyColor4: greyColor4 ?? this.greyColor4,
@@ -122,6 +126,11 @@ class AppTheme extends ThemeExtension<AppTheme> {
         t,
       )!,
       accentRedColor: Color.lerp(accentRedColor, other.accentRedColor, t)!,
+      accentGreenColor: Color.lerp(
+        accentGreenColor,
+        other.accentGreenColor,
+        t,
+      )!,
       surfaceColor: Color.lerp(surfaceColor, other.surfaceColor, t)!,
       accentBlueColor: Color.lerp(accentBlueColor, other.accentBlueColor, t)!,
       greyColor4: Color.lerp(greyColor4, other.greyColor4, t)!,

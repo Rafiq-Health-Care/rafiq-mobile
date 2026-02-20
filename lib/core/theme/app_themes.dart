@@ -6,6 +6,7 @@ class AppThemes {
   final AppTheme lightTheme = AppTheme(
     deepDarkBlueColor: Color(0XFF11325B),
     accentRedColor: Color(0xFFEF233C),
+    accentGreenColor: Color(0xff34C759),
     surfaceColor: Colors.white,
     accentBlueColor: Color(0xFF2977F6),
     greyColor4: Color(0XFFA7A7A7),
