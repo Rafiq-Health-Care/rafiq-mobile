@@ -91,6 +91,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 label: 'New Password',
                 hint: 'Enter your new password',
                 controller: _newPasswordController,
+                showValidationRules: true,
                 validator: Validation.validatePassword,
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) => FocusScope.of(context).nextFocus(),

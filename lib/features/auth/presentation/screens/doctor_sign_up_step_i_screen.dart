@@ -85,6 +85,7 @@ class _DoctorSignUpStepIScreenState extends State<DoctorSignUpStepIScreen> {
                 CustomLabeledPasswordField(
                   label: 'Password',
                   hint: 'Enter password',
+                  showValidationRules: true,
                   controller: _passwordController,
                   validator: Validation.validatePassword,
                   textInputAction: TextInputAction.next,

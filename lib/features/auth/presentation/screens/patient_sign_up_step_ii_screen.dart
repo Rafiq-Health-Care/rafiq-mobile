@@ -70,6 +70,7 @@ class _PatientSignUpStepIIScreenState extends State<PatientSignUpStepIIScreen> {
               CustomLabeledPasswordField(
                 label: 'Password',
                 hint: 'Enter password',
+                showValidationRules: true,
                 controller: _passwordController,
                 validator: Validation.validatePassword,
                 textInputAction: TextInputAction.next,
