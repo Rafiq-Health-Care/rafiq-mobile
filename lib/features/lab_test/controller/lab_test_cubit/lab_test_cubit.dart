@@ -45,78 +45,69 @@ class LabTestCubit extends Cubit<LabTestState> {
       size: 20,
     );
 
-    try {
-      final value = await labTestRepository.getAllLabTests(request);
-
-      if (value.content.isEmpty && _page == 0) {
-        emit(LabTestEmpty());
-      } else {
-        _labTestsContent.addAll(value.content);
-        _lastPage = value.lastPage;
-        if (!_lastPage) {
-          _page++;
-        }
+    final response = await labTestRepository.getAllLabTests(request);
+    response.fold(
+      (failure) {
         _isLoadingMore = false;
-        emit(LabTestSuccess());
-      }
-    } catch (error) {
-      _isLoadingMore = false;
-      emit(LabTestError(error.toString()));
-    }
+        emit(LabTestError(failure.message));
+      },
+      (data) {
+        if (data.content.isEmpty && _page == 0) {
+          emit(LabTestEmpty());
+        } else {
+          _labTestsContent.addAll(data.content);
+          _lastPage = data.lastPage;
+          if (!_lastPage) {
+            _page++;
+          }
+          _isLoadingMore = false;
+          emit(LabTestSuccess());
+        }
+      },
+    );
   }
 
   Future<void> refreshLabTests() async {
     await getAllLabTests(isRefresh: true);
   }
 
-  void loadMoreLabTests() {
-    getAllLabTests();
+  Future<void> loadMoreLabTests() async {
+    await getAllLabTests();
   }
 
-  void deleteAllLabTests() {
+  Future<void> deleteAllLabTests() async {
     emit(LabTestLoading());
-    labTestRepository
-        .deleteAllTestLabs()
-        .then((_) {
-          _labTestsContent.clear();
-          _lastPage = false;
-          _page = 0;
-          emit(LabTestEmpty());
-        })
-        .catchError((error) {
-          emit(LabTestError(error.toString()));
-        });
+    final response = await labTestRepository.deleteAllTestLabs();
+    response.fold((failure) => emit(LabTestError(failure.message)), (_) {
+      _labTestsContent.clear();
+      _lastPage = false;
+      _page = 0;
+      emit(LabTestEmpty());
+    });
   }
 
-  void deleteLabTest(String testId) {
+  Future<void> deleteLabTest(String testId) async {
     emit(LabTestLoading());
-    labTestRepository
-        .deleteTestLab(testId)
-        .then((_) {
-          _labTestsContent.removeWhere((element) => element.testId == testId);
-          if (_labTestsContent.isEmpty) {
-            _lastPage = false;
-            _page = 0;
-            emit(LabTestEmpty());
-          } else {
-            emit(LabTestSuccess());
-          }
-        })
-        .catchError((error) {
-          emit(LabTestError(error.toString()));
-        });
+    final response = await labTestRepository.deleteTestLab(testId);
+    response.fold((failure) => emit(LabTestError(failure.message)), (_) {
+      _labTestsContent.removeWhere((element) => element.testId == testId);
+      if (_labTestsContent.isEmpty) {
+        _lastPage = false;
+        _page = 0;
+        emit(LabTestEmpty());
+      } else {
+        emit(LabTestSuccess());
+      }
+    });
   }
 
-  void saveLabTestResults(LabTestResultsModel results) {
+  Future<void> saveLabTestResults(LabTestResultsModel results) async {
     emit(LabTestLoading());
-    labTestRepository
-        .saveLabTestResults(results)
-        .then((_) {
-          emit(LabTestSuccess());
-        })
-        .catchError((error) {
-          emit(LabTestError(error.toString()));
-        });
+    final response = await labTestRepository.saveLabTestResults(results);
+    response.fold(
+      (failure) => emit(LabTestError(failure.message)),
+      (data) => emit(LabTestSuccess()),
+    );
   }
 
   static LabTestCubit get(context) => BlocProvider.of(context);

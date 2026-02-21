@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:rafiq/core/errors/failure.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_file_response.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_get_all_request.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_get_all_response.dart';
@@ -11,50 +13,74 @@ class LabTestRepository {
   final LabTestService labTestService;
   LabTestRepository({required this.labTestService});
 
-  Future<LabTestGetAllResponse> getAllLabTests(
+  Future<Either<Failure, LabTestGetAllResponse>> getAllLabTests(
     LabTestGetAllRequest request,
   ) async {
     final rowData = await labTestService.getAllLabTests(request);
-    return LabTestGetAllResponse.fromJson(rowData);
+    return rowData.fold(
+      (failure) => Left(failure),
+      (data) => Right(LabTestGetAllResponse.fromJson(data)),
+    );
   }
 
-  Future<void> deleteAllTestLabs() async {
-    await labTestService.deleteAllTestLabs();
+  Future<Either<Failure, void>> deleteAllTestLabs() async {
+    final rowData = await labTestService.deleteAllTestLabs();
+    return rowData.fold((failure) => Left(failure), (_) => Right(null));
   }
 
-  Future<LabTestDetailsModel> getTestLabDetails(String testId) async {
+  Future<Either<Failure, LabTestDetailsModel>> getTestLabDetails(
+    String testId,
+  ) async {
     final rowData = await labTestService.getLabTestDetails(testId);
-    return LabTestDetailsModel.fromJson(rowData);
+    return rowData.fold(
+      (failure) => Left(failure),
+      (data) => Right(LabTestDetailsModel.fromJson(data)),
+    );
   }
 
-  Future<void> deleteTestLab(String testId) async {
-    await labTestService.deleteTestLabDetails(testId);
+  Future<Either<Failure, void>> deleteTestLab(String testId) async {
+    final rowData = await labTestService.deleteTestLabDetails(testId);
+    return rowData.fold((failure) => Left(failure), (_) => Right(null));
   }
 
-  Future<LabTestUploadResponse> uploadTestLab(
+  Future<Either<Failure, LabTestUploadResponse>> uploadTestLab(
     LabTestUploadRequest request,
   ) async {
     final rowData = await labTestService.uploadTestLab(request);
-    return LabTestUploadResponse.fromJson(rowData);
+    return rowData.fold(
+      (failure) => Left(failure),
+      (data) => Right(LabTestUploadResponse.fromJson(data)),
+    );
   }
 
-  Future<LabTestDetailsModel> saveLabTestResults(
+  Future<Either<Failure, LabTestDetailsModel>> saveLabTestResults(
     LabTestResultsModel request,
   ) async {
-    final rawData = await labTestService.saveLabTestResults(request);
-    return LabTestDetailsModel.fromJson(rawData);
+    final rowData = await labTestService.saveLabTestResults(request);
+    return rowData.fold(
+      (failure) => Left(failure),
+      (data) => Right(LabTestDetailsModel.fromJson(data)),
+    );
   }
 
-  Future<LabTestDetailsModel> updateLabTestResults(
+  Future<Either<Failure, LabTestDetailsModel>> updateLabTestResults(
     LabTestResultsModel request,
     String testId,
   ) async {
-    final rawData = await labTestService.updateLabTestResults(request, testId);
-    return LabTestDetailsModel.fromJson(rawData);
+    final rowData = await labTestService.updateLabTestResults(request, testId);
+    return rowData.fold(
+      (failure) => Left(failure),
+      (data) => Right(LabTestDetailsModel.fromJson(data)),
+    );
   }
 
-  Future<LabTestFileResponse> getLAbTestFile(String fileId) async {
-    final rawData = await labTestService.getLabTestFile(fileId);
-    return LabTestFileResponse.fromJson(rawData);
+  Future<Either<Failure, LabTestFileResponse>> getLAbTestFile(
+    String fileId,
+  ) async {
+    final rowData = await labTestService.getLabTestFile(fileId);
+    return rowData.fold(
+      (failure) => Left(failure),
+      (data) => Right(LabTestFileResponse.fromJson(data)),
+    );
   }
 }

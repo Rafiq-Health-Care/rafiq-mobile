@@ -1,4 +1,6 @@
+import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:rafiq/core/errors/failure.dart';
 import 'package:rafiq/core/networking/api_constants.dart';
 import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/features/medications/data/models/all_medicines_request.dart';
@@ -10,60 +12,65 @@ class MedicationService {
   final ApiService _api;
   MedicationService({required ApiService api}) : _api = api;
 
-  Future<List<dynamic>> getDrugs(String searchQuery) async {
+  Future<Either<Failure, List<dynamic>>> getDrugs(String searchQuery) async {
     try {
       final Response response = await _api.get(
         ApiConstants.drugs,
         queryParameters: {'drug': searchQuery},
       );
-      return response.data['content'];
+      return Right(response.data['content']);
     } catch (e) {
-      rethrow;
+      return Left(e as Failure);
     }
   }
 
-  Future<dynamic> getMedicinesDetails(String id) async {
+  Future<Either<Failure, dynamic>> getMedicinesDetails(String id) async {
     try {
       final Response response = await _api.get('${ApiConstants.medicines}/$id');
-      return response.data;
+      return Right(response.data);
     } catch (e) {
-      rethrow;
+      return Left(e as Failure);
     }
   }
 
-  Future<void> deleteMedicines(String id) async {
+  Future<Either<Failure, void>> deleteMedicines(String id) async {
     try {
       await _api.delete('${ApiConstants.medicines}/$id');
+      return Right(null);
     } catch (e) {
-      rethrow;
+      return Left(e as Failure);
     }
   }
 
-  Future<dynamic> addMedicines(MedicinesDetailsRequest request) async {
+  Future<Either<Failure, dynamic>> addMedicines(
+    MedicinesDetailsRequest request,
+  ) async {
     try {
       final Response response = await _api.post(
         ApiConstants.addMedicines,
         data: request.toJson(),
       );
-      return response.data['data'];
+      return Right(response.data['data']);
     } catch (e) {
-      rethrow;
+      return Left(e as Failure);
     }
   }
 
-  Future<dynamic> getAllMedicines(AllMedicinesRequest request) async {
+  Future<Either<Failure, dynamic>> getAllMedicines(
+    AllMedicinesRequest request,
+  ) async {
     try {
       final Response response = await _api.get(
         ApiConstants.medicines,
         queryParameters: request.toJson(),
       );
-      return response.data;
+      return Right(response.data);
     } catch (e) {
-      rethrow;
+      return Left(e as Failure);
     }
   }
 
-  Future<dynamic> updateMedicines(
+  Future<Either<Failure, dynamic>> updateMedicines(
     String id,
     UpdateMedicineRequest request,
   ) async {
@@ -72,17 +79,20 @@ class MedicationService {
         '${ApiConstants.medicines}/$id',
         data: request.toJson(),
       );
-      return response.data['data'];
+      return Right(response.data['data']);
     } catch (e) {
-      rethrow;
+      return Left(e as Failure);
     }
   }
 
-  Future<void> bulkMedicines(MedicinesBulkRequest request) async {
+  Future<Either<Failure, void>> bulkMedicines(
+    MedicinesBulkRequest request,
+  ) async {
     try {
       await _api.post(ApiConstants.bulkMedicines, data: request.toJson());
+      return Right(null);
     } catch (e) {
-      rethrow;
+      return Left(e as Failure);
     }
   }
 }

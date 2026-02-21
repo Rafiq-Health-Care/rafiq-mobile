@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:rafiq/core/errors/failure.dart';
 import 'package:rafiq/core/networking/api_constants.dart';
 import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/features/groups/data/models/group_upsert_request.dart';
@@ -7,36 +9,37 @@ class GroupService {
   final ApiService _api;
   GroupService({required ApiService api}) : _api = api;
 
-  Future<dynamic> addGroup(GroupUpsertRequest request) async {
+  Future<Either<Failure, dynamic>> addGroup(GroupUpsertRequest request) async {
     try {
       final response = await _api.post(
         ApiConstants.addGroup,
         data: request.toJson(),
       );
-      return response.data['data'];
+      return Right(response.data['data']);
     } catch (e) {
-      rethrow;
+      return Left(e as Failure);
     }
   }
 
-  Future<dynamic> getGroupDetails(String groupId) async {
+  Future<Either<Failure, dynamic>> getGroupDetails(String groupId) async {
     try {
       final response = await _api.get('${ApiConstants.group}/$groupId');
-      return response.data['data'];
+      return Right(response.data['data']);
     } catch (e) {
-      rethrow;
+      return Left(e as Failure);
     }
   }
 
-  Future<void> deleteGroup(String groupId) async {
+  Future<Either<Failure, void>> deleteGroup(String groupId) async {
     try {
       await _api.delete('${ApiConstants.group}/$groupId');
+      return Right(null);
     } catch (e) {
-      rethrow;
+      return Left(e as Failure);
     }
   }
 
-  Future<dynamic> updateGroup(
+  Future<Either<Failure, dynamic>> updateGroup(
     String groupId,
     GroupUpsertRequest request,
   ) async {
@@ -45,21 +48,21 @@ class GroupService {
         '${ApiConstants.group}/$groupId',
         data: request.toJson(),
       );
-      return response.data['data'];
+      return Right(response.data['data']);
     } catch (e) {
-      rethrow;
+      return Left(e as Failure);
     }
   }
 
-  Future<dynamic> getAllGroups(AllGroupsRequest request) async {
+  Future<Either<Failure, dynamic>> getAllGroups(AllGroupsRequest request) async {
     try {
       final response = await _api.get(
         ApiConstants.group,
         queryParameters: request.toJson(),
       );
-      return response.data;
+      return Right(response.data);
     } catch (e) {
-      rethrow;
+      return Left(e as Failure);
     }
   }
 }

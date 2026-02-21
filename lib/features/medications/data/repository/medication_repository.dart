@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:rafiq/core/errors/failure.dart';
 import 'package:rafiq/features/medications/data/models/all_medicines_content_model.dart';
 import 'package:rafiq/features/medications/data/models/all_medicines_request.dart';
 import 'package:rafiq/features/medications/data/models/all_medicines_response.dart';
@@ -12,43 +14,64 @@ class MedicationRepository {
   final MedicationService medicationService;
   MedicationRepository(this.medicationService);
 
-  Future<List<DrugModel>> getDrugs(String searchQuery) async {
+  Future<Either<Failure, List<DrugModel>>> getDrugs(String searchQuery) async {
     final rawData = await medicationService.getDrugs(searchQuery);
-    return rawData.map((drug) => DrugModel.fromJson(drug)).toList();
+    return rawData.fold(
+      (failure) => Left(failure),
+      (drugs) => Right(drugs.map((drug) => DrugModel.fromJson(drug)).toList()),
+    );
   }
 
-  Future<MedicinesDetailsModel> getMedicinesDetails(String id) async {
+  Future<Either<Failure, MedicinesDetailsModel>> getMedicinesDetails(
+    String id,
+  ) async {
     final rawData = await medicationService.getMedicinesDetails(id);
-    return MedicinesDetailsModel.fromJson(rawData);
+    return rawData.fold(
+      (failure) => Left(failure),
+      (data) => Right(MedicinesDetailsModel.fromJson(data)),
+    );
   }
 
-  Future<void> deleteMedicines(String id) async {
-    await medicationService.deleteMedicines(id);
+  Future<Either<Failure, void>> deleteMedicines(String id) async {
+    final rawData = await medicationService.deleteMedicines(id);
+    return rawData.fold((failure) => Left(failure), (data) => Right(null));
   }
 
-  Future<AllMedicinesContentModel> addMedicines(
+  Future<Either<Failure, AllMedicinesContentModel>> addMedicines(
     MedicinesDetailsRequest request,
   ) async {
     final rawData = await medicationService.addMedicines(request);
-    return AllMedicinesContentModel.fromJson(rawData);
+    return rawData.fold(
+      (failure) => Left(failure),
+      (data) => Right(AllMedicinesContentModel.fromJson(data)),
+    );
   }
 
-  Future<AllMedicinesResponse> getAllMedicines(
+  Future<Either<Failure, AllMedicinesResponse>> getAllMedicines(
     AllMedicinesRequest request,
   ) async {
     final rawData = await medicationService.getAllMedicines(request);
-    return AllMedicinesResponse.fromJson(rawData);
+    return rawData.fold(
+      (failure) => Left(failure),
+      (data) => Right(AllMedicinesResponse.fromJson(data)),
+    );
   }
 
-  Future<MedicinesDetailsModel> updateMedicines(
+  Future<Either<Failure, MedicinesDetailsModel>> updateMedicines(
     String id,
     UpdateMedicineRequest request,
   ) async {
     final rawData = await medicationService.updateMedicines(id, request);
-    return MedicinesDetailsModel.fromJson(rawData);
+    return rawData.fold(
+      (failure) => Left(failure),
+      (data) => Right(MedicinesDetailsModel.fromJson(data)),
+    );
   }
 
-  Future<void> bulkMedicines(MedicinesBulkRequest request) async {
-    await medicationService.bulkMedicines(request);
+  Future<Either<Failure, void>> bulkMedicines(
+    MedicinesBulkRequest request,
+  ) async {
+    final rawData = await medicationService.bulkMedicines(request);
+    return rawData.fold((failure) => Left(failure), (data) => Right(null));
   }
 }

@@ -20,20 +20,19 @@ class GroupCubit extends Cubit<GroupState> {
     if (needLoading) {
       emit(GroupLoading());
     }
-    try {
-      final allGroupResponse = await groupRepository.getAllGroups(request);
-      emit(
+    final allGroupResponse = await groupRepository.getAllGroups(request);
+    allGroupResponse.fold(
+      (failure) => emit(GroupError(message: failure.message)),
+      (data) => emit(
         GroupLoaded(
           request: request,
-          allGroups: allGroupResponse.content,
-          currentGroups: allGroupResponse.content,
-          hasReachedMax: allGroupResponse.lastPage,
-          totalGroups: allGroupResponse.numberOfElements,
+          allGroups: data.content,
+          currentGroups: data.content,
+          hasReachedMax: data.lastPage,
+          totalGroups: data.numberOfElements,
         ),
-      );
-    } catch (e) {
-      emit(GroupError(message: e.toString()));
-    }
+      ),
+    );
   }
 
   Future<void> loadMoreGroups() async {
@@ -41,131 +40,136 @@ class GroupCubit extends Cubit<GroupState> {
     if (currentState is! GroupLoaded || currentState.hasReachedMax) {
       return;
     }
-    try {
-      final request = currentState.request.copyWith(
-        page: currentState.request.page + 1,
-      );
+    final request = currentState.request.copyWith(
+      page: currentState.request.page + 1,
+    );
 
-      final newResponse = await groupRepository.getAllGroups(request);
-      final allGroups = {
-        ...currentState.allGroups,
-        ...newResponse.content,
-      }.toList();
-
-      emit(
-        GroupLoaded(
-          request: request,
-          allGroups: allGroups,
-          currentGroups: allGroups,
-          hasReachedMax: newResponse.lastPage,
-          totalGroups: newResponse.numberOfElements,
-        ),
-      );
-    } catch (e) {
-      emit(GroupError(message: e.toString()));
-    }
+    final newResponse = await groupRepository.getAllGroups(request);
+    newResponse.fold(
+      (failure) {
+        emit(GroupError(message: failure.message));
+      },
+      (data) {
+        final allGroups = {...currentState.allGroups, ...data.content}.toList();
+        emit(
+          GroupLoaded(
+            request: request,
+            allGroups: allGroups,
+            currentGroups: allGroups,
+            hasReachedMax: data.lastPage,
+            totalGroups: data.numberOfElements,
+          ),
+        );
+      },
+    );
   }
 
   void addGroup(GroupUpsertRequest group) async {
     final currentState = state;
     if (currentState is! GroupLoaded) return;
 
-    try {
-      final newGroup = await groupRepository.addGroup(group);
-      final allGroups = {
-        ...currentState.allGroups,
-        _groupDataToGroupContent(newGroup),
-      }.toList();
+    final newGroup = await groupRepository.addGroup(group);
+    newGroup.fold(
+      (failure) {
+        emit(GroupError(message: failure.message));
+        // return previous state
+        emit(currentState);
+      },
+      (data) {
+        final allGroups = {
+          ...currentState.allGroups,
+          _groupDataToGroupContent(data),
+        }.toList();
 
-      emit(
-        GroupLoaded(
-          request: currentState.request,
-          allGroups: allGroups,
-          currentGroups: allGroups,
-          hasReachedMax: currentState.hasReachedMax,
-          totalGroups: currentState.totalGroups + 1,
-        ),
-      );
-    } catch (e) {
-      emit(GroupError(message: e.toString()));
-
-      // return previous state
-      emit(currentState);
-    }
+        emit(
+          GroupLoaded(
+            request: currentState.request,
+            allGroups: allGroups,
+            currentGroups: allGroups,
+            hasReachedMax: currentState.hasReachedMax,
+            totalGroups: currentState.totalGroups + 1,
+          ),
+        );
+      },
+    );
   }
 
   void updateGroup(String id, GroupUpsertRequest newGroup) async {
     final currentState = state;
     if (currentState is! GroupLoaded) return;
 
-    try {
-      await groupRepository.updateGroup(id, newGroup);
-      final allGroups = currentState.allGroups.map((group) {
-        if (group.id == id) {
-          return group.copyWith(
-            name: newGroup.name,
-            description: newGroup.description,
-            color: newGroup.color,
-          );
-        }
-        return group;
-      }).toList();
+    final updatedGroup = await groupRepository.updateGroup(id, newGroup);
+    updatedGroup.fold(
+      (failure) {
+        emit(GroupError(message: failure.message));
+        // return previous state
+        emit(currentState);
+      },
+      (groupData) {
+        final allGroups = currentState.allGroups.map((group) {
+          if (group.id == id) {
+            return group.copyWith(
+              name: newGroup.name,
+              description: newGroup.description,
+              color: newGroup.color,
+            );
+          }
+          return group;
+        }).toList();
 
-      final currentGroups = currentState.currentGroups.map((group) {
-        if (group.id == id) {
-          return group.copyWith(
-            name: newGroup.name,
-            description: newGroup.description,
-            color: newGroup.color,
-          );
-        }
-        return group;
-      }).toList();
+        final currentGroups = currentState.currentGroups.map((group) {
+          if (group.id == id) {
+            return group.copyWith(
+              name: newGroup.name,
+              description: newGroup.description,
+              color: newGroup.color,
+            );
+          }
+          return group;
+        }).toList();
 
-      emit(
-        GroupLoaded(
-          request: currentState.request,
-          allGroups: allGroups,
-          currentGroups: currentGroups,
-          hasReachedMax: currentState.hasReachedMax,
-          totalGroups: currentState.totalGroups,
-        ),
-      );
-    } catch (e) {
-      emit(GroupError(message: e.toString()));
-
-      // return previous state
-      emit(currentState);
-    }
+        emit(
+          GroupLoaded(
+            request: currentState.request,
+            allGroups: allGroups,
+            currentGroups: currentGroups,
+            hasReachedMax: currentState.hasReachedMax,
+            totalGroups: currentState.totalGroups,
+          ),
+        );
+      },
+    );
   }
 
   void deleteGroup(String id) async {
     final currentState = state;
     if (currentState is! GroupLoaded) return;
 
-    try {
-      await groupRepository.deleteGroup(id);
-      emit(
-        GroupLoaded(
-          request: currentState.request.copyWith(
-            page: currentState.request.page - 1,
+    final response = await groupRepository.deleteGroup(id);
+    response.fold(
+      (failure) {
+        emit(GroupError(message: failure.message));
+        // return previous state
+        emit(currentState);
+      },
+      (data) {
+        emit(
+          GroupLoaded(
+            request: currentState.request.copyWith(
+              page: currentState.request.page - 1,
+            ),
+            allGroups: currentState.allGroups
+                .where((group) => group.id != id)
+                .toList(),
+            currentGroups: currentState.currentGroups
+                .where((group) => group.id != id)
+                .toList(),
+            hasReachedMax: currentState.hasReachedMax,
+            totalGroups: currentState.totalGroups - 1,
           ),
-          allGroups: currentState.allGroups
-              .where((group) => group.id != id)
-              .toList(),
-          currentGroups: currentState.currentGroups
-              .where((group) => group.id != id)
-              .toList(),
-          hasReachedMax: currentState.hasReachedMax,
-          totalGroups: currentState.totalGroups - 1,
-        ),
-      );
-    } catch (e) {
-      emit(GroupError(message: e.toString()));
-
-      // return previous state
-      emit(currentState);
-    }
+        );
+      },
+    );
   }
 
   GroupContentModel _groupDataToGroupContent(GroupDataModel groupData) {

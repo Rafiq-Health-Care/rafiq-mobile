@@ -18,12 +18,12 @@ class GroupDetailsCubit extends Cubit<GroupDetailsState> {
     if (needLoading) {
       emit(GroupDetailsLoading());
     }
-    try {
-      final group = await groupRepository.getGroupDetails(groupId);
-      emit(GroupDetailsLoaded(group: group, medications: group.medicines));
-    } catch (e) {
-      emit(GroupDetailsError(message: e.toString()));
-    }
+    final group = await groupRepository.getGroupDetails(groupId);
+    group.fold(
+      (failure) => emit(GroupDetailsError(message: failure.message)),
+      (group) =>
+          emit(GroupDetailsLoaded(group: group, medications: group.medicines)),
+    );
   }
 
   void search(String query) {

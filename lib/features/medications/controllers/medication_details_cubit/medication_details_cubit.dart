@@ -15,14 +15,13 @@ class MedicationDetailsCubit extends Cubit<MedicationDetailsState> {
 
   Future<void> getMedicineDetails(String medicationId) async {
     emit(MedicationDetailsLoading());
-    try {
-      final medicationDetails = await medicationRepository.getMedicinesDetails(
-        medicationId,
-      );
-      emit(MedicationDetailsLoaded(medicationDetails));
-    } catch (e) {
-      emit(MedicationDetailsError(e.toString()));
-    }
+    final medicationDetails = await medicationRepository.getMedicinesDetails(
+      medicationId,
+    );
+    medicationDetails.fold(
+      (failure) => emit(MedicationDetailsError(failure.message)),
+      (medicationDetails) => emit(MedicationDetailsLoaded(medicationDetails)),
+    );
   }
 
   Future<void> updateMedicineDetails(
@@ -37,15 +36,14 @@ class MedicationDetailsCubit extends Cubit<MedicationDetailsState> {
       return;
     }
 
-    try {
-      final updatedDetails = await medicationRepository.updateMedicines(
-        currentState.medicationDetails.id,
-        medicationDetails,
-      );
-      emit(MedicationDetailsLoaded(updatedDetails));
-    } catch (e) {
-      emit(MedicationDetailsError(e.toString()));
-    }
+    final updatedDetails = await medicationRepository.updateMedicines(
+      currentState.medicationDetails.id,
+      medicationDetails,
+    );
+    updatedDetails.fold(
+      (failure) => emit(MedicationDetailsError(failure.message)),
+      (medicationDetails) => emit(MedicationDetailsLoaded(medicationDetails)),
+    );
   }
 
   bool _hasMedicationChange(

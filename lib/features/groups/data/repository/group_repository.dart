@@ -1,3 +1,5 @@
+import 'package:dartz/dartz.dart';
+import 'package:rafiq/core/errors/failure.dart';
 import 'package:rafiq/features/groups/data/models/group_upsert_request.dart';
 import 'package:rafiq/features/groups/data/models/all_groups_request.dart';
 import 'package:rafiq/features/groups/data/models/all_groups_response.dart';
@@ -9,30 +11,49 @@ class GroupRepository {
   final GroupService groupService;
   GroupRepository(this.groupService);
 
-  Future<GroupDataModel> addGroup(GroupUpsertRequest request) async {
+  Future<Either<Failure, GroupDataModel>> addGroup(
+    GroupUpsertRequest request,
+  ) async {
     final rawData = await groupService.addGroup(request);
-    return GroupDataModel.fromJson(rawData);
+    return rawData.fold(
+      (failure) => Left(failure),
+      (data) => Right(GroupDataModel.fromJson(data)),
+    );
   }
 
-  Future<GroupContentModel> getGroupDetails(String groupId) async {
+  Future<Either<Failure, GroupContentModel>> getGroupDetails(
+    String groupId,
+  ) async {
     final rawData = await groupService.getGroupDetails(groupId);
-    return GroupContentModel.fromJson(rawData);
+    return rawData.fold(
+      (failure) => Left(failure),
+      (data) => Right(GroupContentModel.fromJson(data)),
+    );
   }
 
-  Future<void> deleteGroup(String groupId) async {
-    await groupService.deleteGroup(groupId);
+  Future<Either<Failure, void>> deleteGroup(String groupId) async {
+    final response = await groupService.deleteGroup(groupId);
+    return response.fold((failure) => Left(failure), (_) => Right(null));
   }
 
-  Future<GroupDataModel> updateGroup(
+  Future<Either<Failure, GroupDataModel>> updateGroup(
     String groupId,
     GroupUpsertRequest request,
   ) async {
     final rawData = await groupService.updateGroup(groupId, request);
-    return GroupDataModel.fromJson(rawData);
+    return rawData.fold(
+      (failure) => Left(failure),
+      (data) => Right(GroupDataModel.fromJson(data)),
+    );
   }
 
-  Future<AllGroupsResponse> getAllGroups(AllGroupsRequest request) async {
+  Future<Either<Failure, AllGroupsResponse>> getAllGroups(
+    AllGroupsRequest request,
+  ) async {
     final rawData = await groupService.getAllGroups(request);
-    return AllGroupsResponse.fromJson(rawData);
+    return rawData.fold(
+      (failure) => Left(failure),
+      (data) => Right(AllGroupsResponse.fromJson(data)),
+    );
   }
 }

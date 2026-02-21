@@ -10,28 +10,36 @@ class LabTestDetailsCubit extends Cubit<LabTestDetailsState> {
   final LabTestRepository labTestRepository;
   LabTestDetailsCubit(this.labTestRepository) : super(LabTestDetailsInitial());
 
-  void getLabTestDetails(String testId) {
+  Future<void> getLabTestDetails(String testId) async {
     emit(LabTestDetailsLoading());
-    labTestRepository
-        .getTestLabDetails(testId)
-        .then((response) {
-          emit(LabTestDetailsLoaded(response));
-        })
-        .catchError((error) {
-          emit(LabTestDetailsError(error.toString()));
-        });
+    final response = await labTestRepository.getTestLabDetails(testId);
+    response.fold(
+      (failure) {
+        emit(LabTestDetailsError(failure.message));
+      },
+      (data) {
+        emit(LabTestDetailsLoaded(data));
+      },
+    );
   }
 
-  void updateLabTestResults(LabTestResultsModel results, String testId) {
+  Future<void> updateLabTestResults(
+    LabTestResultsModel results,
+    String testId,
+  ) async {
     emit(LabTestDetailsLoading());
-    labTestRepository
-        .updateLabTestResults(results, testId)
-        .then((response) {
-          emit(LabTestDetailsUpdated(response));
-        })
-        .catchError((error) {
-          emit(LabTestDetailsError(error.toString()));
-        });
+    final response = await labTestRepository.updateLabTestResults(
+      results,
+      testId,
+    );
+    response.fold(
+      (failure) {
+        emit(LabTestDetailsError(failure.message));
+      },
+      (data) {
+        emit(LabTestDetailsUpdated(data));
+      },
+    );
   }
 
   static LabTestDetailsCubit get(context) => BlocProvider.of(context);

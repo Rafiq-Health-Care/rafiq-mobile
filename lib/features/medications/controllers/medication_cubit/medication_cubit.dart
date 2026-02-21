@@ -24,21 +24,24 @@ class MedicationCubit extends Cubit<MedicationState> {
       emit(MedicationLoading(isFirstFetch: true));
     }
 
-    try {
-      final allMedicineResponse = await medicationRepository.getAllMedicines(
-        request,
-      );
-      emit(
-        MedicationLoaded(
-          medications: allMedicineResponse.content,
-          hasReachedMax: allMedicineResponse.lastPage,
-          request: request,
-          total: allMedicineResponse.numberOfElements,
-        ),
-      );
-    } catch (e) {
-      emit(MedicationError(message: e.toString()));
-    }
+    final allMedicineResponse = await medicationRepository.getAllMedicines(
+      request,
+    );
+    allMedicineResponse.fold(
+      (failure) {
+        emit(MedicationError(message: failure.message));
+      },
+      (data) {
+        emit(
+          MedicationLoaded(
+            medications: data.content,
+            hasReachedMax: data.lastPage,
+            request: request,
+            total: data.numberOfElements,
+          ),
+        );
+      },
+    );
   }
 
   Future<void> loadMoreMedications() async {
@@ -47,112 +50,120 @@ class MedicationCubit extends Cubit<MedicationState> {
       return;
     }
 
-    try {
-      final newResponse = await medicationRepository.getAllMedicines(
-        currentState.request.copyWith(page: currentState.request.page + 1),
-      );
-      emit(
-        MedicationLoaded(
-          medications: {
-            ...currentState.medications,
-            ...newResponse.content,
-          }.toList(),
-          hasReachedMax: newResponse.lastPage,
-          request: currentState.request.copyWith(
-            page: currentState.request.page + 1,
+    final newResponse = await medicationRepository.getAllMedicines(
+      currentState.request.copyWith(page: currentState.request.page + 1),
+    );
+    newResponse.fold(
+      (failure) {
+        emit(
+          MedicationError(
+            message: failure.message,
+            medications: currentState.medications,
           ),
-          total: newResponse.numberOfElements,
-        ),
-      );
-    } catch (e) {
-      emit(
-        MedicationError(
-          message: e.toString(),
-          medications: currentState.medications,
-        ),
-      );
-    }
+        );
+      },
+      (data) {
+        emit(
+          MedicationLoaded(
+            medications: {
+              ...currentState.medications,
+              ...data.content,
+            }.toList(),
+            hasReachedMax: data.lastPage,
+            request: currentState.request.copyWith(
+              page: currentState.request.page + 1,
+            ),
+            total: data.numberOfElements,
+          ),
+        );
+      },
+    );
   }
 
   Future<void> addMedicine(MedicinesDetailsRequest medicineDetails) async {
     final currentState = state;
     if (currentState is! MedicationLoaded) return;
 
-    try {
-      final newMedicine = await medicationRepository.addMedicines(
-        medicineDetails,
-      );
-      emit(MedicationAdded(newMedicine: newMedicine));
-      emit(
-        MedicationLoaded(
-          medications: {...currentState.medications, newMedicine}.toList(),
-          hasReachedMax: currentState.hasReachedMax,
-          request: currentState.request,
-          total: currentState.total,
-        ),
-      );
-    } catch (e) {
-      emit(
-        MedicationError(
-          message: e.toString(),
-          medications: currentState.medications,
-        ),
-      );
-
-      // return previous state
-      emit(currentState);
-    }
+    final newMedicine = await medicationRepository.addMedicines(
+      medicineDetails,
+    );
+    newMedicine.fold(
+      (failure) {
+        emit(
+          MedicationError(
+            message: failure.message,
+            medications: currentState.medications,
+          ),
+        );
+        // return previous state
+        emit(currentState);
+      },
+      (newMedicine) {
+        emit(MedicationAdded(newMedicine: newMedicine));
+        emit(
+          MedicationLoaded(
+            medications: {...currentState.medications, newMedicine}.toList(),
+            hasReachedMax: currentState.hasReachedMax,
+            request: currentState.request,
+            total: currentState.total,
+          ),
+        );
+      },
+    );
   }
 
   Future<void> deleteMedicine(String id) async {
     final currentState = state;
     if (currentState is! MedicationLoaded) return;
 
-    try {
-      await medicationRepository.deleteMedicines(id);
-      emit(
-        MedicationLoaded(
-          medications: currentState.medications
-              .where((med) => med.id != id)
-              .toList(),
-          hasReachedMax: currentState.hasReachedMax,
-          request: currentState.request.copyWith(
-            page: currentState.request.page - 1,
+    final response = await medicationRepository.deleteMedicines(id);
+    response.fold(
+      (failure) {
+        emit(
+          MedicationError(
+            message: failure.message,
+            medications: currentState.medications,
           ),
-          total: currentState.total,
-        ),
-      );
-      // after deleting a medicine, we need to load more medications
-      await loadMoreMedications();
-    } catch (e) {
-      emit(
-        MedicationError(
-          message: e.toString(),
-          medications: currentState.medications,
-        ),
-      );
-
-      // return previous state
-      emit(currentState);
-    }
+        );
+        // return previous state
+        emit(currentState);
+      },
+      (_) async {
+        emit(
+          MedicationLoaded(
+            medications: currentState.medications
+                .where((med) => med.id != id)
+                .toList(),
+            hasReachedMax: currentState.hasReachedMax,
+            request: currentState.request.copyWith(
+              page: currentState.request.page - 1,
+            ),
+            total: currentState.total,
+          ),
+        );
+        // after deleting a medicine, we need to load more medications
+        await loadMoreMedications();
+      },
+    );
   }
 
   Future<void> bulkMedicines(MedicinesBulkRequest request) async {
     final currentState = state;
     if (currentState is! MedicationLoaded) return;
-    try {
-      await medicationRepository.bulkMedicines(request);
-      await loadMedications(currentState.request, needLoading: false);
-    } catch (e) {
-      emit(
-        MedicationError(
-          message: e.toString(),
-          medications: currentState.medications,
-        ),
-      );
-      // return previous state
-      emit(currentState);
-    }
+    final response = await medicationRepository.bulkMedicines(request);
+    response.fold(
+      (failure) {
+        emit(
+          MedicationError(
+            message: failure.message,
+            medications: currentState.medications,
+          ),
+        );
+      },
+      (data) async {
+        await loadMedications(currentState.request, needLoading: false);
+      },
+    );
   }
 
   Future<void> search(String query) async {

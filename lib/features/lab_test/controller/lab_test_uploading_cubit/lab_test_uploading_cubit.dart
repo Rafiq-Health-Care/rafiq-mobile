@@ -13,27 +13,29 @@ class LabTestUploadingCubit extends Cubit<LabTestUploadingState> {
   LabTestUploadingCubit(this.labTestRepository)
     : super(LabTestUploadingInitial());
 
-  void uploadTestLab(LabTestUploadRequest request) {
+  Future<void> uploadTestLab(LabTestUploadRequest request) async {
     emit(LabTestUploadingLoading());
-    labTestRepository
-        .uploadTestLab(request)
-        .then((response) {
-          emit(LabTestUploadingSuccess(response));
-        })
-        .catchError((error) {
-          emit(LabTestUploadingError(error.toString()));
-        });
+    final response = await labTestRepository.uploadTestLab(request);
+    response.fold(
+      (failure) => emit(LabTestUploadingError(failure.message)),
+      (data) => emit(LabTestUploadingSuccess(data)),
+    );
   }
 
   Future<void> downloadLabTestFile(String fileId, BuildContext context) async {
-    try {
-      final labTestFile = await labTestRepository.getLAbTestFile(fileId);
-      if (context.mounted) {
-        _downloadFile(labTestFile.fileUrl, labTestFile.fileName, context);
-      }
-    } catch (e) {
-      rethrow;
-    }
+    final labTestFile = await labTestRepository.getLAbTestFile(fileId);
+    labTestFile.fold(
+      (failure) => emit(LabTestUploadingError(failure.message)),
+      (labTestFile) async {
+        if (context.mounted) {
+          await _downloadFile(
+            labTestFile.fileUrl,
+            labTestFile.fileName,
+            context,
+          );
+        }
+      },
+    );
   }
 
   Future<void> _downloadFile(
