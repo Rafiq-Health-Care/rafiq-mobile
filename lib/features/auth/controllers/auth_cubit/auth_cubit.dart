@@ -6,102 +6,89 @@ import 'package:rafiq/features/auth/data/models/patient_sign_up_request.dart';
 import 'package:rafiq/features/auth/data/models/user_response.dart';
 import 'package:rafiq/features/auth/data/models/user_sign_up_body.dart';
 import 'package:rafiq/features/auth/data/models/user_verification_request.dart';
-import 'package:rafiq/features/auth/data/networking/auth_service.dart';
 import 'package:rafiq/features/auth/data/repository/auth_repository.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final AuthService authService;
   final AuthRepository authRepository;
-  AuthCubit(this.authService, this.authRepository) : super(AuthInitial());
+  AuthCubit(this.authRepository) : super(AuthInitial());
 
   UserSignUpBody? userSignUpBody;
   late UserResponse userResponse;
 
-  void doctorSignUp() {
+  Future<void> doctorSignUp() async {
     emit(AuthLoading());
-    authService
-        .registerDoctor(userSignUpBody as DoctorSignUpRequest)
-        .then((_) {
-          emit(DoctorSignUpSuccess());
-        })
-        .catchError((e) {
-          emit(AuthFailure(e.toString()));
-        });
+    final response = await authRepository.doctorSignUpRepository(
+      userSignUpBody as DoctorSignUpRequest,
+    );
+    response.fold(
+      (failure) => emit(AuthFailure(failure.message)),
+      (success) => emit(DoctorSignUpSuccess()),
+    );
   }
 
-  void patientSignUp() {
+  Future<void> patientSignUp() async {
     emit(AuthLoading());
-    authService
-        .registerPatient(userSignUpBody as PatientSignUpRequest)
-        .then((_) {
-          emit(PatientSignUpSuccess());
-        })
-        .catchError((e) {
-          emit(AuthFailure(e.toString()));
-        });
+    final response = await authRepository.patientSignUpRepository(
+      userSignUpBody as PatientSignUpRequest,
+    );
+    response.fold(
+      (failure) => emit(AuthFailure(failure.message)),
+      (success) => emit(PatientSignUpSuccess()),
+    );
   }
 
-  void logIn(LoginRequest body) {
+  Future<void> logIn(LoginRequest body) async {
     emit(AuthLoading());
-    authRepository
-        .logInRepository(body)
-        .then((value) {
-          userResponse = value;
-          emit(LogInSuccess());
-        })
-        .catchError((e) {
-          emit(AuthFailure(e.toString()));
-        });
-  }
-
-  void authWithGoogle() {
-    emit(AuthLoading());
-    authService
-        .authWithGoogle()
-        .then((_) {
-          emit(GoogleAuthSuccess());
-        })
-        .catchError((e) {
-          emit(AuthFailure(e.toString()));
-        });
-  }
-
-  void userVerification(String otp) {
-    emit(AuthLoading());
-    authRepository
-        .userVerificationRepository(
-          UserVerificationRequest(email: userSignUpBody!.email!, otp: otp),
-        )
-        .then((value) {
-          userResponse = value;
-          emit(UserVerificationSuccess());
-        })
-        .catchError((e) {
-          emit(AuthFailure(e.toString()));
-        });
-  }
-
-  void sendNewOtp() {
-    emit(AuthLoading());
-    authService
-        .sendNewOtp(userSignUpBody!.email!)
-        .then((_) {
-          emit(UserVerificationResendSuccess());
-        })
-        .catchError((e) {
-          emit(AuthFailure(e.toString()));
-        });
-  }
-
-  void logout() {
-    emit(AuthLoading());
-    authService.logout().then((value) {
-      value.fold(
-        (failure) => emit(AuthFailure(failure.message)),
-        (success) => emit(LogoutSuccess()),
-      );
+    final response = await authRepository.logInRepository(body);
+    response.fold((failure) => emit(AuthFailure(failure.message)), (
+      userResponse,
+    ) {
+      this.userResponse = userResponse;
+      emit(LogInSuccess());
     });
+  }
+
+  Future<void> authWithGoogle() async {
+    emit(AuthLoading());
+    final response = await authRepository.authWithGoogleRepository();
+    response.fold(
+      (failure) => emit(AuthFailure(failure.message)),
+      (success) => emit(GoogleAuthSuccess()),
+    );
+  }
+
+  Future<void> userVerification(String otp) async {
+    emit(AuthLoading());
+    final response = await authRepository.userVerificationRepository(
+      UserVerificationRequest(email: userSignUpBody!.email!, otp: otp),
+    );
+    response.fold((failure) => emit(AuthFailure(failure.message)), (
+      userResponse,
+    ) {
+      this.userResponse = userResponse;
+      emit(UserVerificationSuccess());
+    });
+  }
+
+  Future<void> sendNewOtp() async {
+    emit(AuthLoading());
+    final response = await authRepository.sendNewOtpRepository(
+      userSignUpBody!.email!,
+    );
+    response.fold(
+      (failure) => emit(AuthFailure(failure.message)),
+      (success) => emit(UserVerificationResendSuccess()),
+    );
+  }
+
+  Future<void> logout() async {
+    emit(AuthLoading());
+    final response = await authRepository.logoutRepository();
+    response.fold(
+      (failure) => emit(AuthFailure(failure.message)),
+      (success) => emit(LogoutSuccess()),
+    );
   }
 
   static AuthCubit get(context) => BlocProvider.of(context);

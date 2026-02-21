@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:rafiq/core/constants/secure.dart';
 import 'package:rafiq/core/errors/failure.dart';
+import 'package:rafiq/core/errors/server_failure.dart';
 import 'package:rafiq/core/networking/api_constants.dart';
 import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/features/auth/data/models/reset_password_request.dart';
@@ -12,29 +13,33 @@ import 'package:rafiq/features/auth/data/models/patient_sign_up_request.dart';
 import 'package:rafiq/features/auth/data/models/user_verification_request.dart';
 
 class AuthService {
-  final _api = ApiService.instance;
+  final ApiService _api;
+  AuthService({required ApiService api}) : _api = api;
 
-  Future<dynamic> login(LoginRequest body) async {
+  Future<Either<Failure, dynamic>> login(LoginRequest body) async {
     try {
       Response response = await _api.post(
         ApiConstants.login,
         data: body.toJson(),
       );
-      return response.data;
+      return right(response.data);
     } catch (e) {
-      rethrow;
+      return left(e as Failure);
     }
   }
 
-  Future<void> registerPatient(PatientSignUpRequest body) async {
+  Future<Either<Failure, void>> registerPatient(
+    PatientSignUpRequest body,
+  ) async {
     try {
       await _api.post(ApiConstants.registerPatient, data: body.toJson());
+      return right(null);
     } catch (e) {
-      rethrow;
+      return left(e as Failure);
     }
   }
 
-  Future<void> registerDoctor(DoctorSignUpRequest body) async {
+  Future<Either<Failure, void>> registerDoctor(DoctorSignUpRequest body) async {
     final formData = await body.toFormData();
 
     try {
@@ -43,46 +48,51 @@ class AuthService {
         data: formData,
         options: Options(headers: {'Content-Type': 'multipart/form-data'}),
       );
+      return right(null);
     } catch (e) {
-      rethrow;
+      return left(e as Failure);
     }
   }
 
-  Future<dynamic> userVerification(UserVerificationRequest body) async {
+  Future<Either<Failure, dynamic>> userVerification(
+    UserVerificationRequest body,
+  ) async {
     try {
       Response response = await _api.post(
         ApiConstants.userVerification,
         data: body.toJson(),
       );
-      return response.data;
+      return right(response.data);
     } catch (e) {
-      rethrow;
+      return left(e as Failure);
     }
   }
 
-  Future<void> sendNewOtp(String email) async {
+  Future<Either<Failure, void>> sendNewOtp(String email) async {
     try {
       await _api.post(ApiConstants.newOtp, data: {'email': email});
+      return right(null);
     } catch (e) {
-      rethrow;
+      return left(e as Failure);
     }
   }
 
-  Future<List<dynamic>> getSpecialization() async {
+  Future<Either<Failure, List<dynamic>>> getSpecialization() async {
     try {
       Response response = await _api.get(ApiConstants.specialization);
-      return response.data;
+      return right(response.data);
     } catch (e) {
-      rethrow;
+      return left(e as Failure);
     }
   }
 
-  Future<void> authWithGoogle() async {
+  Future<Either<Failure, void>> authWithGoogle() async {
     try {
       final idToken = await _googleSignIn();
       await _api.post(ApiConstants.authWithGoogle, data: {'idToken': idToken});
+      return right(null);
     } catch (e) {
-      rethrow;
+      return left(e as Failure);
     }
   }
 
@@ -96,7 +106,7 @@ class AuthService {
       final String? idToken = account.authentication.idToken;
 
       if (idToken == null) {
-        throw Exception('ID token missing from Google response.');
+        throw ServerFailure('ID token missing from Google response.');
       }
 
       return idToken;
@@ -105,19 +115,21 @@ class AuthService {
     }
   }
 
-  Future<void> forgetPassword(String email) async {
+  Future<Either<Failure, void>> forgetPassword(String email) async {
     try {
       await _api.post(ApiConstants.forgetPassword, data: {'email': email});
+      return right(null);
     } catch (e) {
-      rethrow;
+      return left(e as Failure);
     }
   }
 
-  Future<void> resetPassword(ResetPasswordRequest body) async {
+  Future<Either<Failure, void>> resetPassword(ResetPasswordRequest body) async {
     try {
       await _api.post(ApiConstants.resetPassword, data: body.toJson());
+      return right(null);
     } catch (e) {
-      rethrow;
+      return left(e as Failure);
     }
   }
 

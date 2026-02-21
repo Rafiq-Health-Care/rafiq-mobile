@@ -8,16 +8,13 @@ class SpecializationCubit extends Cubit<SpecializationState> {
   final AuthRepository authRepository;
   SpecializationCubit(this.authRepository) : super(SpecializationInitial());
 
-  void getSpecializations() {
+  Future<void> getSpecializations() async {
     emit(SpecializationLoading());
-    authRepository
-        .getSpecializationsRepository()
-        .then((value) {
-          emit(SpecializationSuccess(value));
-        })
-        .catchError((e) {
-          emit(SpecializationFailure(e.toString()));
-        });
+    final response = await authRepository.getSpecializationsRepository();
+    response.fold(
+      (failure) => emit(SpecializationFailure(failure.message)),
+      (specializations) => emit(SpecializationSuccess(specializations)),
+    );
   }
 
   static SpecializationCubit get(context) => BlocProvider.of(context);

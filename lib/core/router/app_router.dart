@@ -77,11 +77,11 @@ class AppRouter {
 
   AppRouter() {
     apiService = ApiService.instance;
-    authService = AuthService();
+    authService = AuthService(api: apiService);
     authRepository = AuthRepository(authService: authService);
-    authCubit = AuthCubit(authService, authRepository);
-    forgetPasswordCubit = PasswordManagementCubit(authService, authRepository);
-    labTestService = LabTestService();
+    authCubit = AuthCubit(authRepository);
+    forgetPasswordCubit = PasswordManagementCubit(authRepository);
+    labTestService = LabTestService(api: apiService);
     labTestRepository = LabTestRepository(labTestService: labTestService);
     labTestCubit = LabTestCubit(labTestRepository);
     labTestDetailsCubit = LabTestDetailsCubit(labTestRepository);
