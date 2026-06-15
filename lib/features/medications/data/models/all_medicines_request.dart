@@ -28,7 +28,7 @@ class AllMedicinesRequest {
       'sort': sort.sortStr(),
       'search': search,
       'status': status?.statusStr(),
-      'groupId': groupId,
+      // 'groupId': groupId,
       'type': type?.typeStr(),
     };
   }

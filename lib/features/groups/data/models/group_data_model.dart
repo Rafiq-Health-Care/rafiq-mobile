@@ -23,7 +23,7 @@ class GroupDataModel {
 
   factory GroupDataModel.fromJson(Map<String, dynamic> json) {
     return GroupDataModel(
-      groupId: json['groupId'],
+      groupId: json['id'],
       patientId: json['patientId'],
       name: json['name'],
       description: json['description'],
