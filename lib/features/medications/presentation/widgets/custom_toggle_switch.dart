@@ -31,7 +31,7 @@ class CustomToggleSwitch<T> extends StatelessWidget {
                 valueNotifier.value = val ? trueValue : falseValue;
               },
               activeColor: appTheme.surfaceColor,
-              activeTrackColor: const Color(0xFF2C6ECB),
+              activeTrackColor: appTheme.vibrantBlueColor,
               inactiveTrackColor: appTheme.greyColor7,
               inactiveThumbColor: appTheme.surfaceColor,
               thumbIcon: WidgetStatePropertyAll(
