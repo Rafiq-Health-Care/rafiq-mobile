@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rafiq/core/di/di.dart';
 import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/controllers/password_management_cubit/password_management_cubit.dart';
 import 'package:rafiq/features/auth/controllers/specialization_cubit/specialization_cubit.dart';
-import 'package:rafiq/features/auth/data/networking/auth_service.dart';
 import 'package:rafiq/features/auth/data/repository/auth_repository.dart';
 import 'package:rafiq/features/auth/presentation/screens/reset_password_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/check_email_screen.dart';
@@ -35,19 +35,16 @@ import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit
 import 'package:rafiq/features/lab_test/controller/lab_test_details_cubit/lab_test_details_cubit.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_uploading_cubit/lab_test_uploading_cubit.dart';
 import 'package:rafiq/features/lab_test/data/repository/lab_test_repository.dart';
-import 'package:rafiq/features/lab_test/data/networking/lab_test_service.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_upload_request.dart';
 import 'package:rafiq/features/medications/controllers/medication_cubit/medication_cubit.dart';
 import 'package:rafiq/features/medications/controllers/medication_details_cubit/medication_details_cubit.dart';
 import 'package:rafiq/features/medications/controllers/search_medicine_name_cubit/search_medicine_name_cubit.dart';
 import 'package:rafiq/features/medications/controllers/selected_medication_cubit/selected_medication_cubit.dart';
 import 'package:rafiq/features/medications/data/models/medicines_details_model.dart';
-import 'package:rafiq/features/medications/data/networking/medication_service.dart';
 import 'package:rafiq/features/medications/data/repository/medication_repository.dart';
 import 'package:rafiq/features/medications/presentation/screens/all_medications_screen.dart';
 import 'package:rafiq/features/medications/presentation/screens/filter_screen.dart';
 import 'package:rafiq/features/groups/controllers/group_cubit/group_cubit.dart';
-import 'package:rafiq/features/groups/data/networking/group_service.dart';
 import 'package:rafiq/features/groups/data/repository/group_repository.dart';
 import 'package:rafiq/features/groups/presentation/screens/all_groups_screen.dart';
 import 'package:rafiq/features/groups/presentation/screens/upsert_group_screen.dart';
@@ -56,44 +53,28 @@ import 'package:rafiq/features/medications/presentation/screens/medicine_upsert_
 import 'package:rafiq/features/medications/presentation/screens/medication_details_screen.dart';
 
 class AppRouter {
-  late ApiService apiService;
   late AuthCubit authCubit;
-  late AuthService authService;
-  late AuthRepository authRepository;
   late PasswordManagementCubit forgetPasswordCubit;
-  late LabTestService labTestService;
-  late LabTestRepository labTestRepository;
   late LabTestCubit labTestCubit;
   late LabTestDetailsCubit labTestDetailsCubit;
   late LabTestUploadingCubit labTestUploadingCubit;
-  late MedicationService medicationService;
-  late MedicationRepository medicationRepository;
   late MedicationCubit medicationCubit;
   late MedicationDetailsCubit medicationDetailsCubit;
-  late GroupService groupService;
-  late GroupRepository groupRepository;
   late GroupCubit groupCubit;
   late GroupDetailsCubit groupDetailsCubit;
 
   AppRouter() {
-    apiService = ApiService.instance;
-    authService = AuthService(api: apiService);
-    authRepository = AuthRepository(authService: authService);
-    authCubit = AuthCubit(authRepository);
-    forgetPasswordCubit = PasswordManagementCubit(authRepository);
-    labTestService = LabTestService(api: apiService);
-    labTestRepository = LabTestRepository(labTestService: labTestService);
-    labTestCubit = LabTestCubit(labTestRepository);
-    labTestDetailsCubit = LabTestDetailsCubit(labTestRepository);
-    labTestUploadingCubit = LabTestUploadingCubit(labTestRepository);
-    medicationService = MedicationService(api: apiService);
-    medicationRepository = MedicationRepository(medicationService);
-    medicationCubit = MedicationCubit(medicationRepository);
-    medicationDetailsCubit = MedicationDetailsCubit(medicationRepository);
-    groupService = GroupService(api: apiService);
-    groupRepository = GroupRepository(groupService);
-    groupCubit = GroupCubit(groupRepository);
-    groupDetailsCubit = GroupDetailsCubit(groupRepository);
+    authCubit = AuthCubit(getIt<AuthRepository>());
+    forgetPasswordCubit = PasswordManagementCubit(getIt<AuthRepository>());
+    labTestCubit = LabTestCubit(getIt<LabTestRepository>());
+    labTestDetailsCubit = LabTestDetailsCubit(getIt<LabTestRepository>());
+    labTestUploadingCubit = LabTestUploadingCubit(getIt<LabTestRepository>());
+    medicationCubit = MedicationCubit(getIt<MedicationRepository>());
+    medicationDetailsCubit = MedicationDetailsCubit(
+      getIt<MedicationRepository>(),
+    );
+    groupCubit = GroupCubit(getIt<GroupRepository>());
+    groupDetailsCubit = GroupDetailsCubit(getIt<GroupRepository>());
   }
 
   Route generateRoute(RouteSettings settings) {
@@ -149,7 +130,8 @@ class AppRouter {
             providers: [
               BlocProvider.value(value: authCubit),
               BlocProvider(
-                create: (context) => SpecializationCubit(authRepository),
+                create: (context) =>
+                    SpecializationCubit(getIt<AuthRepository>()),
               ),
             ],
             child: const DoctorSignUpStepIIScreen(),
@@ -306,7 +288,7 @@ class AppRouter {
               BlocProvider(
                 create: (_) {
                   return SearchMedicineNameCubit(
-                    medicationRepository: medicationRepository,
+                    medicationRepository: getIt<MedicationRepository>(),
                   );
                 },
               ),
@@ -329,7 +311,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) =>
-                LandingCubit(LandingService(apiService: apiService)),
+                LandingCubit(LandingService(apiService: getIt<ApiService>())),
             child: const LandingScreen(),
           ),
         );

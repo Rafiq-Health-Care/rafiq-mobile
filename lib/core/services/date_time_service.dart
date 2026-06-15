@@ -37,10 +37,10 @@ class DateTimeService {
     );
   }
 
-  Future<TimeOfDay?> pickTime(BuildContext context, TimeOfDay time) async {
+  Future<TimeOfDay?> pickTime(BuildContext context, {TimeOfDay? time}) async {
     return await showTimePicker(
       context: context,
-      initialTime: time,
+      initialTime: time ?? TimeOfDay.now(),
       builder: (context, child) {
         final appTheme = context.appTheme;
         return Theme(

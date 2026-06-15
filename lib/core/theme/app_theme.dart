@@ -12,6 +12,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
   final Color cyanColor400;
   final Color softBlueColor;
   final Color fieldFillColor;
+  final Color vibrantBlueColor;
 
   final TextStyle headingLargeTextStyle;
   final TextStyle headingTextStyle;
@@ -39,7 +40,9 @@ class AppTheme extends ThemeExtension<AppTheme> {
     required this.cyanColor400,
     required this.softBlueColor,
     required this.fieldFillColor,
+    required this.vibrantBlueColor,
     required this.headingLargeTextStyle,
+
     required this.headingTextStyle,
     required this.bodyLargeTextStyle,
     required this.bodyTextStyle,
@@ -67,7 +70,9 @@ class AppTheme extends ThemeExtension<AppTheme> {
     Color? cyanColor400,
     Color? softBlueColor,
     Color? fieldFillColor,
+    Color? vibrantBlueColor,
     TextStyle? headingLargeTextStyle,
+
     TextStyle? headingTextStyle,
     TextStyle? bodyLargeTextStyle,
     TextStyle? bodyTextStyle,
@@ -93,6 +98,7 @@ class AppTheme extends ThemeExtension<AppTheme> {
       cyanColor400: cyanColor400 ?? this.cyanColor400,
       softBlueColor: softBlueColor ?? this.softBlueColor,
       fieldFillColor: fieldFillColor ?? this.fieldFillColor,
+      vibrantBlueColor: vibrantBlueColor ?? this.vibrantBlueColor,
       headingLargeTextStyle:
           headingLargeTextStyle ?? this.headingLargeTextStyle,
       headingTextStyle: headingTextStyle ?? this.headingTextStyle,
@@ -139,6 +145,11 @@ class AppTheme extends ThemeExtension<AppTheme> {
       cyanColor400: Color.lerp(cyanColor400, other.cyanColor400, t)!,
       softBlueColor: Color.lerp(softBlueColor, other.softBlueColor, t)!,
       fieldFillColor: Color.lerp(fieldFillColor, other.fieldFillColor, t)!,
+      vibrantBlueColor: Color.lerp(
+        vibrantBlueColor,
+        other.vibrantBlueColor,
+        t,
+      )!,
 
       headingLargeTextStyle: TextStyle.lerp(
         headingLargeTextStyle,

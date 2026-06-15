@@ -15,6 +15,7 @@ class AppThemes {
     cyanColor400: Colors.cyan.shade400,
     softBlueColor: Color(0xFFB8CBE8),
     fieldFillColor: const Color(0x80F3F6FB),
+    vibrantBlueColor: const Color(0xFF2C6ECB),
 
     headingLargeTextStyle: TextStyle(
       fontSize: 48.sp,
