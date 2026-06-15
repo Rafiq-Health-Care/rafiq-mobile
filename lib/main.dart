@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rafiq/core/di/di.dart';
 import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/core/router/app_router.dart';
 import 'package:rafiq/core/theme/app_themes.dart';
+import 'package:rafiq/core/services/notification_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await setupDependencies();
   await ApiService.instance.initialize();
   runApp(Rafiq());
 }
@@ -29,6 +32,7 @@ class Rafiq extends StatelessWidget {
             extensions: [lightTheme],
           ),
           onGenerateRoute: AppRouter().generateRoute,
+          navigatorKey: navigatorKey,
         );
       },
     );
