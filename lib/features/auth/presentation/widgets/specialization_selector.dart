@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:rafiq/core/utils/extensions/formate_names.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
-import 'package:rafiq/features/auth/data/models/specialization_model.dart';
 
 class SpecializationSelector extends StatefulWidget {
   final int initialSpecializationIndex;
-  final List<SpecializationModel> specializations;
+  final List<String> specializations;
   final ValueChanged<int> onChanged;
 
   const SpecializationSelector({
@@ -67,8 +67,7 @@ class _SpecializationSelectorState extends State<SpecializationSelector> {
             return DropdownMenuItem(
               value: index,
               child: Text(
-                specialization.name[0].toUpperCase() +
-                    specialization.name.substring(1),
+                specialization.toReadableFormat(),
               ),
             );
           }),

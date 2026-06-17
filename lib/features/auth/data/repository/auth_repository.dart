@@ -4,7 +4,6 @@ import 'package:rafiq/features/auth/data/models/doctor_sign_up_request.dart';
 import 'package:rafiq/features/auth/data/models/login_request.dart';
 import 'package:rafiq/features/auth/data/models/patient_sign_up_request.dart';
 import 'package:rafiq/features/auth/data/models/reset_password_request.dart';
-import 'package:rafiq/features/auth/data/models/specialization_model.dart';
 import 'package:rafiq/features/auth/data/models/user_response.dart';
 import 'package:rafiq/features/auth/data/models/user_verification_request.dart';
 import 'package:rafiq/features/auth/data/networking/auth_service.dart';
@@ -61,13 +60,12 @@ class AuthRepository {
     );
   }
 
-  Future<Either<Failure, List<SpecializationModel>>>
+  Future<Either<Failure, List<String>>>
   getSpecializationsRepository() async {
     final rowData = await authService.getSpecialization();
     return rowData.fold(
       (failure) => left(failure),
-      (rowData) =>
-          right(rowData.map((e) => SpecializationModel.fromJson(e)).toList()),
+      (rowData) => right(rowData.map((e) => e as String).toList()),
     );
   }
 

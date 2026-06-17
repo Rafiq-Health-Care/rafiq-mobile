@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rafiq/features/auth/data/models/specialization_model.dart';
 import 'package:rafiq/features/auth/data/repository/auth_repository.dart';
 part 'specialization_state.dart';
 

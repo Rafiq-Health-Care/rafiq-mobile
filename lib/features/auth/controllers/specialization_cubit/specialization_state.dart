@@ -8,7 +8,7 @@ final class SpecializationInitial extends SpecializationState {}
 final class SpecializationLoading extends SpecializationState {}
 
 final class SpecializationSuccess extends SpecializationState {
-  final List<SpecializationModel> specializations;
+  final List<String> specializations;
   SpecializationSuccess(this.specializations);
 }
 

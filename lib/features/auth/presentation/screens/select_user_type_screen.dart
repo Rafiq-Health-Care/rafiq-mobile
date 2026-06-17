@@ -73,7 +73,7 @@ class SelectUserTypeScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.of(
                       context,
-                    ).pushNamed(RouterStrings.doctorIdUploadScreen);
+                    ).pushNamed(RouterStrings.signUpDoctorStepI);
                   },
                 ),
               ],
