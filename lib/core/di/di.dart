@@ -16,6 +16,11 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:rafiq/features/medications/data/data_sources/i_medication_local_data_source.dart';
 import 'package:rafiq/features/medications/data/networking/medication_service.dart';
 import 'package:rafiq/features/medications/data/repository/medication_repository.dart';
+import 'package:rafiq/features/Consultation/data/data_source/remote_data_source.dart';
+import 'package:rafiq/features/Consultation/data/repository/repository_impl.dart';
+import 'package:rafiq/features/Consultation/domain/repository/repository.dart';
+import 'package:rafiq/features/Consultation/domain/use_case/get_doctor_details_use_case.dart';
+import 'package:rafiq/features/Consultation/domain/use_case/search_doctors_use_case.dart';
 
 final getIt = GetIt.instance;
 
@@ -83,5 +88,19 @@ Future<void> setupDependencies() async {
   );
   getIt.registerLazySingleton<GroupRepository>(
     () => GroupRepository(getIt<GroupService>()),
+  );
+
+  // setup consultation
+  getIt.registerLazySingleton<RemoteDataSource>(
+    () => RemoteDataSourceImpl(getIt<ApiService>()),
+  );
+  getIt.registerLazySingleton<Repository>(
+    () => RepositoryImpl(getIt<RemoteDataSource>()),
+  );
+  getIt.registerLazySingleton<SearchDoctorsUseCase>(
+    () => SearchDoctorsUseCase(getIt<Repository>()),
+  );
+  getIt.registerLazySingleton<GetDoctorDetailsUseCase>(
+    () => GetDoctorDetailsUseCase(getIt<Repository>()),
   );
 }

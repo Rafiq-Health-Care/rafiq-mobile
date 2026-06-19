@@ -3,6 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/di/di.dart';
 import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/core/router/router_strings.dart';
+import 'package:rafiq/features/Consultation/domain/entity/doctor_entity.dart';
+import 'package:rafiq/features/Consultation/domain/use_case/get_doctor_details_use_case.dart';
+import 'package:rafiq/features/Consultation/domain/use_case/search_doctors_use_case.dart';
+import 'package:rafiq/features/Consultation/presentation/controller/search_doctor_cubit/search_doctor_cubit.dart';
+import 'package:rafiq/features/Consultation/presentation/controller/doctor_details_cubit/doctor_details_cubit.dart';
+import 'package:rafiq/features/Consultation/presentation/screen/search_doctor_screen.dart';
+import 'package:rafiq/features/Consultation/presentation/screen/doctor_details_screen.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/controllers/password_management_cubit/password_management_cubit.dart';
 import 'package:rafiq/features/auth/controllers/specialization_cubit/specialization_cubit.dart';
@@ -304,6 +311,28 @@ class AppRouter {
           builder: (_) => MultiBlocProvider(
             providers: [BlocProvider.value(value: medicationDetailsCubit)],
             child: MedicationDetailsScreen(medicineId: medicineId),
+          ),
+        );
+
+      case RouterStrings.searchDoctor:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (_) => SearchDoctorCubit(
+              searchDoctorsUseCase: getIt<SearchDoctorsUseCase>(),
+            ),
+            child: const SearchDoctorScreen(),
+          ),
+        );
+
+      case RouterStrings.doctorDetails:
+        final doctor = settings.arguments as DoctorEntity;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) => DoctorDetailsCubit(
+              getDoctorDetailsUseCase: getIt<GetDoctorDetailsUseCase>(),
+            )..getDoctorDetails(doctor.doctorId),
+            child: DoctorDetailsScreen(doctor: doctor),
           ),
         );
 

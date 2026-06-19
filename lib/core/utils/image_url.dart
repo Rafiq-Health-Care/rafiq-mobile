@@ -21,4 +21,9 @@ class ImageUrl {
   final String drugs = 'assets/icons/drugs.png';
   final String medicine = 'assets/icons/medicine.png';
   final String hourglass = 'assets/icons/hourglass.png';
+  final String people = 'assets/icons/people.svg';
+  final String star = 'assets/icons/star.svg';
+  final String work = 'assets/icons/work.svg';
+  final String experience = 'assets/icons/experience.svg';
+  final String education = 'assets/icons/education.svg';
 }

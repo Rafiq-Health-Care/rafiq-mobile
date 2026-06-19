@@ -25,4 +25,6 @@ abstract class RouterStrings {
   static const String upsertGroup = '/upsert_group';
   static const String upsertMedicine = '/upsert_medicine';
   static const String groupDetails = "/group_details";
+  static const String searchDoctor = "/search_doctor";
+  static const String doctorDetails = "/doctor_details";
 }

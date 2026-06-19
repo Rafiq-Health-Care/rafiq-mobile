@@ -88,6 +88,14 @@ class HomeScreen extends StatelessWidget {
                       // Navigate to Reminders
                     },
                   ),
+                  HomeMenuItem(
+                    icon: Icons.notifications_active,
+                    label: 'consultation',
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, RouterStrings.searchDoctor);
+                    },
+                  ),
                 ],
               ),
             ),

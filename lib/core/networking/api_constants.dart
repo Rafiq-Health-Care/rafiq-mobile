@@ -32,4 +32,7 @@ class ApiConstants {
   static const String addGroup = "/group/add";
   static const String addMedicinesToGroup = "/group/addMedicines";
   static const String removeMedicineFromGroup = "/group/removeMedicines";
+
+  static const String doctorSearch = "/doctors/search";
+  static const String doctor = "/doctors";
 }

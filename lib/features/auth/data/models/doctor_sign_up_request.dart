@@ -31,7 +31,7 @@ class DoctorSignUpRequest extends UserSignUpBody {
         }),
         contentType: DioMediaType('application', 'json'),
       ),
-      'nationalId': await MultipartFile.fromFile(
+      'nationalId': nationalId == null? null :await MultipartFile.fromFile(
         nationalId!.path,
         filename: nationalId!.uri.pathSegments.last,
         contentType: DioMediaType('multipart', 'form-data'),
