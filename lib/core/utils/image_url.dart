@@ -10,7 +10,7 @@ class ImageUrl {
   final String healthCare = 'assets/images/Healthcare.png';
   final String patientIconSvg = 'assets/icons/patient.svg';
   final String doctorIconSvg = 'assets/icons/doctor.svg';
-  final String cloudComputing = 'assets/icons/cloud-computing.png';
+  final String uploadFile = 'assets/icons/upload-file.png';
   final String loading = 'assets/icons/loading.svg';
   final String file = 'assets/icons/file.svg';
   final String empty = 'assets/icons/empty.svg';

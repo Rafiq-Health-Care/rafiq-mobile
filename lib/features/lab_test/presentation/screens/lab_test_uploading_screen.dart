@@ -41,7 +41,7 @@ class _LabTestUploadingScreenState extends State<LabTestUploadingScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Spacer(),
-            Image.asset(ImageUrl().cloudComputing, height: 120, width: 120),
+            Image.asset(ImageUrl().uploadFile, height: 120, width: 120),
             const SizedBox(height: 40),
             const Text(
               'Upload Your Lab Test',
@@ -54,7 +54,7 @@ class _LabTestUploadingScreenState extends State<LabTestUploadingScreen> {
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.grey),
             ),
-            const SizedBox(height: 40),
+            const Spacer(),
             ValueListenableBuilder<PlatformFile?>(
               valueListenable: selectedFileNotifier,
               builder: (context, file, child) {
@@ -110,7 +110,6 @@ class _LabTestUploadingScreenState extends State<LabTestUploadingScreen> {
                 );
               },
             ),
-            const Spacer(),
           ],
         ),
       ),

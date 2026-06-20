@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
 import 'package:rafiq/core/widgets/custom_app_bar.dart';
+import 'package:rafiq/core/widgets/custom_icon_button.dart';
 import 'package:rafiq/core/widgets/custom_refresh_indicator.dart';
+import 'package:rafiq/core/widgets/empty_state_widget.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit.dart';
 
 class AllLabTestsScreen extends StatefulWidget {
@@ -43,12 +46,6 @@ class _AllLabTestsScreenState extends State<AllLabTestsScreen> {
     final appTheme = context.appTheme;
     return Scaffold(
       appBar: CustomAppBar(title: const Text('All Lab Tests')),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, RouterStrings.labTestUploading);
-        },
-        child: const Icon(Icons.add),
-      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         child: BlocBuilder<LabTestCubit, LabTestState>(
@@ -63,27 +60,42 @@ class _AllLabTestsScreenState extends State<AllLabTestsScreen> {
                 onRefresh: () async {
                   await cubit.refreshLabTests();
                 },
-                child: ListView(
-                  physics: const AlwaysScrollableScrollPhysics(),
+                child: Column(
                   children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.3),
-                    Center(
-                      child: Card(
-                        child: ListTile(
-                          leading: SvgPicture.asset(ImageUrl().file, width: 60),
-                          title: Text(
-                            'No lab tests found.',
-                            style: appTheme.bodyLargeTextStyle.copyWith(
-                              color: appTheme.deepDarkBlueColor,
-                            ),
+                    Expanded(
+                      child: ListView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.25,
                           ),
-                          subtitle: Text(
-                            'Please upload your first test result to get started',
-                            style: appTheme.bodyTextStyle.copyWith(
-                              color: appTheme.deepDarkBlueColor,
-                            ),
+                          EmptyStateWidget(
+                            icon: SvgPicture.asset(ImageUrl().file),
+                            title: 'No lab tests found.',
+                            description:
+                                'Upload or add your first test result to start tracking your health history.',
                           ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 8,
+                        left: 16,
+                        right: 16,
+                      ),
+                      child: CustomIconButton(
+                        onPress: () => Navigator.pushNamed(
+                          context,
+                          RouterStrings.labTestUploading,
                         ),
+                        label: 'Add Test Result',
+                        icon: Icons.add,
+                        fontSize: 18.sp,
+                        labelColor: Colors.white,
+                        borderRadius: 16,
+                        backgroundColor: appTheme.cyanColor400,
                       ),
                     ),
                   ],
@@ -95,37 +107,64 @@ class _AllLabTestsScreenState extends State<AllLabTestsScreen> {
                 onRefresh: () async {
                   await cubit.refreshLabTests();
                 },
-                child: ListView.builder(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  controller: _scrollController,
-                  itemCount: labTests.length + (cubit.isLoadingMore ? 1 : 0),
-                  itemBuilder: (context, index) {
-                    if (index < labTests.length) {
-                      final test = labTests[index];
-                      return Card(
-                        child: ListTile(
-                          title: Text(
-                            test.name,
-                            style: appTheme.bodyLargeTextStyle.copyWith(
-                              color: appTheme.deepDarkBlueColor,
-                            ),
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(
-                              context,
-                              RouterStrings.labTestDetails,
-                              arguments: test.testId,
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        controller: _scrollController,
+                        itemCount:
+                            labTests.length + (cubit.isLoadingMore ? 1 : 0),
+                        itemBuilder: (context, index) {
+                          if (index < labTests.length) {
+                            final test = labTests[index];
+                            return Card(
+                              child: ListTile(
+                                title: Text(
+                                  test.name,
+                                  style: appTheme.bodyLargeTextStyle.copyWith(
+                                    color: appTheme.deepDarkBlueColor,
+                                  ),
+                                ),
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    RouterStrings.labTestDetails,
+                                    arguments: test.testId,
+                                  );
+                                },
+                              ),
                             );
-                          },
+                          } else {
+                            return const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Center(child: CircularProgressIndicator()),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                    SizedBox(height: 16.h),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 8,
+                        left: 16,
+                        right: 16,
+                      ),
+                      child: CustomIconButton(
+                        onPress: () => Navigator.pushNamed(
+                          context,
+                          RouterStrings.labTestUploading,
                         ),
-                      );
-                    } else {
-                      return const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Center(child: CircularProgressIndicator()),
-                      );
-                    }
-                  },
+                        label: 'Add Test Result',
+                        icon: Icons.add,
+                        fontSize: 18.sp,
+                        labelColor: Colors.white,
+                        borderRadius: 16,
+                        backgroundColor: appTheme.cyanColor400,
+                      ),
+                    ),
+                  ],
                 ),
               );
             }
