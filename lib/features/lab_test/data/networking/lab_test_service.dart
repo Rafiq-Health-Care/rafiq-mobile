@@ -59,7 +59,7 @@ class LabTestService {
 
     try {
       Response response = await _api.post(
-        ApiConstants.extractLabTestFile,
+        ApiConstants.labTestUpload,
         data: formData,
         options: Options(headers: {'Content-Type': 'multipart/form-data'}),
       );
@@ -98,14 +98,14 @@ class LabTestService {
     }
   }
 
-  Future<Either<Failure, dynamic>> getLabTestFile(String fileId) async {
-    try {
-      Response response = await _api.get(
-        '${ApiConstants.getLabTestFile}/$fileId',
-      );
-      return Right(response.data);
-    } catch (e) {
-      return Left(e as Failure);
-    }
-  }
+  // Future<Either<Failure, dynamic>> getLabTestFile(String fileId) async {
+  //   try {
+  //     Response response = await _api.get(
+  //       '${ApiConstants.getLabTestFile}/$fileId',
+  //     );
+  //     return Right(response.data);
+  //   } catch (e) {
+  //     return Left(e as Failure);
+  //   }
+  // }
 }

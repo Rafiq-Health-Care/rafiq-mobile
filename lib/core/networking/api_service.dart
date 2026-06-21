@@ -9,11 +9,13 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:rafiq/core/errors/server_failure.dart';
 import 'package:rafiq/core/networking/interceptors/cookie_logger_interceptor.dart';
 import 'package:rafiq/core/networking/interceptors/refresh_interceptor.dart';
+import 'package:uuid/uuid.dart';
 import 'api_constants.dart';
 
 class ApiService {
   static final ApiService instance = ApiService._internal();
   final Dio _dio = Dio();
+  final Uuid _uuid = const Uuid();
   late final PersistCookieJar _cookieJar;
 
   ApiService._internal() {
@@ -71,11 +73,15 @@ class ApiService {
     Options? options,
   }) async {
     try {
+      final requestOptions = options ?? Options();
+      requestOptions.headers ??= {};
+      requestOptions.headers!['Idempotency-Key'] = _uuid.v4();
+
       return await _dio.post(
         path,
         data: data,
         queryParameters: queryParameters,
-        options: options,
+        options: requestOptions,
       );
     } on DioException catch (e) {
       throw ServerFailure.fromDioError(e);
@@ -99,7 +105,11 @@ class ApiService {
 
   Future<Response> put(String path, {dynamic data, Options? options}) async {
     try {
-      return await _dio.put(path, data: data, options: options);
+      final requestOptions = options ?? Options();
+      requestOptions.headers ??= {};
+      requestOptions.headers!['Idempotency-Key'] = _uuid.v4();
+
+      return await _dio.put(path, data: data, options: requestOptions);
     } on DioException catch (e) {
       throw ServerFailure.fromDioError(e);
     } catch (e) {
@@ -109,7 +119,11 @@ class ApiService {
 
   Future<Response> patch(String path, {dynamic data, Options? options}) async {
     try {
-      return await _dio.patch(path, data: data, options: options);
+      final requestOptions = options ?? Options();
+      requestOptions.headers ??= {};
+      requestOptions.headers!['Idempotency-Key'] = _uuid.v4();
+
+      return await _dio.patch(path, data: data, options: requestOptions);
     } on DioException catch (e) {
       throw ServerFailure.fromDioError(e);
     } catch (e) {
@@ -119,7 +133,10 @@ class ApiService {
 
   Future<Response> delete(String path, {dynamic data, Options? options}) async {
     try {
-      return await _dio.delete(path, data: data, options: options);
+      final requestOptions = options ?? Options();
+      requestOptions.headers ??= {};
+      requestOptions.headers!['Idempotency-Key'] = _uuid.v4();
+      return await _dio.delete(path, data: data, options: requestOptions);
     } on DioException catch (e) {
       throw ServerFailure.fromDioError(e);
     } catch (e) {

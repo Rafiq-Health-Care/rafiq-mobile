@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_upload_request.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_upload_response.dart';
 import 'package:rafiq/features/lab_test/data/repository/lab_test_repository.dart';
@@ -22,43 +21,43 @@ class LabTestUploadingCubit extends Cubit<LabTestUploadingState> {
     );
   }
 
-  Future<void> downloadLabTestFile(String fileId, BuildContext context) async {
-    final labTestFile = await labTestRepository.getLAbTestFile(fileId);
-    labTestFile.fold(
-      (failure) => emit(LabTestUploadingError(failure.message)),
-      (labTestFile) async {
-        if (context.mounted) {
-          await _downloadFile(
-            labTestFile.fileUrl,
-            labTestFile.fileName,
-            context,
-          );
-        }
-      },
-    );
-  }
+  // Future<void> downloadLabTestFile(String fileId, BuildContext context) async {
+  //   final labTestFile = await labTestRepository.getLAbTestFile(fileId);
+  //   labTestFile.fold(
+  //     (failure) => emit(LabTestUploadingError(failure.message)),
+  //     (labTestFile) async {
+  //       if (context.mounted) {
+  //         await _downloadFile(
+  //           labTestFile.fileUrl,
+  //           labTestFile.fileName,
+  //           context,
+  //         );
+  //       }
+  //     },
+  //   );
+  // }
 
-  Future<void> _downloadFile(
-    String url,
-    String fileName,
-    BuildContext context,
-  ) async {
-    try {
-      final savePath = await ApiService.instance.downloadFile(url, fileName);
+  // Future<void> _downloadFile(
+  //   String url,
+  //   String fileName,
+  //   BuildContext context,
+  // ) async {
+  //   try {
+  //     final savePath = await ApiService.instance.downloadFile(url, fileName);
 
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('File downloaded to: $savePath')),
-        );
-      }
-    } catch (e) {
-      if (context.mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Download failed: $e')));
-      }
-    }
-  }
+  //     if (context.mounted) {
+  //       ScaffoldMessenger.of(context).showSnackBar(
+  //         SnackBar(content: Text('File downloaded to: $savePath')),
+  //       );
+  //     }
+  //   } catch (e) {
+  //     if (context.mounted) {
+  //       ScaffoldMessenger.of(
+  //         context,
+  //       ).showSnackBar(SnackBar(content: Text('Download failed: $e')));
+  //     }
+  //   }
+  // }
 
   static LabTestUploadingCubit get(context) => BlocProvider.of(context);
 }

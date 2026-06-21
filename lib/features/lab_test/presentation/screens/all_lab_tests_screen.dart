@@ -8,6 +8,7 @@ import 'package:rafiq/core/utils/image_url.dart';
 import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/core/widgets/custom_icon_button.dart';
 import 'package:rafiq/core/widgets/custom_refresh_indicator.dart';
+import 'package:rafiq/core/widgets/custom_screen_header.dart';
 import 'package:rafiq/core/widgets/empty_state_widget.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit.dart';
 
@@ -45,7 +46,7 @@ class _AllLabTestsScreenState extends State<AllLabTestsScreen> {
   Widget build(BuildContext context) {
     final appTheme = context.appTheme;
     return Scaffold(
-      appBar: CustomAppBar(title: const Text('All Lab Tests')),
+      appBar: CustomAppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         child: BlocBuilder<LabTestCubit, LabTestState>(
@@ -62,6 +63,15 @@ class _AllLabTestsScreenState extends State<AllLabTestsScreen> {
                 },
                 child: Column(
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: CustomScreenHeader(
+                        title: 'Lab Tests',
+                        description:
+                            'View and manage all your uploaded laboratory test results securely in one place.',
+                        total: 'Total Lab Tests: 0',
+                      ),
+                    ),
                     Expanded(
                       child: ListView(
                         physics: const AlwaysScrollableScrollPhysics(),
@@ -109,6 +119,15 @@ class _AllLabTestsScreenState extends State<AllLabTestsScreen> {
                 },
                 child: Column(
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: CustomScreenHeader(
+                        title: 'Lab Tests',
+                        description:
+                            'View and manage all your uploaded laboratory test results securely in one place.',
+                        total: 'Total Lab Tests: ${labTests.length}',
+                      ),
+                    ),
                     Expanded(
                       child: ListView.builder(
                         physics: const AlwaysScrollableScrollPhysics(),

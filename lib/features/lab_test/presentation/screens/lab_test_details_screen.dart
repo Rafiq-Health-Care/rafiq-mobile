@@ -4,7 +4,6 @@ import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_details_cubit/lab_test_details_cubit.dart';
-import 'package:rafiq/features/lab_test/controller/lab_test_uploading_cubit/lab_test_uploading_cubit.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/analysis_details_card.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/file_actions_button.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/lab_test_details_record_card.dart';
@@ -55,9 +54,9 @@ class _LabTestDetailsScreenState extends State<LabTestDetailsScreen> {
                         ),
                         FileActionsButton(
                           onClickDownload: () {
-                            LabTestUploadingCubit.get(
-                              context,
-                            ).downloadLabTestFile(details.fileId, context);
+                            // LabTestUploadingCubit.get(
+                            //   context,
+                            // ).downloadLabTestFile(details.fileId, context);
                           },
                           onClickDelete: () {
                             LabTestCubit.get(

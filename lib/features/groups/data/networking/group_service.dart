@@ -12,7 +12,7 @@ class GroupService {
   Future<Either<Failure, dynamic>> addGroup(GroupUpsertRequest request) async {
     try {
       final response = await _api.post(
-        ApiConstants.addGroup,
+        ApiConstants.group,
         data: request.toJson(),
       );
       return Right(response.data['data']);

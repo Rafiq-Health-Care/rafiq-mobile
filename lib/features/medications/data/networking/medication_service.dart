@@ -26,7 +26,7 @@ class MedicationService {
 
   Future<Either<Failure, dynamic>> getMedicinesDetails(String id) async {
     try {
-      final Response response = await _api.get('${ApiConstants.medicines}/$id');
+      final Response response = await _api.get('${ApiConstants.medicine}/$id');
       return Right(response.data);
     } catch (e) {
       return Left(e as Failure);
@@ -35,7 +35,7 @@ class MedicationService {
 
   Future<Either<Failure, void>> deleteMedicines(String id) async {
     try {
-      await _api.delete('${ApiConstants.medicines}/$id');
+      await _api.delete('${ApiConstants.medicine}/$id');
       return Right(null);
     } catch (e) {
       return Left(e as Failure);
@@ -47,7 +47,7 @@ class MedicationService {
   ) async {
     try {
       final Response response = await _api.post(
-        ApiConstants.addMedicines,
+        ApiConstants.medicine,
         data: request.toJson(),
       );
       return Right(response.data['data']);
@@ -61,7 +61,7 @@ class MedicationService {
   ) async {
     try {
       final Response response = await _api.get(
-        ApiConstants.medicines,
+        ApiConstants.medicine,
         queryParameters: request.toJson(),
       );
       return Right(response.data);
@@ -76,7 +76,7 @@ class MedicationService {
   ) async {
     try {
       final Response response = await _api.patch(
-        '${ApiConstants.medicines}/$id',
+        '${ApiConstants.medicine}/$id',
         data: request.toJson(),
       );
       return Right(response.data['data']);
@@ -89,7 +89,7 @@ class MedicationService {
     MedicinesBulkRequest request,
   ) async {
     try {
-      await _api.post(ApiConstants.bulkMedicines, data: request.toJson());
+      await _api.post(ApiConstants.bulkMedicine, data: request.toJson());
       return Right(null);
     } catch (e) {
       return Left(e as Failure);

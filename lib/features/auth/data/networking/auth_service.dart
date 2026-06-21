@@ -58,7 +58,7 @@ class AuthService {
     UserVerificationRequest body,
   ) async {
     try {
-      Response response = await _api.post(
+      Response response = await _api.patch(
         ApiConstants.userVerification,
         data: body.toJson(),
       );

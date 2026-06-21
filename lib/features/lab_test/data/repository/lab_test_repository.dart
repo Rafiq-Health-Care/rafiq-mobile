@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:rafiq/core/errors/failure.dart';
-import 'package:rafiq/features/lab_test/data/models/lab_test_file_response.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_get_all_request.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_get_all_response.dart';
 import 'package:rafiq/features/lab_test/data/models/lab_test_details_model.dart';
@@ -74,13 +73,13 @@ class LabTestRepository {
     );
   }
 
-  Future<Either<Failure, LabTestFileResponse>> getLAbTestFile(
-    String fileId,
-  ) async {
-    final rowData = await labTestService.getLabTestFile(fileId);
-    return rowData.fold(
-      (failure) => Left(failure),
-      (data) => Right(LabTestFileResponse.fromJson(data)),
-    );
-  }
+  // Future<Either<Failure, LabTestFileResponse>> getLAbTestFile(
+  //   String fileId,
+  // ) async {
+  //   final rowData = await labTestService.getLabTestFile(fileId);
+  //   return rowData.fold(
+  //     (failure) => Left(failure),
+  //     (data) => Right(LabTestFileResponse.fromJson(data)),
+  //   );
+  // }
 }
