@@ -4,6 +4,7 @@ import 'package:rafiq/core/errors/server_failure.dart';
 import 'package:rafiq/features/Consultation/data/data_source/remote_data_source.dart';
 import 'package:rafiq/features/Consultation/domain/entity/doctor_details_entity.dart';
 import 'package:rafiq/features/Consultation/domain/entity/paginated_doctors_entity.dart';
+import 'package:rafiq/features/Consultation/domain/entity/slot_pagination_entity.dart';
 import 'package:rafiq/features/Consultation/domain/repository/repository.dart';
 
 class RepositoryImpl implements Repository {
@@ -35,6 +36,24 @@ class RepositoryImpl implements Repository {
   }) async {
     try {
       final remoteData = await remoteDataSource.getDoctorDetails(id: id);
+      return Right(remoteData.toEntity());
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, SlotPaginationEntity>> patientSeeDoctorsSlots({
+    required String doctorId,
+    required int page,
+    required int size,
+  }) async {
+    try {
+      final remoteData = await remoteDataSource.patientSeeDoctorsSlots(
+        doctorId: doctorId,
+        page: page,
+        size: size,
+      );
       return Right(remoteData.toEntity());
     } catch (e) {
       return Left(ServerFailure(e.toString()));
