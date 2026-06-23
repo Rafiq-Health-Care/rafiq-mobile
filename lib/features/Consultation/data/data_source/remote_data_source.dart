@@ -2,6 +2,7 @@ import 'package:rafiq/core/networking/api_constants.dart';
 import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/features/Consultation/data/model/doctor_details_model.dart';
 import 'package:rafiq/features/Consultation/data/model/paginated_doctors_model.dart';
+import 'package:rafiq/features/Consultation/data/model/payment_model.dart';
 import 'package:rafiq/features/Consultation/data/model/slot_pagination_model.dart';
 
 abstract class RemoteDataSource {
@@ -16,6 +17,9 @@ abstract class RemoteDataSource {
     required String doctorId,
     required int page,
     required int size,
+  });
+  Future<PaymentModel> reserveConsultationSlot({
+    required Map<String, dynamic> reserveConsultationSlotBody,
   });
 }
 
@@ -54,5 +58,14 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       queryParameters: {'page': page, 'size': size},
     );
     return SlotPaginationModel.fromJson(response.data);
+  }
+  
+  @override
+  Future<PaymentModel> reserveConsultationSlot({required Map<String, dynamic> reserveConsultationSlotBody})async {
+    final response = await apiService.post(
+      ApiConstants.consultation,
+      data: reserveConsultationSlotBody,
+    );
+    return PaymentModel.fromJson(response.data);
   }
 }

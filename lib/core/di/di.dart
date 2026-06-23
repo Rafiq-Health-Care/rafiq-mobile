@@ -2,6 +2,8 @@ import 'package:get_it/get_it.dart';
 import 'package:rafiq/core/database/objectbox.dart';
 import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/core/services/background_tasks.dart';
+import 'package:rafiq/features/Consultation/domain/use_case/patient_see_doctor_slots_use_case.dart';
+import 'package:rafiq/features/Consultation/domain/use_case/reserve_consultation_slot_use_case.dart';
 import 'package:rafiq/features/auth/data/networking/auth_service.dart';
 import 'package:rafiq/features/auth/data/repository/auth_repository.dart';
 import 'package:rafiq/features/groups/data/networking/group_service.dart';
@@ -102,5 +104,13 @@ Future<void> setupDependencies() async {
   );
   getIt.registerLazySingleton<GetDoctorDetailsUseCase>(
     () => GetDoctorDetailsUseCase(getIt<Repository>()),
+  );
+
+  getIt.registerLazySingleton<PatientSeeDoctorSlotsUseCase>(
+    () => PatientSeeDoctorSlotsUseCase(getIt<Repository>()),
+  );
+
+  getIt.registerLazySingleton<ReserveConsultationSlotUseCase>(
+    () => ReserveConsultationSlotUseCase(getIt<Repository>()),
   );
 }

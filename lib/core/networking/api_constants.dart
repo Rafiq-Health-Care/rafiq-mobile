@@ -33,4 +33,5 @@ class ApiConstants {
   static const String doctorSearch = "/doctors/search";
   static const String doctor = "/doctors";
   static const String patientSeeDoctorsSlots = "/slot/doctor";
+  static const String consultation = "/consultation";
 }

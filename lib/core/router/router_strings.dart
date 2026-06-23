@@ -27,4 +27,6 @@ abstract class RouterStrings {
   static const String groupDetails = "/group_details";
   static const String searchDoctor = "/search_doctor";
   static const String doctorDetails = "/doctor_details";
+  static const String doctorSlots = "/doctor_slots";
+  static const String bookingConfirm = "/booking_confirm";
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/utils/extensions/formate_names.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
@@ -254,7 +255,10 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                       ),
                       ElevatedButton(
                         onPressed: () {
-                          
+                          Navigator.of(context).pushNamed(
+                            RouterStrings.doctorSlots,
+                            arguments: widget.doctor,
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: appTheme.deepDarkBlueColor,

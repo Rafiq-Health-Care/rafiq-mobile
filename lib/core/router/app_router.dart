@@ -5,9 +5,15 @@ import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/features/Consultation/domain/entity/doctor_entity.dart';
 import 'package:rafiq/features/Consultation/domain/use_case/get_doctor_details_use_case.dart';
+import 'package:rafiq/features/Consultation/domain/use_case/patient_see_doctor_slots_use_case.dart';
+import 'package:rafiq/features/Consultation/domain/use_case/reserve_consultation_slot_use_case.dart';
 import 'package:rafiq/features/Consultation/domain/use_case/search_doctors_use_case.dart';
+import 'package:rafiq/features/Consultation/presentation/controller/booking_confirm_cubit/booking_confirm_cubit.dart';
 import 'package:rafiq/features/Consultation/presentation/controller/search_doctor_cubit/search_doctor_cubit.dart';
 import 'package:rafiq/features/Consultation/presentation/controller/doctor_details_cubit/doctor_details_cubit.dart';
+import 'package:rafiq/features/Consultation/presentation/controller/slot_cubit/slot_cubit.dart';
+import 'package:rafiq/features/Consultation/presentation/screen/booking_confirm_screen.dart';
+import 'package:rafiq/features/Consultation/presentation/screen/doctor_slots_screen.dart';
 import 'package:rafiq/features/Consultation/presentation/screen/search_doctor_screen.dart';
 import 'package:rafiq/features/Consultation/presentation/screen/doctor_details_screen.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
@@ -333,6 +339,33 @@ class AppRouter {
               getDoctorDetailsUseCase: getIt<GetDoctorDetailsUseCase>(),
             )..getDoctorDetails(doctor.doctorId),
             child: DoctorDetailsScreen(doctor: doctor),
+          ),
+        );
+
+      case RouterStrings.doctorSlots:
+        final doctor = settings.arguments as DoctorEntity;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) => SlotCubit(
+              patientSeeDoctorSlotsUseCase:
+                  getIt<PatientSeeDoctorSlotsUseCase>(),
+            ),
+            child: DoctorSlotsScreen(doctor: doctor),
+          ),
+        );
+
+      case RouterStrings.bookingConfirm:
+        final args = settings.arguments as ConsultationArgs;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (context) => ReserveConsultationSlotCubit(
+              reserveConsultationSlotUseCase:
+                  getIt<ReserveConsultationSlotUseCase>(),
+            ),
+
+            child: BookingConfirmScreen(doctor: args.doctor, slot: args.slot),
           ),
         );
 

@@ -7,7 +7,7 @@ import 'package:rafiq/features/Consultation/domain/use_case/patient_see_doctor_s
 part 'slot_state.dart';
 
 class SlotCubit extends Cubit<SlotState> {
-  final PatientSeeDoctorsSlotsUseCase patientSeeDoctorSlotsUseCase;
+  final PatientSeeDoctorSlotsUseCase patientSeeDoctorSlotsUseCase;
   SlotCubit({required this.patientSeeDoctorSlotsUseCase})
     : super(SlotInitial());
 

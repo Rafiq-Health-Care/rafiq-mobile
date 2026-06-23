@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:rafiq/core/errors/failure.dart';
-import 'package:rafiq/core/errors/server_failure.dart';
 import 'package:rafiq/features/Consultation/data/data_source/remote_data_source.dart';
 import 'package:rafiq/features/Consultation/domain/entity/doctor_details_entity.dart';
 import 'package:rafiq/features/Consultation/domain/entity/paginated_doctors_entity.dart';
+import 'package:rafiq/features/Consultation/domain/entity/payment_entity.dart';
 import 'package:rafiq/features/Consultation/domain/entity/slot_pagination_entity.dart';
 import 'package:rafiq/features/Consultation/domain/repository/repository.dart';
 
@@ -26,7 +26,7 @@ class RepositoryImpl implements Repository {
       );
       return Right(remoteData.toEntity());
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(e as Failure);
     }
   }
 
@@ -38,7 +38,7 @@ class RepositoryImpl implements Repository {
       final remoteData = await remoteDataSource.getDoctorDetails(id: id);
       return Right(remoteData.toEntity());
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(e as Failure);
     }
   }
 
@@ -56,7 +56,21 @@ class RepositoryImpl implements Repository {
       );
       return Right(remoteData.toEntity());
     } catch (e) {
-      return Left(ServerFailure(e.toString()));
+      return Left(e as Failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, PaymentEntity>> reserveConsultationSlot({
+    required Map<String, dynamic> reserveConsultationSlotBody,
+  }) async {
+    try {
+      final remoteData = await remoteDataSource.reserveConsultationSlot(
+        reserveConsultationSlotBody: reserveConsultationSlotBody,
+      );
+      return Right(remoteData.toEntity());
+    } catch (e) {
+      return Left(e as Failure);
     }
   }
 }

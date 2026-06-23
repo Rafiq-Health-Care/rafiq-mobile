@@ -4,7 +4,7 @@ class DoctorEntity {
   final String lastName;
   final String specialization;
   final String? personalPhoto;
-  final String nextAvailable;
+  final DateTime nextAvailable;
   final double price;
   final double rating;
   final int yearsOfExperience;

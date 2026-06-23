@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/features/Consultation/domain/entity/doctor_entity.dart';
 
@@ -43,13 +44,16 @@ class DoctorCardWidget extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(50.r),
-                    child: doctor.personalPhoto != null && doctor.personalPhoto!.isNotEmpty
+                    child:
+                        doctor.personalPhoto != null &&
+                            doctor.personalPhoto!.isNotEmpty
                         ? Image.network(
                             doctor.personalPhoto!,
                             width: 54.w,
                             height: 54.h,
                             fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) => const DefaultDoctorAvatar(),
+                            errorBuilder: (context, error, stackTrace) =>
+                                const DefaultDoctorAvatar(),
                           )
                         : const DefaultDoctorAvatar(),
                   ),
@@ -89,7 +93,11 @@ class DoctorCardWidget extends StatelessWidget {
                         // Rating
                         Row(
                           children: [
-                            Icon(Icons.star, color: const Color(0xffF6CB05), size: 16.sp),
+                            Icon(
+                              Icons.star,
+                              color: const Color(0xffF6CB05),
+                              size: 16.sp,
+                            ),
                             SizedBox(width: 4.w),
                             Text(
                               doctor.rating.toStringAsFixed(1),
@@ -143,9 +151,7 @@ class DoctorCardWidget extends StatelessWidget {
           SizedBox(height: 12.h),
           // Availability
           Text(
-            doctor.nextAvailable.isNotEmpty
-                ? 'Available ${doctor.nextAvailable}'
-                : 'Available Today',
+            'Available ${DateFormat('EEEE, MMMM d, h:mm a').format(doctor.nextAvailable)}',
             style: TextStyle(
               fontFamily: 'Poppins',
               fontWeight: FontWeight.w500,
@@ -188,7 +194,10 @@ class DoctorCardWidget extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40.r),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.w,
+                    vertical: 8.h,
+                  ),
                   elevation: 0,
                 ),
                 icon: Icon(
@@ -222,11 +231,7 @@ class DefaultDoctorAvatar extends StatelessWidget {
       width: 54.w,
       height: 54.h,
       color: const Color(0xffE0CEFF),
-      child: Icon(
-        Icons.person,
-        size: 32.sp,
-        color: appTheme.deepDarkBlueColor,
-      ),
+      child: Icon(Icons.person, size: 32.sp, color: appTheme.deepDarkBlueColor),
     );
   }
 }

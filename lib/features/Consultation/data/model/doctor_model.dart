@@ -6,7 +6,7 @@ class DoctorModel {
   final String lastName;
   final String specialization;
   final String personalPhoto;
-  final String nextAvailable;
+  final DateTime nextAvailable;
   final double price;
   final double rating;
   final int yearsOfExperience;
@@ -30,7 +30,7 @@ class DoctorModel {
       lastName: json['lastName'] ?? '',
       specialization: json['specialization'] ?? '',
       personalPhoto: json['personalPhoto'] ?? '',
-      nextAvailable: json['nextAvailable'] ?? '',
+      nextAvailable: DateTime.parse(json['nextAvailable']),
       price: (json['price'] as num?)?.toDouble() ?? 0.0,
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
       yearsOfExperience: json['yearsOfExperience'] as int? ?? 0,
