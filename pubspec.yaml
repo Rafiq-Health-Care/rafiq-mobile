@@ -43,6 +43,7 @@ dependencies:
   flutter_bloc: ^9.1.1
   flutter_local_notifications: ^18.0.1
   flutter_screenutil: ^5.9.3
+  flutter_stripe: ^13.0.0
   flutter_svg: ^2.2.1
   font_awesome_flutter: ^10.9.1
   get_it: ^9.2.1

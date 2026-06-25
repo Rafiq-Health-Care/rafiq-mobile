@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rafiq/core/functions/make_payment.dart';
 import 'package:rafiq/core/functions/snack_bar_message.dart';
 import 'package:rafiq/core/widgets/custom_labeled_text_field.dart';
 import 'package:rafiq/core/widgets/custom_screen_header.dart';
@@ -45,7 +46,6 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: CustomAppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsetsDirectional.only(
@@ -81,9 +81,10 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
                 ReserveConsultationSlotCubit,
                 ReserveConsultationSlotState
               >(
-                listener: (context, state) {
+                listener: (context, state) async {
                   if (state is ReserveConsultationSlotSuccess) {
                     // Navigator.of(context).pushNamed(routeName)
+                    await makePayment(context, state.paymentEntity.paymentKey);
                   } else if (state is ReserveConsultationSlotFailure) {
                     SnackBarMessage.showErrorSnackBar(
                       context: context,
