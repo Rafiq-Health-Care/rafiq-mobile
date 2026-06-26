@@ -7,12 +7,16 @@ class RafiqPrimaryButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final IconData? icon;
+  final bool isLoading;
+  final Color? backgroundColor;
 
   const RafiqPrimaryButton({
     super.key,
     required this.text,
     required this.onPressed,
     this.icon = Icons.arrow_forward_rounded,
+    this.isLoading = false,
+    this.backgroundColor,
   });
 
   @override
@@ -21,9 +25,9 @@ class RafiqPrimaryButton extends StatelessWidget {
 
     return Container(
       width: context.width,
-      height: 56.h,
+      height: 60.h,
       decoration: BoxDecoration(
-        color: appTheme.cyanColor400,
+        color: backgroundColor ?? appTheme.cyanColor400,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -49,28 +53,30 @@ class RafiqPrimaryButton extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
               vertical: 16,
             ), // padding: 16px 0px
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // --- Text ---
-                Text(
-                  text,
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                    height: 24 / 16,
-                    color: Colors.white,
-                  ),
-                ),
+            child: isLoading
+                ? Center(child: CircularProgressIndicator())
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // --- Text ---
+                      Text(
+                        text,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16.sp,
+                          height: 24 / 16,
+                          color: Colors.white,
+                        ),
+                      ),
 
-                if (icon != null) ...[
-                  SizedBox(width: 8.w),
-                  Icon(icon, size: 15.sp, color: Colors.white),
-                ],
-              ],
-            ),
+                      if (icon != null) ...[
+                        SizedBox(width: 8.w),
+                        Icon(icon, size: 18.sp, color: Colors.white),
+                      ],
+                    ],
+                  ),
           ),
         ),
       ),

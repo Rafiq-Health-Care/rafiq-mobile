@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/functions/make_payment.dart';
 import 'package:rafiq/core/functions/snack_bar_message.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/widgets/custom_labeled_text_field.dart';
 import 'package:rafiq/core/widgets/custom_screen_header.dart';
 import 'package:rafiq/core/widgets/rafiq_primary_button.dart';
@@ -95,6 +96,7 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
                 builder: (context, state) {
                   return RafiqPrimaryButton(
                     text: 'Confirm Booking',
+                    icon: Icons.check_circle,
                     onPressed: () {
                       if (state is! ReserveConsultationSlotLoading) {
                         context
@@ -107,6 +109,8 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
                             );
                       }
                     },
+                    backgroundColor: context.appTheme.deepDarkBlueColor,
+                    isLoading: state is ReserveConsultationSlotLoading,
                   );
                 },
               ),

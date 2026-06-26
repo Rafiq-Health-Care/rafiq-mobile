@@ -26,4 +26,8 @@ class ImageUrl {
   final String work = 'assets/icons/work.svg';
   final String experience = 'assets/icons/experience.svg';
   final String education = 'assets/icons/education.svg';
+  final String date = 'assets/icons/date.svg';
+  final String time = 'assets/icons/time.svg';
+  final String duration = 'assets/icons/duration.svg';
+  final String fee = 'assets/icons/fee.svg';
 }
