@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 
 class CustomOutlinedButton extends StatelessWidget {
   final VoidCallback onPressed;
-  final Color foregroundColor;
+  final Color? foregroundColor;
   final Color borderSideColor;
   final Widget child;
-  
+  final double? borderRadius;
+
   const CustomOutlinedButton({
     super.key,
     required this.onPressed,
-    required this.foregroundColor,
+     this.foregroundColor,
     required this.borderSideColor,
     required this.child,
+    this.borderRadius,
   });
 
   @override
@@ -22,7 +24,9 @@ class CustomOutlinedButton extends StatelessWidget {
         foregroundColor: foregroundColor,
         side: BorderSide(color: borderSideColor),
         padding: const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadius ?? 12),
+        ),
       ),
       child: child,
     );

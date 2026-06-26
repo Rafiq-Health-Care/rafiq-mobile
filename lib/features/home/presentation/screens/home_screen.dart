@@ -96,6 +96,17 @@ class HomeScreen extends StatelessWidget {
                       Navigator.pushNamed(context, RouterStrings.searchDoctor);
                     },
                   ),
+                  HomeMenuItem(
+                    icon: Icons.notifications_active,
+                    label: 'consultation',
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(
+                        context,
+                        RouterStrings.patientConsultations,
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

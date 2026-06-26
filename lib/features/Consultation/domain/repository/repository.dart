@@ -1,9 +1,11 @@
 import 'package:dartz/dartz.dart';
 import 'package:rafiq/core/errors/failure.dart';
 import 'package:rafiq/features/Consultation/domain/entity/doctor_details_entity.dart';
+import 'package:rafiq/features/Consultation/domain/entity/paginated_consultation_entity.dart';
 import 'package:rafiq/features/Consultation/domain/entity/paginated_doctors_entity.dart';
 import 'package:rafiq/features/Consultation/domain/entity/payment_entity.dart';
 import 'package:rafiq/features/Consultation/domain/entity/slot_pagination_entity.dart';
+import 'package:rafiq/features/Consultation/domain/params/patient_consultation_params.dart';
 
 abstract class Repository {
   Future<Either<Failure, PaginatedDoctorsEntity>> searchDoctors({
@@ -24,5 +26,9 @@ abstract class Repository {
 
   Future<Either<Failure, PaymentEntity>> reserveConsultationSlot({
     required Map<String, dynamic> reserveConsultationSlotBody,
+  });
+
+  Future<Either<Failure, PaginatedConsultationEntity>> patientConsultations({
+    required PatientConsultationParams params,
   });
 }
