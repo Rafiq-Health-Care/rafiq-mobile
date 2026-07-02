@@ -21,12 +21,25 @@ tasks.register<Delete>("clean") {
 }
 
 subprojects {
+    // 1. تضبيط الـ NDK بالطريقة الذكية (بتاعت Agora) ومشي شغال للاثنين    
+    val subProject = this
+    subProject.plugins.withId("com.android.library") {
+        subProject.configure<com.android.build.gradle.BaseExtension> {
+            ndkVersion = "27.3.13750724" // الـ NDK بتاعك بدون أي تعارض
+        }
+    }
+    subProject.plugins.withId("com.android.application") {
+        subProject.configure<com.android.build.gradle.BaseExtension> {
+            ndkVersion = "27.3.13750724"
+        }
+    }
+
     // دالة داخلية لتطبيق الإعدادات بأمان
     val configureProject = {
         // 1. تضبيط الـ NDK بأمان بدون أخطاء
-        extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
-            ndkVersion = "27.3.13750724"
-        }
+        //extensions.findByType<com.android.build.gradle.BaseExtension>()?.apply {
+        //  ndkVersion = "27.3.13750724"
+        //}
         
         // 2. تعطيل فحص الـ AAR Metadata بالطريقة المتوافقة مع الـ Kotlin DSL
         tasks.matching { it.name.contains("checkAarMetadata", ignoreCase = true) }.configureEach {
