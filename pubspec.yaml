@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  agora_rtc_engine: ^6.5.4
   bloc: ^9.1.0
   cached_network_image: ^3.4.1
   cookie_jar: ^4.0.8

@@ -186,18 +186,18 @@ class ConsultationCard extends StatelessWidget {
                   child: OutlinedButton(
                     onPressed: () {},
                     style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Color(0xff0531F6)),
+                      side: BorderSide(color: appTheme.accentBlueColor),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40.r),
                       ),
                     ),
                     child: Text(
-                      "Reschedule",
+                      "Cancel",
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w500,
                         fontSize: 14.sp,
-                        color: const Color(0xff0531F6),
+                        color: appTheme.accentBlueColor,
                       ),
                     ),
                   ),
@@ -217,7 +217,7 @@ class ConsultationCard extends StatelessWidget {
                       ),
                     ),
                     child: Text(
-                      "Join",
+                      "Reschedule",
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w500,
