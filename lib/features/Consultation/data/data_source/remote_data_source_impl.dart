@@ -1,6 +1,7 @@
 import 'package:rafiq/core/networking/api_constants.dart';
 import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/features/Consultation/data/data_source/remote_data_source.dart';
+import 'package:rafiq/features/Consultation/data/model/consultation_details_model.dart';
 import 'package:rafiq/features/Consultation/data/model/doctor_details_model.dart';
 import 'package:rafiq/features/Consultation/data/model/paginated_doctors_model.dart';
 import 'package:rafiq/features/Consultation/data/model/paginated_consultation_model.dart';
@@ -66,5 +67,11 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       queryParameters: {'page': page, 'size': size},
     );
     return PaginatedConsultationModel.fromJson(response.data);
+  }
+
+  @override
+  Future<ConsultationDetailsModel> consultationDetails({required String id}) async{
+    final response = await apiService.get('${ApiConstants.consultation}/$id');
+    return ConsultationDetailsModel.fromJson(response.data);
   }
 }

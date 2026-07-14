@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rafiq/core/functions/make_payment.dart';
 import 'package:rafiq/core/functions/snack_bar_message.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/widgets/custom_labeled_text_field.dart';
@@ -13,6 +12,8 @@ import 'package:rafiq/features/Consultation/domain/params/reserve_consultation_s
 import 'package:rafiq/features/Consultation/presentation/controller/booking_confirm_cubit/booking_confirm_cubit.dart';
 import 'package:rafiq/features/Consultation/presentation/widget/consultation_details.dart';
 import 'package:rafiq/features/Consultation/presentation/widget/doctor_details_summary_card.dart';
+import 'package:rafiq/features/payment/payment_screen.dart';
+import 'package:rafiq/features/payment/price_item.dart';
 
 class ConsultationArgs {
   final DoctorEntity doctor;
@@ -85,7 +86,20 @@ class _BookingConfirmScreenState extends State<BookingConfirmScreen> {
                 listener: (context, state) async {
                   if (state is ReserveConsultationSlotSuccess) {
                     // Navigator.of(context).pushNamed(routeName)
-                    await makePayment(context, state.paymentEntity.paymentKey);
+                    // await makePayment(context, state.paymentEntity.paymentKey);
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => PaymentScreen(
+                          paymentClientSecret: state.paymentEntity.paymentKey,
+                          summary: ConsultationSummary(
+                            totalPrice: widget.doctor.price,
+                            tax: 0,
+                            insurance: 0,
+                            finalTotal: widget.doctor.price,
+                          ),
+                        ),
+                      ),
+                    );
                   } else if (state is ReserveConsultationSlotFailure) {
                     SnackBarMessage.showErrorSnackBar(
                       context: context,

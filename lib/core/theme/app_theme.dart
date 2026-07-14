@@ -13,6 +13,9 @@ class AppTheme extends ThemeExtension<AppTheme> {
   final Color softBlueColor;
   final Color fieldFillColor;
   final Color vibrantBlueColor;
+  final Color surfaceMutedColor;
+  final Color iconContainerColor;
+  final Color avatarBackgroundColor;
 
   final TextStyle headingLargeTextStyle;
   final TextStyle headingTextStyle;
@@ -26,6 +29,9 @@ class AppTheme extends ThemeExtension<AppTheme> {
   final TextStyle descriptionSmallTextStyle;
   final TextStyle popupMenuItemTextStyle;
   final TextStyle infoLabelTextStyle;
+  final TextStyle overlineTextStyle; 
+  final TextStyle valueTextStyle; 
+  final TextStyle captionTextStyle;
 
   final InputBorder textFieldBorder;
   const AppTheme({
@@ -41,8 +47,11 @@ class AppTheme extends ThemeExtension<AppTheme> {
     required this.softBlueColor,
     required this.fieldFillColor,
     required this.vibrantBlueColor,
-    required this.headingLargeTextStyle,
+    required this.surfaceMutedColor,
+    required this.iconContainerColor,
+    required this.avatarBackgroundColor,
 
+    required this.headingLargeTextStyle,
     required this.headingTextStyle,
     required this.bodyLargeTextStyle,
     required this.bodyTextStyle,
@@ -54,6 +63,10 @@ class AppTheme extends ThemeExtension<AppTheme> {
     required this.descriptionSmallTextStyle,
     required this.popupMenuItemTextStyle,
     required this.infoLabelTextStyle,
+    required this.overlineTextStyle, 
+    required this.valueTextStyle, 
+    required this.captionTextStyle,
+    
     required this.textFieldBorder,
   });
 
@@ -71,8 +84,11 @@ class AppTheme extends ThemeExtension<AppTheme> {
     Color? softBlueColor,
     Color? fieldFillColor,
     Color? vibrantBlueColor,
-    TextStyle? headingLargeTextStyle,
+    Color? surfaceMutedColor,
+    Color? iconContainerColor,
+    Color? avatarBackgroundColor,
 
+    TextStyle? headingLargeTextStyle,
     TextStyle? headingTextStyle,
     TextStyle? bodyLargeTextStyle,
     TextStyle? bodyTextStyle,
@@ -84,6 +100,10 @@ class AppTheme extends ThemeExtension<AppTheme> {
     TextStyle? descriptionSmallTextStyle,
     TextStyle? popupMenuItemTextStyle,
     TextStyle? infoLabelTextStyle,
+    TextStyle? overlineTextStyle, 
+    TextStyle? valueTextStyle, 
+    TextStyle? captionTextStyle,
+
     InputBorder? textFieldBorder,
   }) {
     return AppTheme(
@@ -99,6 +119,10 @@ class AppTheme extends ThemeExtension<AppTheme> {
       softBlueColor: softBlueColor ?? this.softBlueColor,
       fieldFillColor: fieldFillColor ?? this.fieldFillColor,
       vibrantBlueColor: vibrantBlueColor ?? this.vibrantBlueColor,
+      surfaceMutedColor: surfaceMutedColor ?? this.surfaceMutedColor,
+      iconContainerColor: iconContainerColor ?? this.iconContainerColor,
+      avatarBackgroundColor: avatarBackgroundColor ?? this.avatarBackgroundColor,
+
       headingLargeTextStyle:
           headingLargeTextStyle ?? this.headingLargeTextStyle,
       headingTextStyle: headingTextStyle ?? this.headingTextStyle,
@@ -116,6 +140,10 @@ class AppTheme extends ThemeExtension<AppTheme> {
       popupMenuItemTextStyle:
           popupMenuItemTextStyle ?? this.popupMenuItemTextStyle,
       infoLabelTextStyle: infoLabelTextStyle ?? this.infoLabelTextStyle,
+      overlineTextStyle: overlineTextStyle ?? this.overlineTextStyle, 
+      valueTextStyle: valueTextStyle ?? this.valueTextStyle, 
+      captionTextStyle: captionTextStyle ?? this.captionTextStyle,
+
       textFieldBorder: textFieldBorder ?? this.textFieldBorder,
     );
   }
@@ -148,6 +176,21 @@ class AppTheme extends ThemeExtension<AppTheme> {
       vibrantBlueColor: Color.lerp(
         vibrantBlueColor,
         other.vibrantBlueColor,
+        t,
+      )!,
+      surfaceMutedColor: Color.lerp(
+        surfaceMutedColor,
+        other.surfaceMutedColor,
+        t,
+      )!,
+      iconContainerColor: Color.lerp(
+        iconContainerColor,
+        other.iconContainerColor,
+        t,
+      )!,
+      avatarBackgroundColor: Color.lerp(
+        avatarBackgroundColor,
+        other.avatarBackgroundColor,
         t,
       )!,
 
@@ -206,6 +249,21 @@ class AppTheme extends ThemeExtension<AppTheme> {
       infoLabelTextStyle: TextStyle.lerp(
         infoLabelTextStyle,
         other.infoLabelTextStyle,
+        t,
+      )!,
+      overlineTextStyle: TextStyle.lerp(
+        overlineTextStyle,
+        other.overlineTextStyle,
+        t,
+      )!,
+      valueTextStyle: TextStyle.lerp(
+        valueTextStyle,
+        other.valueTextStyle,
+        t,
+      )!,
+      captionTextStyle: TextStyle.lerp(
+        captionTextStyle,
+        other.captionTextStyle,
         t,
       )!,
 

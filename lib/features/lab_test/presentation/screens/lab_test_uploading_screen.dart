@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/utils/image_url.dart';
@@ -33,6 +34,7 @@ class _LabTestUploadingScreenState extends State<LabTestUploadingScreen> {
     final appTheme = context.appTheme;
 
     return Scaffold(
+      backgroundColor: Color(0xffF3F6FB),
       appBar: CustomAppBar(title: const Text('Upload Lab Test')),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -41,18 +43,31 @@ class _LabTestUploadingScreenState extends State<LabTestUploadingScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const Spacer(),
-            Image.asset(ImageUrl().uploadFile, height: 120, width: 120),
-            const SizedBox(height: 40),
-            const Text(
-              'Upload Your Lab Test',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Select a file to upload your lab test results.',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey),
+            Container(
+              height: 380.h,
+              decoration: BoxDecoration(
+                color: appTheme.surfaceColor,
+                borderRadius: BorderRadius.circular(24.r),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(ImageUrl().uploadFile, height: 120, width: 120),
+                  const SizedBox(height: 40),
+                  const Text(
+                    'Upload Your Lab Test',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Select a file to upload your lab test results.',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
             ),
             const Spacer(),
             ValueListenableBuilder<PlatformFile?>(
@@ -80,6 +95,7 @@ class _LabTestUploadingScreenState extends State<LabTestUploadingScreen> {
                       },
                       label: !isPicked ? 'Select File' : 'Change File',
                       icon: Icons.upload_file,
+                      backgroundColor: appTheme.surfaceColor,
                     ),
                     const SizedBox(height: 16),
                     SizedBox(

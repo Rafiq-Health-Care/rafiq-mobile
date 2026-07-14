@@ -3,8 +3,12 @@ import 'package:workmanager/workmanager.dart';
 import 'package:rafiq/core/services/notification_service.dart';
 import 'package:rafiq/core/database/objectbox.dart';
 import 'package:rafiq/features/medications/data/models/medicine_object_box_model.dart';
+import 'package:rafiq/features/medications/data/models/medicine_entity.dart';
+import 'package:rafiq/core/services/session_manager.dart';
+import 'package:rafiq/core/services/medication_encryption_service.dart';
 import 'package:rafiq/core/services/i_background_service.dart';
 import 'package:rafiq/objectbox.g.dart';
+import 'dart:convert';
 
 @pragma('vm:entry-point')
 void callbackDispatcher() {
@@ -12,12 +16,37 @@ void callbackDispatcher() {
     try {
       final objectBox = await ObjectBox.create();
       final store = objectBox.store;
-      final box = store.box<MedicineObjectBoxModel>();
+      final box = store.box<MedicineEntity>();
 
-      final activeMedicines = box
-          .query(MedicineObjectBoxModel_.status.equals('active'))
+      final currentUserEmail = await SessionManager.getCurrentUserEmail() ?? 'default_user';
+
+      final activeEntities = box
+          .query(
+            MedicineEntity_.status.equals('active')
+            .and(MedicineEntity_.userEmail.equals(currentUserEmail)),
+          )
           .build()
           .find();
+
+      final encryptionService = MedicationEncryptionService();
+      final activeMedicines = <MedicineObjectBoxModel>[];
+      for (var entity in activeEntities) {
+        try {
+          final decryptedJsonString = await encryptionService.decrypt(entity.encryptedData, entity.userEmail);
+          final decryptedMap = json.decode(decryptedJsonString) as Map<String, dynamic>;
+          final medicine = MedicineObjectBoxModel.fromJson(
+            decryptedMap,
+            objectBoxID: entity.objectBoxID,
+            id: entity.apiId,
+            status: entity.status,
+          );
+          activeMedicines.add(medicine);
+        } catch (e) {
+          if (kDebugMode) {
+            print('Failed to decrypt medicine ${entity.apiId}: $e');
+          }
+        }
+      }
 
       final notificationService = NotificationService.instance;
       await notificationService.initialize();

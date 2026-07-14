@@ -1,3 +1,4 @@
+import 'package:rafiq/features/Consultation/data/model/consultation_details_model.dart';
 import 'package:rafiq/features/Consultation/data/model/doctor_details_model.dart';
 import 'package:rafiq/features/Consultation/data/model/paginated_consultation_model.dart';
 import 'package:rafiq/features/Consultation/data/model/paginated_doctors_model.dart';
@@ -25,4 +26,5 @@ abstract class RemoteDataSource {
     required int size,
     required String status,
   });
+  Future<ConsultationDetailsModel> consultationDetails({required String id});
 }

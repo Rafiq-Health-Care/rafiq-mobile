@@ -17,6 +17,7 @@ class PickedFileInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTheme = context.appTheme;
     return Card(
+      color: appTheme.surfaceColor,
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: ListTile(

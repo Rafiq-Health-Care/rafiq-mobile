@@ -29,7 +29,7 @@ class DoctorModel {
       firstName: json['firstName'] ?? '',
       lastName: json['lastName'] ?? '',
       specialization: json['specialization'] ?? '',
-      personalPhoto: json['personalPhoto'] ?? '',
+      personalPhoto: json['personalPhoto'] ?? "https://i.postimg.cc/2ycZ7LrZ/ahmed.png",
       nextAvailable: DateTime.parse(json['nextAvailable']),
       price: (json['price'] as num?)?.toDouble() ?? 0.0,
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,

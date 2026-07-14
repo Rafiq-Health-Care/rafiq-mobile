@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/utils/extensions/formate_names.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
@@ -134,7 +135,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                                             subtitle: xp.hospital,
                                             description: xp.description,
                                             years:
-                                                '${xp.startYear} - ${xp.endYear}',
+                                                '${DateFormat('yyyy').format(xp.startYear)} - ${DateFormat('yyyy').format(xp.endYear)}',
                                           ),
                                         )
                                         .toList(),
@@ -154,7 +155,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                                             title: edu.degree,
                                             subtitle: edu.university,
                                             years:
-                                                '${edu.startYear} - ${edu.endYear}',
+                                                '${DateFormat('yyyy').format(edu.startYear)} - ${DateFormat('yyyy').format(edu.endYear)}',
                                           ),
                                         )
                                         .toList(),

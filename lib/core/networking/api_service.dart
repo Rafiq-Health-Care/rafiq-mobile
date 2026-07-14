@@ -11,6 +11,9 @@ import 'package:rafiq/core/networking/interceptors/cookie_logger_interceptor.dar
 import 'package:rafiq/core/networking/interceptors/refresh_interceptor.dart';
 import 'package:uuid/uuid.dart';
 import 'api_constants.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:hive_cookie_store/hive_cookie_store.dart';
+import 'package:hive_ce/hive.dart' as hive_ce;
 
 class ApiService {
   static final ApiService instance = ApiService._internal();
@@ -27,11 +30,42 @@ class ApiService {
   }
 
   Future<void> initialize() async {
+    // 1. Initialize Hive for Flutter
+    await Hive.initFlutter();
+
+    // 2. Initialize hive_ce for the cookie store (since hive_cookie_store uses hive_ce)
     final appDocDir = await getApplicationDocumentsDirectory();
-    final cookiePath = '${appDocDir.path}/.cookies/';
+    hive_ce.Hive.init(appDocDir.path);
+
+    // 3. Setup HiveCookieStorage with encryption cipher
+    // We use EncryptionHelper.generateCipher directly to handle key creation and persistence.
+    final cipher = await EncryptionHelper.generateCipher(key: 'secure_cookie_encryption_key');
+
+    // 4. Eagerly open/verify the box as Box<String> to match HiveCookieStorage's type definition.
+    // If opening fails (e.g., due to key/decryption mismatch), delete and recreate it.
+    try {
+      await hive_ce.Hive.openBox<String>('secure_cookies_box', encryptionCipher: cipher);
+    } catch (e) {
+      if (kDebugMode) {
+        print('⚠️ Failed to open secure_cookies_box: $e. Recreating...');
+      }
+      try {
+        await hive_ce.Hive.deleteBoxFromDisk('secure_cookies_box');
+      } catch (deleteError) {
+        if (kDebugMode) {
+          print('⚠️ Failed to delete secure_cookies_box from disk: $deleteError');
+        }
+      }
+      await hive_ce.Hive.openBox<String>('secure_cookies_box', encryptionCipher: cipher);
+    }
+
+    final storage = HiveCookieStorage(
+      boxName: 'secure_cookies_box',
+      encryptionCipher: cipher,
+    );
 
     _cookieJar = PersistCookieJar(
-      storage: FileStorage(cookiePath),
+      storage: storage,
       ignoreExpires: false, // Respect cookie expiration dates
     );
 

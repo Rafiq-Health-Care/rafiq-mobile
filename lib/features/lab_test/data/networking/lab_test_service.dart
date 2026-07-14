@@ -69,15 +69,15 @@ class LabTestService {
     }
   }
 
-  Future<Either<Failure, dynamic>> saveLabTestResults(
+  Future<Either<Failure, void>> saveLabTestResults(
     LabTestResultsModel body,
   ) async {
     try {
-      Response response = await _api.post(
+      await _api.post(
         ApiConstants.labTestResults,
         data: body.toJson(),
       );
-      return Right(response.data);
+      return Right(null);
     } catch (e) {
       return Left(e as Failure);
     }

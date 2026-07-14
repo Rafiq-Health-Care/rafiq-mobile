@@ -27,7 +27,7 @@ class GroupRepository {
     final rawData = await groupService.getGroupDetails(groupId);
     return rawData.fold(
       (failure) => Left(failure),
-      (data) => Right(GroupContentModel.fromJson(data)),
+      (data) => Right(GroupContentModel.fromJsonForDetails(data)),
     );
   }
 

@@ -1,10 +1,11 @@
-import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rafiq/core/di/di.dart';
-import 'package:rafiq/features/call/domain/event/agora_call_event.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rafiq/core/utils/extensions/snack_bar_extension.dart';
 import 'package:rafiq/features/call/presentation/controller/call_cubit/call_cubit.dart';
 import 'package:rafiq/features/call/presentation/widget/call_control_bar.dart';
+import 'package:rafiq/features/call/presentation/widget/local_video.dart';
+import 'package:rafiq/features/call/presentation/widget/remote_video.dart';
 
 class CallScreen extends StatefulWidget {
   const CallScreen({super.key});
@@ -14,15 +15,20 @@ class CallScreen extends StatefulWidget {
 }
 
 class _CallScreenState extends State<CallScreen> {
+  late final CallCubit callCubit;
   @override
   void initState() {
     super.initState();
-    context.read<CallCubit>().joinCall(
-      consultationId: '',
-      isVideoOn: true,
-      isAudioOn: true,
-      uid: 0,
-    );
+    callCubit = context.read<CallCubit>();
+    callCubit.joinCall();
+  }
+
+  @override
+  void dispose() {
+    if (callCubit.state is! CallEnd) {
+      callCubit.endCall();
+    }
+    super.dispose();
   }
 
   @override
@@ -31,7 +37,7 @@ class _CallScreenState extends State<CallScreen> {
       body: BlocConsumer<CallCubit, CallState>(
         listener: (context, state) {
           if (state is CallFailure) {
-            print("CallFailure: ${state.message}");
+            context.showErrorSnackBar(message: state.message);
           }
           if (state is CallEnd) {
             Navigator.pop(context);
@@ -41,38 +47,17 @@ class _CallScreenState extends State<CallScreen> {
           if (state is CallSuccess) {
             return Stack(
               children: [
-                Center(child: _remoteVideo(state)),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: SizedBox(
-                    width: 100,
-                    height: 150,
-                    child: Center(
-                      child: AgoraVideoView(
-                        controller: VideoViewController(
-                          rtcEngine: getIt<RtcEngine>(),
-                          canvas: VideoCanvas(uid: state.callEntity.uid),
-                        ),
-                      ),
-                    ),
-                  ),
+                Center(child: RemoteVideo(callEvent: state.event,channelId: state.channelId)),
+                Positioned(
+                  top: kToolbarHeight.h,
+                  right: 12.w,
+                  child: LocalVideo(callParams: state.callParams),
                 ),
-                Align(
-                  alignment: Alignment.bottomCenter,
-                  child: CallControlBar(
-                    onToggleMic: () async {
-                      await context.read<CallCubit>().toggleAudio();
-                    },
-                    onToggleVideo: () async {
-                      await context.read<CallCubit>().toggleVideo();
-                    },
-                    onEndCall: () async {
-                      await context.read<CallCubit>().endCall(
-                        consultationId: '',
-                      );
-                    },
-                  ),
-                  // ControlButtons(callEntity: state.callEntity),
+                Positioned(
+                  bottom: 15.h,
+                  left: 8.w,
+                  right: 8.w,
+                  child: CallControlBar(callParams: state.callParams),
                 ),
               ],
             );
@@ -86,23 +71,5 @@ class _CallScreenState extends State<CallScreen> {
         },
       ),
     );
-  }
-
-  Widget _remoteVideo(CallSuccess state) {
-    final event = state.event;
-    if (event is UserJoinedEvent) {
-      return AgoraVideoView(
-        controller: VideoViewController.remote(
-          rtcEngine: getIt<RtcEngine>(),
-          canvas: VideoCanvas(uid: event.uid),
-          connection: RtcConnection(channelId: state.callEntity.channelName),
-        ),
-      );
-    } else {
-      return const Text(
-        'Please wait for remote user to join',
-        textAlign: TextAlign.center,
-      );
-    }
   }
 }

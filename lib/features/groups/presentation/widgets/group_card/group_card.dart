@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/features/groups/data/models/group_content_model.dart';
+import 'package:rafiq/features/groups/presentation/utils/group_color_palette.dart';
 import 'package:rafiq/features/groups/presentation/widgets/group_card/group_actions.dart';
 import 'package:rafiq/features/groups/presentation/widgets/group_card/group_dates.dart';
 import 'package:rafiq/features/groups/presentation/widgets/group_card/group_header.dart';
@@ -42,7 +43,7 @@ class GroupCard extends StatelessWidget {
               height: 150.h,
               width: 30.w,
               decoration: BoxDecoration(
-                color: appTheme.softBlueColor,
+                color: GroupColorPalette.getColorFromEnum(group.color),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(14.r),
                   bottomLeft: Radius.circular(14.r),

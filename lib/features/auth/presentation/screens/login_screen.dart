@@ -11,6 +11,7 @@ import 'package:rafiq/features/auth/presentation/sections/media_auth_section.dar
 import 'package:rafiq/features/auth/presentation/widgets/horizontal_text_divider.dart';
 import 'package:rafiq/features/auth/presentation/widgets/text_with_action_link.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
+import 'package:rafiq/features/home/params/user_role_enum.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -81,6 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (state is LogInSuccess) {
                       Navigator.of(context).pushNamedAndRemoveUntil(
                         RouterStrings.home,
+                        arguments: UserRoleEnum.fromString(state.role),
                         (route) => false,
                       );
                     } else if (state is AuthFailure) {

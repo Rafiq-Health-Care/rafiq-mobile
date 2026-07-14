@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/features/auth/data/models/reset_password_request.dart';
-import 'package:rafiq/features/auth/data/repository/auth_repository.dart';
+import 'package:rafiq/features/auth/data/networking/repository/auth_repository.dart';
 
 part 'password_management_state.dart';
 

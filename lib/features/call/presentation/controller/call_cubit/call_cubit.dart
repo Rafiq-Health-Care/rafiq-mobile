@@ -2,11 +2,12 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:rafiq/features/call/domain/entity/call_entity.dart';
+import 'package:rafiq/features/call/domain/params/call_params.dart';
 import 'package:rafiq/features/call/domain/event/agora_call_event.dart';
 import 'package:rafiq/features/call/domain/use_case/call_events_use_case.dart';
 import 'package:rafiq/features/call/domain/use_case/join_call_use_case.dart';
 import 'package:rafiq/features/call/domain/use_case/leave_call_use_case.dart';
+import 'package:rafiq/features/call/domain/use_case/start_preview_use_case.dart';
 import 'package:rafiq/features/call/domain/use_case/toggle_audio_use_case.dart';
 import 'package:rafiq/features/call/domain/use_case/toggle_video_use_case.dart';
 part 'call_state.dart';
@@ -16,9 +17,11 @@ class CallCubit extends Cubit<CallState> {
   final LeaveCallUseCase leaveCallUseCase;
   final ToggleAudioUseCase toggleAudioUseCase;
   final ToggleVideoUseCase toggleVideoUseCase;
+  final StartPreviewUseCase startPreviewUseCase;
   final CallEventsUseCase callEventsUseCase;
   StreamSubscription<AgoraCallEvent>? _eventSubscription;
   CallCubit({
+    required this.startPreviewUseCase,
     required this.joinCallUseCase,
     required this.leaveCallUseCase,
     required this.toggleAudioUseCase,
@@ -26,12 +29,7 @@ class CallCubit extends Cubit<CallState> {
     required this.callEventsUseCase,
   }) : super(CallInitial());
 
-  Future<void> joinCall({
-    required String consultationId,
-    required bool isVideoOn,
-    required bool isAudioOn,
-    required int uid,
-  }) async {
+  Future<void> startPreview(CallParams callParams) async {
     emit(CallLoading());
     final permission = await [
       Permission.microphone,
@@ -49,16 +47,31 @@ class CallCubit extends Cubit<CallState> {
       return;
     }
 
+    final result = await startPreviewUseCase.call();
+    result.fold((failure) => emit(CallFailure(message: failure.message)), (_) {
+      emit(PreviewSuccess(callParams: callParams));
+      _listenToCallEvents();
+    });
+  }
+
+  Future<void> joinCall() async {
+    final currentState = state;
+    if (currentState is! PreviewSuccess) return;
+
+    emit(CallLoading());
+
     final result = await joinCallUseCase.call(
-      consultationId: consultationId,
-      isVideoOn: isVideoOn,
-      isAudioOn: isAudioOn,
-      uid: uid,
+      consultationId: currentState.callParams.consultationId,
+      uid: currentState.callParams.uid,
     );
-    result.fold((failure) => emit(CallFailure(message: failure.message)), (
-      callEntity,
-    ) {
-      emit(CallSuccess(event: LocalJoinedEvent(), callEntity: callEntity));
+    result.fold((failure) => emit(CallFailure(message: failure.message)), (channelId) {
+      emit(
+        CallSuccess(
+          event: LocalJoinedEvent(),
+          callParams: currentState.callParams,
+          channelId: channelId,
+        ),
+      );
       _listenToCallEvents();
     });
   }
@@ -75,53 +88,93 @@ class CallCubit extends Cubit<CallState> {
 
   Future<void> toggleAudio() async {
     final currentState = state;
-    if (currentState is! CallSuccess) return;
-    final result = await toggleAudioUseCase.call(
-      isAudioOn: !currentState.callEntity.isAudioOn,
-    );
-    result.fold(
-      (failure) {
-        emit(CallFailure(message: failure.message));
-      },
-      (_) {
-        emit(
-          currentState.copyWith(
-            callEntity: currentState.callEntity.copyWith(
-              isAudioOn: !currentState.callEntity.isAudioOn,
+    if (currentState is CallSuccess) {
+      final result = await toggleAudioUseCase.call(
+        isAudioOn: !currentState.callParams.isAudioOn,
+      );
+      result.fold(
+        (failure) {
+          emit(CallFailure(message: failure.message));
+        },
+        (_) {
+          emit(
+            currentState.copyWith(
+              callParams: currentState.callParams.copyWith(
+                isAudioOn: !currentState.callParams.isAudioOn,
+              ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
+    }
+    if (currentState is PreviewSuccess) {
+      final result = await toggleAudioUseCase.call(
+        isAudioOn: !currentState.callParams.isAudioOn,
+      );
+      result.fold(
+        (failure) {
+          emit(CallFailure(message: failure.message));
+        },
+        (_) {
+          emit(
+            PreviewSuccess(
+              callParams: currentState.callParams.copyWith(
+                isAudioOn: !currentState.callParams.isAudioOn,
+              ),
+            ),
+          );
+        },
+      );
+    }
   }
 
   Future<void> toggleVideo() async {
     final currentState = state;
-    if (currentState is! CallSuccess) return;
-    final result = await toggleVideoUseCase.call(
-      isVideoOn: !currentState.callEntity.isVideoOn,
-    );
-    result.fold(
-      (failure) {
-        emit(CallFailure(message: failure.message));
-      },
-      (_) {
-        emit(
-          currentState.copyWith(
-            callEntity: currentState.callEntity.copyWith(
-              isVideoOn: !currentState.callEntity.isVideoOn,
+    if (currentState is CallSuccess) {
+      final result = await toggleVideoUseCase.call(
+        isVideoOn: !currentState.callParams.isVideoOn,
+      );
+      result.fold(
+        (failure) {
+          emit(CallFailure(message: failure.message));
+        },
+        (_) {
+          emit(
+            currentState.copyWith(
+              callParams: currentState.callParams.copyWith(
+                isVideoOn: !currentState.callParams.isVideoOn,
+              ),
             ),
-          ),
-        );
-      },
-    );
+          );
+        },
+      );
+    }
+    if (currentState is PreviewSuccess) {
+      final result = await toggleVideoUseCase.call(
+        isVideoOn: !currentState.callParams.isVideoOn,
+      );
+      result.fold(
+        (failure) {
+          emit(CallFailure(message: failure.message));
+        },
+        (_) {
+          emit(
+            PreviewSuccess(
+              callParams: currentState.callParams.copyWith(
+                isVideoOn: !currentState.callParams.isVideoOn,
+              ),
+            ),
+          );
+        },
+      );
+    }
   }
 
-  Future<void> endCall({required String consultationId}) async {
+  Future<void> endCall() async {
     final currentState = state;
     if (currentState is! CallSuccess) return;
     final result = await leaveCallUseCase.call(
-      consultationId: currentState.callEntity.channelName,
+      consultationId: currentState.callParams.consultationId,
     );
     result.fold(
       (failure) => emit(CallFailure(message: failure.message)),

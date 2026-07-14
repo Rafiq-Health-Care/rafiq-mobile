@@ -28,6 +28,7 @@ class FileActionsButton extends StatelessWidget {
             onPress: onClickDownload,
             label: 'Download File',
             icon: Icons.download,
+            backgroundColor: appTheme.surfaceColor,
           ),
         ),
         SizedBox(width: 2),

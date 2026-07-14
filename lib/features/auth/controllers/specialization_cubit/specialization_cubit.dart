@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rafiq/features/auth/data/repository/auth_repository.dart';
+import 'package:rafiq/features/auth/data/networking/repository/auth_repository.dart';
 part 'specialization_state.dart';
 
 class SpecializationCubit extends Cubit<SpecializationState> {

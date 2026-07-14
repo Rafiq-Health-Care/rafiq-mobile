@@ -3,8 +3,8 @@ import 'package:rafiq/features/Consultation/domain/entity/doctor_details_entity.
 class EducationModel {
   final String degree;
   final String university;
-  final int startYear;
-  final int endYear;
+  final DateTime startYear;
+  final DateTime endYear;
 
   const EducationModel({
     required this.degree,
@@ -17,8 +17,12 @@ class EducationModel {
     return EducationModel(
       degree: json['degree'] ?? '',
       university: json['university'] ?? '',
-      startYear: json['startYear'] ?? 0,
-      endYear: json['endYear'] ?? 0,
+      startYear: json['startDate'] != null
+          ? DateTime.parse(json['startDate'].toString())
+          : DateTime.now(),
+      endYear: json['endDate'] != null
+          ? DateTime.parse(json['endDate'].toString())
+          : DateTime.now(),
     );
   }
 
@@ -44,8 +48,8 @@ class EducationModel {
 class ExperienceModel {
   final String position;
   final String hospital;
-  final int startYear;
-  final int endYear;
+  final DateTime startYear;
+  final DateTime endYear;
   final String description;
 
   const ExperienceModel({
@@ -60,8 +64,12 @@ class ExperienceModel {
     return ExperienceModel(
       position: json['position'] ?? '',
       hospital: json['hospital'] ?? '',
-      startYear: json['startYear'] ?? 0,
-      endYear: json['endYear'] ?? 0,
+      startYear: json['startDate'] != null
+          ? DateTime.parse(json['startDate'].toString())
+          : DateTime.now(),
+      endYear: json['endDate'] != null
+          ? DateTime.parse(json['endDate'].toString())
+          : DateTime.now(),
       description: json['description'] ?? '',
     );
   }

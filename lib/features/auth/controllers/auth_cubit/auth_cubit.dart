@@ -6,7 +6,7 @@ import 'package:rafiq/features/auth/data/models/patient_sign_up_request.dart';
 import 'package:rafiq/features/auth/data/models/user_response.dart';
 import 'package:rafiq/features/auth/data/models/user_sign_up_body.dart';
 import 'package:rafiq/features/auth/data/models/user_verification_request.dart';
-import 'package:rafiq/features/auth/data/repository/auth_repository.dart';
+import 'package:rafiq/features/auth/data/networking/repository/auth_repository.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -23,7 +23,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
     response.fold(
       (failure) => emit(AuthFailure(failure.message)),
-      (success) => emit(DoctorSignUpSuccess()),
+      (success) => emit(DoctorSignUpSuccess(role: 'doctor')),
     );
   }
 
@@ -34,7 +34,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
     response.fold(
       (failure) => emit(AuthFailure(failure.message)),
-      (success) => emit(PatientSignUpSuccess()),
+      (success) => emit(PatientSignUpSuccess(role: 'patient')),
     );
   }
 
@@ -45,7 +45,7 @@ class AuthCubit extends Cubit<AuthState> {
       userResponse,
     ) {
       this.userResponse = userResponse;
-      emit(LogInSuccess());
+      emit(LogInSuccess(role: userResponse.roles));
     });
   }
 

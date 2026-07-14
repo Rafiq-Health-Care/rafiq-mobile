@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:objectbox/objectbox.dart';
 import 'package:rafiq/features/medications/data/enums/medicine_status_enum.dart';
 import 'package:rafiq/features/medications/data/enums/medicine_type_enum.dart';
 import 'package:rafiq/features/medications/data/models/medicines_details_model.dart';
 import 'package:rafiq/features/medications/presentation/enums/week_days.dart';
 
-@Entity()
 class MedicineObjectBoxModel {
-  @Id()
   int objectBoxID;
 
   final String id; // from API (String in existing models)
@@ -80,6 +77,44 @@ class MedicineObjectBoxModel {
     return selectedWeeklyDaysInts.map((i) {
       return WeekDays.values.firstWhere((d) => d.dayNumber == i);
     }).toList();
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'dosage': dosage,
+      'startDate': startDate.toIso8601String(),
+      'endDate': endDate?.toIso8601String(),
+      'type': type,
+      'notes': notes,
+      'doseTimesStrings': doseTimesStrings,
+      'frequency': frequency,
+      'selectedWeeklyDaysInts': selectedWeeklyDaysInts,
+      'customInterval': customInterval,
+    };
+  }
+
+  factory MedicineObjectBoxModel.fromJson(
+    Map<String, dynamic> json, {
+    required int objectBoxID,
+    required String id,
+    required String status,
+  }) {
+    return MedicineObjectBoxModel(
+      objectBoxID: objectBoxID,
+      id: id,
+      name: json['name'] as String,
+      dosage: json['dosage'] as String,
+      startDate: DateTime.parse(json['startDate'] as String),
+      endDate: json['endDate'] != null ? DateTime.parse(json['endDate'] as String) : null,
+      type: json['type'] as String?,
+      status: status,
+      notes: json['notes'] as String?,
+      doseTimesStrings: List<String>.from(json['doseTimesStrings'] as List),
+      frequency: json['frequency'] as String,
+      selectedWeeklyDaysInts: List<int>.from(json['selectedWeeklyDaysInts'] as List),
+      customInterval: json['customInterval'] as int?,
+    );
   }
 
   @override

@@ -14,93 +14,45 @@ import 'package:objectbox/internal.dart'
 import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
-import 'features/medications/data/models/medicine_object_box_model.dart';
+import 'features/medications/data/models/medicine_entity.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
 final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
-    id: const obx_int.IdUid(1, 7768628635660357013),
-    name: 'MedicineObjectBoxModel',
-    lastPropertyId: const obx_int.IdUid(24, 816540448144724395),
+    id: const obx_int.IdUid(2, 8291714512488286130),
+    name: 'MedicineEntity',
+    lastPropertyId: const obx_int.IdUid(5, 2277127078062080438),
     flags: 0,
     properties: <obx_int.ModelProperty>[
       obx_int.ModelProperty(
-        id: const obx_int.IdUid(1, 4220230178406858809),
+        id: const obx_int.IdUid(1, 2972913938570541984),
         name: 'objectBoxID',
         type: 6,
         flags: 1,
       ),
       obx_int.ModelProperty(
-        id: const obx_int.IdUid(2, 7877846591538032837),
-        name: 'id',
+        id: const obx_int.IdUid(2, 5503882446672202598),
+        name: 'apiId',
         type: 9,
         flags: 0,
       ),
       obx_int.ModelProperty(
-        id: const obx_int.IdUid(3, 7406869334810307877),
-        name: 'name',
+        id: const obx_int.IdUid(3, 1068312268792641598),
+        name: 'userEmail',
         type: 9,
         flags: 0,
       ),
       obx_int.ModelProperty(
-        id: const obx_int.IdUid(4, 4281897016612523578),
-        name: 'dosage',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(5, 64806723711354131),
-        name: 'startDate',
-        type: 10,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(6, 4948589142224755999),
-        name: 'endDate',
-        type: 10,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(7, 4079466097281231093),
-        name: 'type',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(8, 1420540025662427916),
+        id: const obx_int.IdUid(4, 3056262963093514980),
         name: 'status',
         type: 9,
         flags: 0,
       ),
       obx_int.ModelProperty(
-        id: const obx_int.IdUid(9, 6230799157140055628),
-        name: 'notes',
+        id: const obx_int.IdUid(5, 2277127078062080438),
+        name: 'encryptedData',
         type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(10, 8213018171037882677),
-        name: 'doseTimesStrings',
-        type: 30,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(11, 9074415681171311096),
-        name: 'frequency',
-        type: 9,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(12, 5814219871142235366),
-        name: 'selectedWeeklyDaysInts',
-        type: 27,
-        flags: 0,
-      ),
-      obx_int.ModelProperty(
-        id: const obx_int.IdUid(13, 8686114294138418875),
-        name: 'customInterval',
-        type: 6,
         flags: 0,
       ),
     ],
@@ -152,11 +104,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
     // Typically, this is done with `dart run build_runner build`.
     generatorVersion: obx_int.GeneratorVersion.v2025_12_16,
     entities: _entities,
-    lastEntityId: const obx_int.IdUid(1, 7768628635660357013),
+    lastEntityId: const obx_int.IdUid(2, 8291714512488286130),
     lastIndexId: const obx_int.IdUid(0, 0),
     lastRelationId: const obx_int.IdUid(0, 0),
     lastSequenceId: const obx_int.IdUid(0, 0),
-    retiredEntityUids: const [],
+    retiredEntityUids: const [7768628635660357013],
     retiredIndexUids: const [],
     retiredPropertyUids: const [
       2710202074535320957,
@@ -170,6 +122,19 @@ obx_int.ModelDefinition getObjectBoxModel() {
       3576073966702581452,
       3866135810803336202,
       816540448144724395,
+      4220230178406858809,
+      7877846591538032837,
+      7406869334810307877,
+      4281897016612523578,
+      64806723711354131,
+      4948589142224755999,
+      4079466097281231093,
+      1420540025662427916,
+      6230799157140055628,
+      8213018171037882677,
+      9074415681171311096,
+      5814219871142235366,
+      8686114294138418875,
     ],
     retiredRelationUids: const [],
     modelVersion: 5,
@@ -178,117 +143,55 @@ obx_int.ModelDefinition getObjectBoxModel() {
   );
 
   final bindings = <Type, obx_int.EntityDefinition>{
-    MedicineObjectBoxModel: obx_int.EntityDefinition<MedicineObjectBoxModel>(
+    MedicineEntity: obx_int.EntityDefinition<MedicineEntity>(
       model: _entities[0],
-      toOneRelations: (MedicineObjectBoxModel object) => [],
-      toManyRelations: (MedicineObjectBoxModel object) => {},
-      getId: (MedicineObjectBoxModel object) => object.objectBoxID,
-      setId: (MedicineObjectBoxModel object, int id) {
+      toOneRelations: (MedicineEntity object) => [],
+      toManyRelations: (MedicineEntity object) => {},
+      getId: (MedicineEntity object) => object.objectBoxID,
+      setId: (MedicineEntity object, int id) {
         object.objectBoxID = id;
       },
-      objectToFB: (MedicineObjectBoxModel object, fb.Builder fbb) {
-        final idOffset = fbb.writeString(object.id);
-        final nameOffset = fbb.writeString(object.name);
-        final dosageOffset = fbb.writeString(object.dosage);
-        final typeOffset = object.type == null
-            ? null
-            : fbb.writeString(object.type!);
+      objectToFB: (MedicineEntity object, fb.Builder fbb) {
+        final apiIdOffset = fbb.writeString(object.apiId);
+        final userEmailOffset = fbb.writeString(object.userEmail);
         final statusOffset = fbb.writeString(object.status);
-        final notesOffset = object.notes == null
-            ? null
-            : fbb.writeString(object.notes!);
-        final doseTimesStringsOffset = fbb.writeList(
-          object.doseTimesStrings.map(fbb.writeString).toList(growable: false),
-        );
-        final frequencyOffset = fbb.writeString(object.frequency);
-        final selectedWeeklyDaysIntsOffset = fbb.writeListInt64(
-          object.selectedWeeklyDaysInts,
-        );
-        fbb.startTable(25);
+        final encryptedDataOffset = fbb.writeString(object.encryptedData);
+        fbb.startTable(6);
         fbb.addInt64(0, object.objectBoxID);
-        fbb.addOffset(1, idOffset);
-        fbb.addOffset(2, nameOffset);
-        fbb.addOffset(3, dosageOffset);
-        fbb.addInt64(4, object.startDate.millisecondsSinceEpoch);
-        fbb.addInt64(5, object.endDate?.millisecondsSinceEpoch);
-        fbb.addOffset(6, typeOffset);
-        fbb.addOffset(7, statusOffset);
-        fbb.addOffset(8, notesOffset);
-        fbb.addOffset(9, doseTimesStringsOffset);
-        fbb.addOffset(10, frequencyOffset);
-        fbb.addOffset(11, selectedWeeklyDaysIntsOffset);
-        fbb.addInt64(12, object.customInterval);
+        fbb.addOffset(1, apiIdOffset);
+        fbb.addOffset(2, userEmailOffset);
+        fbb.addOffset(3, statusOffset);
+        fbb.addOffset(4, encryptedDataOffset);
         fbb.finish(fbb.endTable());
         return object.objectBoxID;
       },
       objectFromFB: (obx.Store store, ByteData fbData) {
         final buffer = fb.BufferContext(fbData);
         final rootOffset = buffer.derefObject(0);
-        final endDateValue = const fb.Int64Reader().vTableGetNullable(
-          buffer,
-          rootOffset,
-          14,
-        );
         final objectBoxIDParam = const fb.Int64Reader().vTableGet(
           buffer,
           rootOffset,
           4,
           0,
         );
-        final idParam = const fb.StringReader(
+        final apiIdParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGet(buffer, rootOffset, 6, '');
-        final nameParam = const fb.StringReader(
+        final userEmailParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGet(buffer, rootOffset, 8, '');
-        final dosageParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 10, '');
-        final startDateParam = DateTime.fromMillisecondsSinceEpoch(
-          const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
-        );
-        final endDateParam = endDateValue == null
-            ? null
-            : DateTime.fromMillisecondsSinceEpoch(endDateValue);
-        final typeParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGetNullable(buffer, rootOffset, 16);
         final statusParam = const fb.StringReader(
           asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 18, '');
-        final notesParam = const fb.StringReader(
+        ).vTableGet(buffer, rootOffset, 10, '');
+        final encryptedDataParam = const fb.StringReader(
           asciiOptimization: true,
-        ).vTableGetNullable(buffer, rootOffset, 20);
-        final doseTimesStringsParam = const fb.ListReader<String>(
-          fb.StringReader(asciiOptimization: true),
-          lazy: false,
-        ).vTableGet(buffer, rootOffset, 22, []);
-        final frequencyParam = const fb.StringReader(
-          asciiOptimization: true,
-        ).vTableGet(buffer, rootOffset, 24, '');
-        final selectedWeeklyDaysIntsParam = const fb.ListReader<int>(
-          fb.Int64Reader(),
-          lazy: false,
-        ).vTableGet(buffer, rootOffset, 26, []);
-        final customIntervalParam = const fb.Int64Reader().vTableGetNullable(
-          buffer,
-          rootOffset,
-          28,
-        );
-        final object = MedicineObjectBoxModel(
+        ).vTableGet(buffer, rootOffset, 12, '');
+        final object = MedicineEntity(
           objectBoxID: objectBoxIDParam,
-          id: idParam,
-          name: nameParam,
-          dosage: dosageParam,
-          startDate: startDateParam,
-          endDate: endDateParam,
-          type: typeParam,
+          apiId: apiIdParam,
+          userEmail: userEmailParam,
           status: statusParam,
-          notes: notesParam,
-          doseTimesStrings: doseTimesStringsParam,
-          frequency: frequencyParam,
-          selectedWeeklyDaysInts: selectedWeeklyDaysIntsParam,
-          customInterval: customIntervalParam,
+          encryptedData: encryptedDataParam,
         );
 
         return object;
@@ -299,73 +202,30 @@ obx_int.ModelDefinition getObjectBoxModel() {
   return obx_int.ModelDefinition(model, bindings);
 }
 
-/// [MedicineObjectBoxModel] entity fields to define ObjectBox queries.
-class MedicineObjectBoxModel_ {
-  /// See [MedicineObjectBoxModel.objectBoxID].
-  static final objectBoxID = obx.QueryIntegerProperty<MedicineObjectBoxModel>(
+/// [MedicineEntity] entity fields to define ObjectBox queries.
+class MedicineEntity_ {
+  /// See [MedicineEntity.objectBoxID].
+  static final objectBoxID = obx.QueryIntegerProperty<MedicineEntity>(
     _entities[0].properties[0],
   );
 
-  /// See [MedicineObjectBoxModel.id].
-  static final id = obx.QueryStringProperty<MedicineObjectBoxModel>(
+  /// See [MedicineEntity.apiId].
+  static final apiId = obx.QueryStringProperty<MedicineEntity>(
     _entities[0].properties[1],
   );
 
-  /// See [MedicineObjectBoxModel.name].
-  static final name = obx.QueryStringProperty<MedicineObjectBoxModel>(
+  /// See [MedicineEntity.userEmail].
+  static final userEmail = obx.QueryStringProperty<MedicineEntity>(
     _entities[0].properties[2],
   );
 
-  /// See [MedicineObjectBoxModel.dosage].
-  static final dosage = obx.QueryStringProperty<MedicineObjectBoxModel>(
+  /// See [MedicineEntity.status].
+  static final status = obx.QueryStringProperty<MedicineEntity>(
     _entities[0].properties[3],
   );
 
-  /// See [MedicineObjectBoxModel.startDate].
-  static final startDate = obx.QueryDateProperty<MedicineObjectBoxModel>(
+  /// See [MedicineEntity.encryptedData].
+  static final encryptedData = obx.QueryStringProperty<MedicineEntity>(
     _entities[0].properties[4],
   );
-
-  /// See [MedicineObjectBoxModel.endDate].
-  static final endDate = obx.QueryDateProperty<MedicineObjectBoxModel>(
-    _entities[0].properties[5],
-  );
-
-  /// See [MedicineObjectBoxModel.type].
-  static final type = obx.QueryStringProperty<MedicineObjectBoxModel>(
-    _entities[0].properties[6],
-  );
-
-  /// See [MedicineObjectBoxModel.status].
-  static final status = obx.QueryStringProperty<MedicineObjectBoxModel>(
-    _entities[0].properties[7],
-  );
-
-  /// See [MedicineObjectBoxModel.notes].
-  static final notes = obx.QueryStringProperty<MedicineObjectBoxModel>(
-    _entities[0].properties[8],
-  );
-
-  /// See [MedicineObjectBoxModel.doseTimesStrings].
-  static final doseTimesStrings =
-      obx.QueryStringVectorProperty<MedicineObjectBoxModel>(
-        _entities[0].properties[9],
-      );
-
-  /// See [MedicineObjectBoxModel.frequency].
-  static final frequency = obx.QueryStringProperty<MedicineObjectBoxModel>(
-    _entities[0].properties[10],
-  );
-
-  /// See [MedicineObjectBoxModel.selectedWeeklyDaysInts].
-  static final selectedWeeklyDaysInts =
-      obx.QueryIntegerVectorProperty<MedicineObjectBoxModel>(
-        _entities[0].properties[11],
-      );
-
-  /// See [MedicineObjectBoxModel.customInterval].
-  static final customInterval =
-      obx.QueryIntegerProperty<MedicineObjectBoxModel>(
-        _entities[0].properties[12],
-      );
 }

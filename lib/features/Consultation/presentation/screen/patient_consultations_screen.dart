@@ -28,8 +28,8 @@ class _PatientConsultationsScreenState
   );
   final List<ConsultationStatusEnum> stateTabs = [
     ConsultationStatusEnum.upcoming,
+    ConsultationStatusEnum.live,
     ConsultationStatusEnum.completed,
-    ConsultationStatusEnum.pending,
   ];
 
   @override

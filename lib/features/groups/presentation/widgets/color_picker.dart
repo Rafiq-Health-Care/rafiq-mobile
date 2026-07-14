@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 
 class ColorPicker extends StatelessWidget {
-  final ValueNotifier<Color> selectedColorNotifier;
+  final ValueNotifier<int> selectedColorNotifier;
   final List<Color> colors;
 
   const ColorPicker({
@@ -20,16 +20,21 @@ class ColorPicker extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Color', style: appTheme.textFieldLabelTextStyle),
-        ValueListenableBuilder<Color>(
+        ValueListenableBuilder<int>(
           valueListenable: selectedColorNotifier,
-          builder: (context, selectedColor, _) {
+          builder: (context, selectedColorIndex, _) {
             return Wrap(
               spacing: 8.r,
               runSpacing: 8.r,
-              children: colors.map((color) {
-                final isSelected = color.toARGB32() == selectedColor.toARGB32();
+              children: List.generate(colors.length, (index) {
+                final color = colors[index];
+                final isSelected = index == selectedColorIndex;
                 return GestureDetector(
-                  onTap: () => selectedColorNotifier.value = color,
+                  onTap: () {
+                    if (!isSelected) {
+                      selectedColorNotifier.value = index;
+                    }
+                  },
                   child: Container(
                     width: 30.r,
                     height: 30.r,

@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:rafiq/core/errors/failure.dart';
+import 'package:rafiq/core/services/session_manager.dart';
 import 'package:rafiq/features/auth/data/models/doctor_sign_up_request.dart';
 import 'package:rafiq/features/auth/data/models/login_request.dart';
 import 'package:rafiq/features/auth/data/models/patient_sign_up_request.dart';
@@ -18,7 +19,10 @@ class AuthRepository {
     final rowData = await authService.login(body);
     return rowData.fold(
       (failure) => left(failure),
-      (rowData) => right(UserResponse.fromJson(rowData)),
+      (rowData) async {
+        await SessionManager.setCurrentUserEmail(body.email);
+        return right(UserResponse.fromJson(rowData));
+      },
     );
   }
 
@@ -56,7 +60,10 @@ class AuthRepository {
     final rowData = await authService.userVerification(body);
     return rowData.fold(
       (failure) => left(failure),
-      (rowData) => right(UserResponse.fromJson(rowData)),
+      (rowData) async {
+        await SessionManager.setCurrentUserEmail(body.email);
+        return right(UserResponse.fromJson(rowData));
+      },
     );
   }
 

@@ -35,7 +35,11 @@ class ApiConstants {
   static const String patientSeeDoctorsSlots = "/slot/doctor";
   static const String consultation = "/consultation";
   static const String patientConsultations = "/consultation/patient";
+  static String cancelConsultation(String id) => "/consultation/$id/cancel";
 
   static String getEnterCall(String id) => "/consultations/$id/call/enter";
   static String getLeaveCall(String id) => "/consultations/$id/call/leave";
+
+  static String doctorSchedule = '/slot/schedule/search';
+  static String slot = '/slot';
 }

@@ -7,10 +7,10 @@ class LandingService {
   final ApiService apiService;
   LandingService({required this.apiService});
 
-  Future<Either<Failure, void>> refresh() async {
+  Future<Either<Failure, String>> refresh() async {
     try {
-      await apiService.post(ApiConstants.authRefresh);
-      return Right(null);
+      final response = await apiService.post(ApiConstants.authRefresh);
+      return Right(response.data['role']);
     } catch (e) {
       return Left(e as Failure);
     }

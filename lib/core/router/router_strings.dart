@@ -30,4 +30,12 @@ abstract class RouterStrings {
   static const String doctorSlots = "/doctor_slots";
   static const String bookingConfirm = "/booking_confirm";
   static const String patientConsultations = "/patient_consultations";
+  static const String consultationDetails = "/consultation_details";
+  static const String consultationReady = "/consultation_ready";
+  static const String callPreviewScreen = "/call_preview_screen";
+  static const String callScreen = "/call_screen";
+  static const String weeklySchedule = '/weekly_schedule';
+  static const String chatbot = '/chatbot';
+  static const String doctorConsultationDetails = '/doctor_consultation_details';
+
 }

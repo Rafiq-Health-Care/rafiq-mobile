@@ -3,13 +3,11 @@ import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 
 class AnalysisDetailsCard extends StatelessWidget {
-  final String patientName;
   final DateTime testDate;
   final String laboratory;
 
   const AnalysisDetailsCard({
     super.key,
-    required this.patientName,
     required this.testDate,
     required this.laboratory,
   });
@@ -19,6 +17,7 @@ class AnalysisDetailsCard extends StatelessWidget {
     final appTheme = context.appTheme;
     return Card(
       margin: EdgeInsets.zero,
+      color: appTheme.surfaceColor,
       child: Padding(
         padding: const EdgeInsets.all(8),
         child: SizedBox(
@@ -35,7 +34,6 @@ class AnalysisDetailsCard extends StatelessWidget {
                 ),
               ),
               SizedBox(),
-              _item('Patient Name: ', patientName, appTheme),
               _item('Test Date: ', testDate.toString().split(' ')[0], appTheme),
               _item('Laboratory: ', laboratory, appTheme),
             ],

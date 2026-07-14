@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/functions/snack_bar_message.dart';
-import 'package:rafiq/core/router/router_strings.dart';
+import 'package:rafiq/core/utils/extensions/navigation_extension.dart';
 import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_details_cubit/lab_test_details_cubit.dart';
@@ -115,10 +115,8 @@ class _LabTestConfirmAndUpdateScreenState
             listener: (context, state) {
               if (state is LabTestSuccess && !_isUpdate) {
                 LabTestCubit.get(context).getAllLabTests(isRefresh: true);
-                Navigator.popUntil(
-                  context,
-                  ModalRoute.withName(RouterStrings.allLabTests),
-                );
+                context.navigateBack();
+                context.navigateBack();
               } else if (state is LabTestError) {
                 snackBarMessage(context, 'Error: ${state.message}');
               }

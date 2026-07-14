@@ -16,7 +16,7 @@ void main() async {
       "pk_test_51TWCI7KGdiK21vXxdxqWoQgquDX4HEAVWTtrgmVq2AUNNEwMQMNcY2ETjS9SaRzUbxfz8EtmABnYGjQ6SbDGua5900rUIV8RrM";
 
   // تأكيد الإعدادات
-  // await Stripe.instance.applySettings();
+  await Stripe.instance.applySettings();
   runApp(Rafiq());
 }
 

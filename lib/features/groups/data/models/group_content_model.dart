@@ -36,9 +36,23 @@ class GroupContentModel extends Equatable {
       iconUrl: json['iconUrl'],
       medicineCount: json['medicineCount'],
       medicines: [],
-      // List<AllMedicinesContentModel>.from(
-      //   json['medicines'].map((x) => AllMedicinesContentModel.fromJson(x)),
-      // ),
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: DateTime.parse(json['updatedAt']),
+    );
+  }
+
+  factory GroupContentModel.fromJsonForDetails(Map<String, dynamic> json) {
+    return GroupContentModel(
+      id: json['id'],
+      patientId: json['userId'],
+      name: json['name'],
+      description: json['description'],
+      color: json['color'],
+      iconUrl: json['iconUrl'],
+      medicineCount: json['medicineCount'],
+      medicines: List<AllMedicinesContentModel>.from(
+        json['medicines'].map((x) => AllMedicinesContentModel.fromJson(x)),
+      ),
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
     );

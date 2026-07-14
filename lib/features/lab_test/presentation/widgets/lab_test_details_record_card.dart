@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/features/lab_test/data/models/test_model.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/lab_test_status.dart';
 
@@ -11,6 +12,7 @@ class LabTestDetailsRecordCard extends StatelessWidget {
     return Card(
       margin: EdgeInsets.zero,
       elevation: 2,
+      color: context.appTheme.surfaceColor,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 6),
         child: ListTile(

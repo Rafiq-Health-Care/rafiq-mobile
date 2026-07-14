@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
+import 'package:flutter/foundation.dart';
 import 'package:rafiq/core/constants/secure.dart';
 import 'package:rafiq/features/call/data/data_source/agora_data_source.dart';
 import 'package:rafiq/features/call/domain/event/agora_call_event.dart';
@@ -19,7 +20,7 @@ class AgoraDataSourceImpl implements AgoraDataSource {
     await _engine.initialize(
       const RtcEngineContext(
         appId: agoraAppId,
-        channelProfile: ChannelProfileType.channelProfileLiveBroadcasting,
+        channelProfile: ChannelProfileType.channelProfileCommunication,
       ),
     );
 
@@ -37,9 +38,21 @@ class AgoraDataSourceImpl implements AgoraDataSource {
         onTokenPrivilegeWillExpire: (_, String token) {
           _eventStreamController.add(ConnectionStateChangedEvent(token));
         },
+        onError: (err, msg) {
+          if (kDebugMode) {
+            print('Error in Agora $err => $msg');
+          }
+        },
       ),
     );
     await _engine.setClientRole(role: ClientRoleType.clientRoleBroadcaster);
+  }
+
+  @override
+  Future<void> startPreview() async {
+    await _engine.enableVideo();
+    await _engine.enableAudio();
+    await _engine.startPreview();
   }
 
   @override
@@ -47,13 +60,7 @@ class AgoraDataSourceImpl implements AgoraDataSource {
     required String token,
     required String channelId,
     required int uid,
-    required bool isVideoOn,
-    required bool isAudioOn,
   }) async {
-    isVideoOn ? await _engine.enableVideo() : await _engine.disableVideo();
-    isAudioOn ? await _engine.enableAudio() : await _engine.disableAudio();
-    await _engine.startPreview();
-
     await _engine.joinChannel(
       token: token,
       channelId: channelId,
@@ -77,5 +84,6 @@ class AgoraDataSourceImpl implements AgoraDataSource {
   @override
   Future<void> toggleVideo({required bool isVideoOn}) async {
     await _engine.muteLocalVideoStream(!isVideoOn);
+    isVideoOn ? await _engine.startPreview() : await _engine.stopPreview();
   }
 }

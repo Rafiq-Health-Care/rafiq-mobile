@@ -46,6 +46,7 @@ class _AllLabTestsScreenState extends State<AllLabTestsScreen> {
   Widget build(BuildContext context) {
     final appTheme = context.appTheme;
     return Scaffold(
+      backgroundColor: Color(0xffF3F6FB),
       appBar: CustomAppBar(),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -128,30 +129,36 @@ class _AllLabTestsScreenState extends State<AllLabTestsScreen> {
                         total: 'Total Lab Tests: ${labTests.length}',
                       ),
                     ),
+                    SizedBox(height: 16.h),
                     Expanded(
                       child: ListView.builder(
                         physics: const AlwaysScrollableScrollPhysics(),
+                        padding: EdgeInsets.zero,
                         controller: _scrollController,
                         itemCount:
                             labTests.length + (cubit.isLoadingMore ? 1 : 0),
                         itemBuilder: (context, index) {
                           if (index < labTests.length) {
                             final test = labTests[index];
-                            return Card(
-                              child: ListTile(
-                                title: Text(
-                                  test.name,
-                                  style: appTheme.bodyLargeTextStyle.copyWith(
-                                    color: appTheme.deepDarkBlueColor,
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 5.h),
+                              child: Card(
+                                color: appTheme.surfaceColor,
+                                child: ListTile(
+                                  title: Text(
+                                    test.name,
+                                    style: appTheme.bodyLargeTextStyle.copyWith(
+                                      color: appTheme.deepDarkBlueColor,
+                                    ),
                                   ),
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                      context,
+                                      RouterStrings.labTestDetails,
+                                      arguments: test.testId,
+                                    );
+                                  },
                                 ),
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                    context,
-                                    RouterStrings.labTestDetails,
-                                    arguments: test.testId,
-                                  );
-                                },
                               ),
                             );
                           } else {

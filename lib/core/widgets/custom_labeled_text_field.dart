@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 
 class CustomLabeledTextField extends StatelessWidget {
-  final String label;
+  final String? label;
   final String hint;
   final bool isOptional;
   final TextEditingController controller;
@@ -19,14 +19,16 @@ class CustomLabeledTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
   final void Function(String)? onFieldSubmitted;
+  final TextStyle? labelTextStyle;
+  final Color? fillColor;
 
-  const CustomLabeledTextField({
+  const CustomLabeledTextField( {
     super.key,
     required this.hint,
     required this.controller,
     this.validator,
     this.keyboardType = TextInputType.text,
-    required this.label,
+    this.label,
     this.isOptional = false,
     this.inputFormatters,
     this.prefixText,
@@ -37,6 +39,8 @@ class CustomLabeledTextField extends StatelessWidget {
     this.focusNode,
     this.textInputAction,
     this.onFieldSubmitted,
+    this.labelTextStyle,
+    this.fillColor,
   });
 
   @override
@@ -52,7 +56,11 @@ class CustomLabeledTextField extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (labelIcon != null) labelIcon!,
-            Text(label, style: appTheme.textFieldLabelTextStyle),
+            if (label != null)
+              Text(
+                label!,
+                style: labelTextStyle ?? appTheme.textFieldLabelTextStyle,
+              ),
             if (isOptional)
               Text(
                 '(Optional)',
@@ -85,7 +93,7 @@ class CustomLabeledTextField extends StatelessWidget {
                 ),
               ),
               hintStyle: appTheme.textFieldHintTextStyle,
-              fillColor: appTheme.fieldFillColor,
+              fillColor: fillColor ?? appTheme.fieldFillColor,
               filled: true,
               prefixIcon: prefixIcon,
             ),

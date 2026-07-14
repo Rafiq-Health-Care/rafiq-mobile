@@ -26,7 +26,7 @@ class ConsultationModel {
       consultationId: json['consultationId'],
       doctorName: json['doctorName'] ?? 'no_name',
       doctorBio: json['doctorBio'] ?? 'no_bio',
-      doctorImage: json['doctorImage'] ?? '',
+      doctorImage: json['doctorImage'] ?? "https://i.postimg.cc/2ycZ7LrZ/ahmed.png",
       startTime: DateTime.parse(json['startTime']),
       duration: json['duration'],
       summaryId: json['summaryId'] ?? 'no_summary_yet',

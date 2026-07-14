@@ -6,12 +6,14 @@ class CustomScreenHeader extends StatelessWidget {
   final String title;
   final String description;
   final String? total;
+  final Color? totalColor;
 
   const CustomScreenHeader({
     super.key,
     required this.title,
     required this.description,
     this.total,
+    this.totalColor,
   });
 
   @override
@@ -38,13 +40,14 @@ class CustomScreenHeader extends StatelessWidget {
                   vertical: 8,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
+                  color:
+                      totalColor?.withValues(alpha: 0.2) ?? Colors.blue.shade50,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
                   total!,
                   style: TextStyle(
-                    color: Colors.blue.shade400,
+                    color: totalColor ?? Colors.blue.shade400,
                     fontWeight: FontWeight.w700,
                     fontSize: 13.sp,
                   ),

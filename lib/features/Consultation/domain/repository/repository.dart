@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:rafiq/core/errors/failure.dart';
+import 'package:rafiq/features/Consultation/domain/entity/consultation_details_entity.dart';
 import 'package:rafiq/features/Consultation/domain/entity/doctor_details_entity.dart';
 import 'package:rafiq/features/Consultation/domain/entity/paginated_consultation_entity.dart';
 import 'package:rafiq/features/Consultation/domain/entity/paginated_doctors_entity.dart';
@@ -30,5 +31,9 @@ abstract class Repository {
 
   Future<Either<Failure, PaginatedConsultationEntity>> patientConsultations({
     required PatientConsultationParams params,
+  });
+
+  Future<Either<Failure, ConsultationDetailsEntity>> consultationDetails({
+    required String id,
   });
 }

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:rafiq/core/errors/failure.dart';
 import 'package:rafiq/features/Consultation/data/data_source/remote_data_source.dart';
+import 'package:rafiq/features/Consultation/domain/entity/consultation_details_entity.dart';
 import 'package:rafiq/features/Consultation/domain/entity/doctor_details_entity.dart';
 import 'package:rafiq/features/Consultation/domain/entity/paginated_consultation_entity.dart';
 import 'package:rafiq/features/Consultation/domain/entity/paginated_doctors_entity.dart';
@@ -86,6 +87,18 @@ class RepositoryImpl implements Repository {
         size: params.size,
         status: params.status.name.toUpperCase(),
       );
+      return Right(remoteData.toEntity());
+    } catch (e) {
+      return Left(e as Failure);
+    }
+  }
+
+  @override
+  Future<Either<Failure, ConsultationDetailsEntity>> consultationDetails({
+    required String id,
+  }) async {
+    try {
+      final remoteData = await remoteDataSource.consultationDetails(id: id);
       return Right(remoteData.toEntity());
     } catch (e) {
       return Left(e as Failure);

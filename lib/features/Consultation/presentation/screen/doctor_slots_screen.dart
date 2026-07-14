@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/widgets/custom_refresh_indicator.dart';
+import 'package:rafiq/core/widgets/custom_screen_header.dart';
 import 'package:rafiq/features/Consultation/domain/entity/doctor_entity.dart';
 import 'package:rafiq/features/Consultation/domain/params/patient_see_doctor_slots_params.dart';
 import 'package:rafiq/features/Consultation/presentation/controller/slot_cubit/slot_cubit.dart';
+import 'package:rafiq/features/Consultation/presentation/widget/doctor_details_summary_card.dart';
 import 'package:rafiq/features/Consultation/presentation/widget/slot_card.dart';
 import 'package:rafiq/features/Consultation/presentation/widget/slots_loading_skeleton.dart'; // Ideal for formatting DateTime strings smoothly
 
@@ -53,16 +56,6 @@ class _DoctorSlotsScreenState extends State<DoctorSlotsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[50],
-      appBar: AppBar(
-        title: const Text(
-          'Available Appointments',
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        foregroundColor: Colors.black,
-      ),
       body: BlocBuilder<SlotCubit, SlotState>(
         builder: (context, state) {
           if (state is SlotLoading) {
@@ -78,30 +71,56 @@ class _DoctorSlotsScreenState extends State<DoctorSlotsScreen> {
               return _buildEmptyWidget();
             }
 
-            return CustomRefreshIndicator(
-              onRefresh: _onRefresh,
-              child: ListView.builder(
-                controller: _scrollController,
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                itemCount: state.slots.length + (state.isLastPage ? 0 : 1),
-                itemBuilder: (context, index) {
-                  if (index < state.slots.length) {
-                    final slot = state.slots[index];
-                    return SlotCard(slot: slot, doctor: widget.doctor);
-                  } else {
-                    // Bottom pagination loader placeholder
-                    return const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 24.0),
-                      child: Center(
-                        child: CircularProgressIndicator(strokeWidth: 2.5),
+            return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.w),
+              child: CustomRefreshIndicator(
+                onRefresh: _onRefresh,
+                child: CustomScrollView(
+                  controller: _scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: kToolbarHeight),
+                        child: CustomScreenHeader(
+                          title: "Available Appointments",
+                          description: "Select a slot to book an appointment",
+                        ),
                       ),
-                    );
-                  }
-                },
+                    ),
+                    SliverToBoxAdapter(child: SizedBox(height: 28.h)),
+                    SliverToBoxAdapter(
+                      child: DoctorDetailsSummaryCard(doctor: widget.doctor),
+                    ),
+                    SliverToBoxAdapter(child: SizedBox(height: 16.h)),
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 12,
+                      ),
+                      sliver: SliverList.builder(
+                        itemCount:
+                            state.slots.length + (state.isLastPage ? 0 : 1),
+                        itemBuilder: (context, index) {
+                          if (index < state.slots.length) {
+                            final slot = state.slots[index];
+                            return SlotCard(slot: slot, doctor: widget.doctor);
+                          } else {
+                            // Bottom pagination loader placeholder
+                            return const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 24.0),
+                              child: Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2.5,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           }

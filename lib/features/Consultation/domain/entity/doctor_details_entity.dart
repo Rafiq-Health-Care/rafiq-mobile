@@ -1,8 +1,8 @@
 class EducationEntity {
   final String degree;
   final String university;
-  final int startYear;
-  final int endYear;
+  final DateTime startYear;
+  final DateTime endYear;
 
   const EducationEntity({
     required this.degree,
@@ -15,8 +15,8 @@ class EducationEntity {
 class ExperienceEntity {
   final String position;
   final String hospital;
-  final int startYear;
-  final int endYear;
+  final DateTime startYear;
+  final DateTime endYear;
   final String description;
 
   const ExperienceEntity({

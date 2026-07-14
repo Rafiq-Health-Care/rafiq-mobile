@@ -6,6 +6,7 @@ import 'package:rafiq/core/errors/failure.dart';
 import 'package:rafiq/core/errors/server_failure.dart';
 import 'package:rafiq/core/networking/api_constants.dart';
 import 'package:rafiq/core/networking/api_service.dart';
+import 'package:rafiq/core/services/session_manager.dart';
 import 'package:rafiq/features/auth/data/models/reset_password_request.dart';
 import 'package:rafiq/features/auth/data/models/doctor_sign_up_request.dart';
 import 'package:rafiq/features/auth/data/models/login_request.dart';
@@ -109,6 +110,8 @@ class AuthService {
         throw ServerFailure('ID token missing from Google response.');
       }
 
+      await SessionManager.setCurrentUserEmail(account.email);
+
       return idToken;
     } catch (e) {
       rethrow;
@@ -137,6 +140,7 @@ class AuthService {
     try {
       await _api.post(ApiConstants.authLogout);
       await _api.clearCookies();
+      await SessionManager.clearCurrentUserEmail();
       return right(null);
     } catch (e) {
       return left(e as Failure);

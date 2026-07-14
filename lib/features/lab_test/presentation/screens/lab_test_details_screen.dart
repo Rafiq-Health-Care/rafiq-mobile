@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rafiq/core/router/router_strings.dart';
-import 'package:rafiq/core/widgets/custom_app_bar.dart';
+import 'package:rafiq/core/widgets/custom_screen_header.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_cubit/lab_test_cubit.dart';
 import 'package:rafiq/features/lab_test/controller/lab_test_details_cubit/lab_test_details_cubit.dart';
 import 'package:rafiq/features/lab_test/presentation/widgets/analysis_details_card.dart';
@@ -26,7 +27,8 @@ class _LabTestDetailsScreenState extends State<LabTestDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: const Text('Lab Test Details')),
+      backgroundColor: Color(0xffF3F6FB),
+      // appBar: CustomAppBar(title: const Text('Lab Test Details')),
       body: BlocBuilder<LabTestDetailsCubit, LabTestDetailsState>(
         builder: (context, state) {
           if (state is LabTestDetailsLoading) {
@@ -47,8 +49,13 @@ class _LabTestDetailsScreenState extends State<LabTestDetailsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       spacing: 16,
                       children: [
+                        SizedBox(height: kToolbarHeight - 32),
+                        CustomScreenHeader(
+                          title: 'Test Result Details',
+                          description:
+                              'view and manage the details of a specific test result.',
+                        ),
                         AnalysisDetailsCard(
-                          patientName: 'ToDo',
                           testDate: details.date,
                           laboratory: details.name,
                         ),
@@ -85,9 +92,9 @@ class _LabTestDetailsScreenState extends State<LabTestDetailsScreen> {
                       (context, index) {
                         final test = details.tests[index];
                         return Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0,
-                            vertical: 4.0,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 8.h,
                           ),
                           child: LabTestDetailsRecordCard(test: test),
                         );

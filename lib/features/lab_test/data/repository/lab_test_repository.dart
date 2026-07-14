@@ -52,13 +52,13 @@ class LabTestRepository {
     );
   }
 
-  Future<Either<Failure, LabTestDetailsModel>> saveLabTestResults(
+  Future<Either<Failure, void>> saveLabTestResults(
     LabTestResultsModel request,
   ) async {
     final rowData = await labTestService.saveLabTestResults(request);
     return rowData.fold(
       (failure) => Left(failure),
-      (data) => Right(LabTestDetailsModel.fromJson(data)),
+      (data) => Right(null),
     );
   }
 

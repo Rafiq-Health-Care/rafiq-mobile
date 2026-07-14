@@ -16,6 +16,9 @@ class AppThemes {
     softBlueColor: Color(0xFFB8CBE8),
     fieldFillColor: const Color(0x80F3F6FB),
     vibrantBlueColor: const Color(0xFF2C6ECB),
+    surfaceMutedColor: const Color(0xFFF8FAFC),
+    iconContainerColor: const Color(0xFFEFF6FF),
+    avatarBackgroundColor: const Color(0xFFDBEAFE),
 
     headingLargeTextStyle: TextStyle(
       fontSize: 48.sp,
@@ -83,6 +86,27 @@ class AppThemes {
       fontSize: 16.sp,
       fontFamily: 'Inter',
     ),
+    overlineTextStyle: TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 11.sp,
+      fontWeight: FontWeight.w700,
+      letterSpacing: 0.6,
+      color: Color(0xFF6E6E6E),
+    ),
+    valueTextStyle: TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 13.sp,
+      fontWeight: FontWeight.w600,
+      color: Color(0XFF11325B),
+    ),
+    captionTextStyle: TextStyle(
+      fontFamily: 'Inter',
+      fontSize: 13.sp,
+      fontWeight: FontWeight.w400,
+      height: 1.6,
+      color: Color(0xFF3A3A3A),
+    ),
+
     textFieldBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
       borderSide: const BorderSide(color: Color(0XFF8BA9D2)),

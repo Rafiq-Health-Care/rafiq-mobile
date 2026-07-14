@@ -19,20 +19,16 @@ class CallActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onPressed,
-      borderRadius: BorderRadius.circular(45.r), // Using .r for responsive radius
+      borderRadius: BorderRadius.circular(45.r),
       child: Container(
-        width: 60.w,  // Matches 60px width
-        height: 60.h, // Matches 60px height
+        width: 60.w,
+        height: 60.h,
         decoration: BoxDecoration(
           color: backgroundColor,
-          shape: BoxShape.circle, // Automatically handles the 44.77px border radius to keep it perfectly round
+          shape: BoxShape.circle,
         ),
         child: Center(
-          child: Icon(
-            icon,
-            color: iconColor,
-            size: 24.sp, // Responsive icon scaling
-          ),
+          child: Icon(icon, color: iconColor, size: 24.sp),
         ),
       ),
     );

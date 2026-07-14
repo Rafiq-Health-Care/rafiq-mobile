@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:rafiq/core/router/router_strings.dart';
+import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/features/Consultation/domain/entity/doctor_entity.dart';
 import 'package:rafiq/features/Consultation/domain/entity/slot_entity.dart';
 import 'package:rafiq/features/Consultation/presentation/screen/booking_confirm_screen.dart';
@@ -41,13 +43,15 @@ class SlotCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor.withValues(alpha: 0.08),
+                  color: context.appTheme.deepDarkBlueColor.withValues(
+                    alpha: 0.08,
+                  ),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(
                   Icons.access_time_filled_rounded,
-                  color: Theme.of(context).primaryColor,
-                  size: 28,
+                  color: context.appTheme.deepDarkBlueColor,
+                  size: 28.sp,
                 ),
               ),
               const SizedBox(width: 16),
@@ -86,7 +90,7 @@ class SlotCard extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   elevation: 0,
-                  backgroundColor: Theme.of(context).primaryColor,
+                  backgroundColor: context.appTheme.deepDarkBlueColor,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),

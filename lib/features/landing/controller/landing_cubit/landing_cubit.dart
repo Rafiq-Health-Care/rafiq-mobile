@@ -13,7 +13,7 @@ class LandingCubit extends Cubit<LandingState> {
     final result = await landingService.refresh();
     result.fold(
       (failure) => emit(LandingFailure(message: failure.message)),
-      (success) => emit(LandingSuccess()),
+      (role) => emit(LandingSuccess(role: role)),
     );
   }
 

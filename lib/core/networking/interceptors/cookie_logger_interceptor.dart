@@ -47,6 +47,10 @@ class CookieLoggerInterceptor extends InterceptorsWrapper {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     if (kDebugMode) {
       print('🍪 Cookie Error: ${err.message}');
+      if (err.error != null) {
+        print('🍪 Cookie Error Details: ${err.error}');
+      }
+      print('🍪 Cookie Error StackTrace:\n${err.stackTrace}');
     }
     handler.next(err);
   }
