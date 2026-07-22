@@ -66,11 +66,7 @@ class GroupCubit extends Cubit<GroupState> {
 
   Future<void> addGroup(GroupUpsertRequest group) async {
     final currentState = state;
-    if (currentState is! GroupLoaded) {
-      print(state.toString());
-      print('fuckkkkkkkkkkkkkkkkkkkkkkkkkkkkkk');
-      return;
-    }
+    if (currentState is! GroupLoaded) return;
 
     final newGroup = await groupRepository.addGroup(group);
     newGroup.fold(

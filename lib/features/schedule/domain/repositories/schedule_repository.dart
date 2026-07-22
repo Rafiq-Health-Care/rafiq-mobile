@@ -7,4 +7,9 @@ abstract class ScheduleRepository {
     required DateTime startDate,
     required DateTime endDate,
   });
+  
+  Future<Either<Failure, void>> addSlot({
+    required DateTime startTime,
+    required int durationInMinutes,
+  });
 }

@@ -10,6 +10,11 @@ abstract class ScheduleRemoteDataSource {
     int page = 0,
     int size = 100,
   });
+
+  Future<void> addSlot({
+    required DateTime startTime,
+    required int durationInMinutes,
+  });
 }
 
 class ScheduleRemoteDataSourceImpl implements ScheduleRemoteDataSource {
@@ -36,5 +41,19 @@ class ScheduleRemoteDataSourceImpl implements ScheduleRemoteDataSource {
     );
 
     return SlotSearchPage.fromJson(response.data as Map<String, dynamic>);
+  }
+
+  @override
+  Future<void> addSlot({
+    required DateTime startTime,
+    required int durationInMinutes,
+  }) async {
+    await _apiService.post(
+      ApiConstants.slot,
+      data: {
+        'startTime': startTime.toUtc().toIso8601String(),
+        'duration': durationInMinutes,
+      },
+    );
   }
 }

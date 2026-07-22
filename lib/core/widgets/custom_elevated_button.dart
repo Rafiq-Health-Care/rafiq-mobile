@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomElevatedButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Color backgroundColor;
   final Color foregroundColor;
   final Widget child;
+  final EdgeInsetsGeometry? padding;
 
   const CustomElevatedButton({
     super.key,
@@ -12,6 +14,7 @@ class CustomElevatedButton extends StatelessWidget {
     required this.backgroundColor,
     required this.foregroundColor,
     required this.child,
+    this.padding
   });
 
   @override
@@ -21,8 +24,8 @@ class CustomElevatedButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
         foregroundColor: foregroundColor,
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        padding: padding ?? const EdgeInsets.symmetric(vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       ),
       child: child,
     );

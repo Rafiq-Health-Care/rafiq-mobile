@@ -64,7 +64,9 @@ class CallCubit extends Cubit<CallState> {
       consultationId: currentState.callParams.consultationId,
       uid: currentState.callParams.uid,
     );
-    result.fold((failure) => emit(CallFailure(message: failure.message)), (channelId) {
+    result.fold((failure) => emit(CallFailure(message: failure.message)), (
+      channelId,
+    ) {
       emit(
         CallSuccess(
           event: LocalJoinedEvent(),
@@ -178,7 +180,8 @@ class CallCubit extends Cubit<CallState> {
     );
     result.fold(
       (failure) => emit(CallFailure(message: failure.message)),
-      (_) => emit(CallEnd()),
+      (_) =>
+          emit(CallEnd(consultationId: currentState.callParams.consultationId)),
     );
   }
 

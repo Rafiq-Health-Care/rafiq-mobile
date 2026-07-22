@@ -16,6 +16,25 @@ class AppTheme extends ThemeExtension<AppTheme> {
   final Color surfaceMutedColor;
   final Color iconContainerColor;
   final Color avatarBackgroundColor;
+  final Color pageBackgroundColor;
+  final Color borderColor;
+  final Color labelColor;
+  final Color placeholderColor;
+  final Color mutedTextColor;
+  final Color secondaryTextColor;
+  final Color tealAccentColor;
+  final Color infoBackgroundColor;
+  final Color infoBorderColor;
+  final Color warningBackgroundColor;
+  final Color warningColor;
+  final Color inputTextColor;
+  final Color bodyMutedColor;
+  final Color cardBorderColor;
+  final Color lightIconContainerColor;
+  final Color secondaryBorderColor;
+  final Color mutedHintColor;
+  final Color starColor;
+  final Color dividerColor;
 
   final TextStyle headingLargeTextStyle;
   final TextStyle headingTextStyle;
@@ -50,6 +69,25 @@ class AppTheme extends ThemeExtension<AppTheme> {
     required this.surfaceMutedColor,
     required this.iconContainerColor,
     required this.avatarBackgroundColor,
+    required this.pageBackgroundColor,
+    required this.borderColor,
+    required this.labelColor,
+    required this.placeholderColor,
+    required this.mutedTextColor,
+    required this.secondaryTextColor,
+    required this.tealAccentColor,
+    required this.infoBackgroundColor,
+    required this.infoBorderColor,
+    required this.warningBackgroundColor,
+    required this.warningColor,
+    required this.inputTextColor,
+    required this.bodyMutedColor,
+    required this.cardBorderColor,
+    required this.lightIconContainerColor,
+    required this.secondaryBorderColor,
+    required this.mutedHintColor,
+    required this.starColor,
+    required this.dividerColor,
 
     required this.headingLargeTextStyle,
     required this.headingTextStyle,
@@ -87,6 +125,25 @@ class AppTheme extends ThemeExtension<AppTheme> {
     Color? surfaceMutedColor,
     Color? iconContainerColor,
     Color? avatarBackgroundColor,
+    Color? pageBackgroundColor,
+    Color? borderColor,
+    Color? labelColor,
+    Color? placeholderColor,
+    Color? mutedTextColor,
+    Color? secondaryTextColor,
+    Color? tealAccentColor,
+    Color? infoBackgroundColor,
+    Color? infoBorderColor,
+    Color? warningBackgroundColor,
+    Color? warningColor,
+    Color? inputTextColor,
+    Color? bodyMutedColor,
+    Color? cardBorderColor,
+    Color? lightIconContainerColor,
+    Color? secondaryBorderColor,
+    Color? mutedHintColor,
+    Color? starColor,
+    Color? dividerColor,
 
     TextStyle? headingLargeTextStyle,
     TextStyle? headingTextStyle,
@@ -122,6 +179,27 @@ class AppTheme extends ThemeExtension<AppTheme> {
       surfaceMutedColor: surfaceMutedColor ?? this.surfaceMutedColor,
       iconContainerColor: iconContainerColor ?? this.iconContainerColor,
       avatarBackgroundColor: avatarBackgroundColor ?? this.avatarBackgroundColor,
+      pageBackgroundColor: pageBackgroundColor ?? this.pageBackgroundColor,
+      borderColor: borderColor ?? this.borderColor,
+      labelColor: labelColor ?? this.labelColor,
+      placeholderColor: placeholderColor ?? this.placeholderColor,
+      mutedTextColor: mutedTextColor ?? this.mutedTextColor,
+      secondaryTextColor: secondaryTextColor ?? this.secondaryTextColor,
+      tealAccentColor: tealAccentColor ?? this.tealAccentColor,
+      infoBackgroundColor: infoBackgroundColor ?? this.infoBackgroundColor,
+      infoBorderColor: infoBorderColor ?? this.infoBorderColor,
+      warningBackgroundColor:
+          warningBackgroundColor ?? this.warningBackgroundColor,
+      warningColor: warningColor ?? this.warningColor,
+      inputTextColor: inputTextColor ?? this.inputTextColor,
+      bodyMutedColor: bodyMutedColor ?? this.bodyMutedColor,
+      cardBorderColor: cardBorderColor ?? this.cardBorderColor,
+      lightIconContainerColor:
+          lightIconContainerColor ?? this.lightIconContainerColor,
+      secondaryBorderColor: secondaryBorderColor ?? this.secondaryBorderColor,
+      mutedHintColor: mutedHintColor ?? this.mutedHintColor,
+      starColor: starColor ?? this.starColor,
+      dividerColor: dividerColor ?? this.dividerColor,
 
       headingLargeTextStyle:
           headingLargeTextStyle ?? this.headingLargeTextStyle,
@@ -193,6 +271,77 @@ class AppTheme extends ThemeExtension<AppTheme> {
         other.avatarBackgroundColor,
         t,
       )!,
+      pageBackgroundColor: Color.lerp(
+        pageBackgroundColor,
+        other.pageBackgroundColor,
+        t,
+      )!,
+      borderColor: Color.lerp(borderColor, other.borderColor, t)!,
+      labelColor: Color.lerp(labelColor, other.labelColor, t)!,
+      placeholderColor: Color.lerp(
+        placeholderColor,
+        other.placeholderColor,
+        t,
+      )!,
+      mutedTextColor: Color.lerp(mutedTextColor, other.mutedTextColor, t)!,
+      secondaryTextColor: Color.lerp(
+        secondaryTextColor,
+        other.secondaryTextColor,
+        t,
+      )!,
+      tealAccentColor: Color.lerp(
+        tealAccentColor,
+        other.tealAccentColor,
+        t,
+      )!,
+      infoBackgroundColor: Color.lerp(
+        infoBackgroundColor,
+        other.infoBackgroundColor,
+        t,
+      )!,
+      infoBorderColor: Color.lerp(
+        infoBorderColor,
+        other.infoBorderColor,
+        t,
+      )!,
+      warningBackgroundColor: Color.lerp(
+        warningBackgroundColor,
+        other.warningBackgroundColor,
+        t,
+      )!,
+      warningColor: Color.lerp(warningColor, other.warningColor, t)!,
+      inputTextColor: Color.lerp(
+        inputTextColor,
+        other.inputTextColor,
+        t,
+      )!,
+      bodyMutedColor: Color.lerp(
+        bodyMutedColor,
+        other.bodyMutedColor,
+        t,
+      )!,
+      cardBorderColor: Color.lerp(
+        cardBorderColor,
+        other.cardBorderColor,
+        t,
+      )!,
+      lightIconContainerColor: Color.lerp(
+        lightIconContainerColor,
+        other.lightIconContainerColor,
+        t,
+      )!,
+      secondaryBorderColor: Color.lerp(
+        secondaryBorderColor,
+        other.secondaryBorderColor,
+        t,
+      )!,
+      mutedHintColor: Color.lerp(
+        mutedHintColor,
+        other.mutedHintColor,
+        t,
+      )!,
+      starColor: Color.lerp(starColor, other.starColor, t)!,
+      dividerColor: Color.lerp(dividerColor, other.dividerColor, t)!,
 
       headingLargeTextStyle: TextStyle.lerp(
         headingLargeTextStyle,

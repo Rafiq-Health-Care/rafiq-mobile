@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:rafiq/core/errors/failure.dart';
 import 'package:rafiq/core/errors/server_failure.dart';
 import 'package:rafiq/core/errors/unknown_failure.dart';
@@ -34,8 +33,26 @@ class ScheduleRepositoryImpl implements ScheduleRepository {
       }
 
       return Right(slots);
-    } on DioException catch (e) {
-      return Left(ServerFailure.fromDioError(e));
+    } on ServerFailure catch (e) {
+      return Left(e);
+    } catch (e) {
+      return Left(UnknownFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> addSlot({
+    required DateTime startTime,
+    required int durationInMinutes,
+  }) async {
+    try {
+      await remoteDataSource.addSlot(
+        startTime: startTime,
+        durationInMinutes: durationInMinutes,
+      );
+      return const Right(null);
+    } on ServerFailure catch (e) {
+      return Left(e);
     } catch (e) {
       return Left(UnknownFailure(e.toString()));
     }

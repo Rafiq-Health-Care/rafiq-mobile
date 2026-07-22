@@ -4,15 +4,16 @@ import 'package:rafiq/core/di/di.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/theme/app_theme.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
-import 'package:rafiq/features/Consultation/domain/use_case/patient_consultation_use_case.dart';
-import 'package:rafiq/features/Consultation/domain/use_case/search_doctors_use_case.dart';
-import 'package:rafiq/features/Consultation/presentation/controller/consultation_cubit/consultation_cubit.dart';
-import 'package:rafiq/features/Consultation/presentation/controller/search_doctor_cubit/search_doctor_cubit.dart';
-import 'package:rafiq/features/Consultation/presentation/screen/patient_consultations_screen.dart';
-import 'package:rafiq/features/Consultation/presentation/screen/search_doctor_screen.dart';
-import 'package:rafiq/features/chat_bot/controller/chat_cubit.dart';
-import 'package:rafiq/features/chat_bot/screen/chatbot_screen.dart';
-import 'package:rafiq/features/consultation_details/domain/usecases/cancel_consultation.dart';
+import 'package:rafiq/features/chat_bot/presentation/controller/chat_cubit/chat_cubit.dart';
+import 'package:rafiq/features/chat_bot/presentation/screen/chatbot_screen.dart';
+import 'package:rafiq/features/consultation/domain/use_case/cancel_consultation_use_case.dart';
+import 'package:rafiq/features/consultation/domain/use_case/patient_consultation_use_case.dart';
+import 'package:rafiq/features/consultation/presentation/controller/consultation_cubit/consultation_cubit.dart';
+import 'package:rafiq/features/consultation/presentation/screen/patient_consultations_screen.dart';
+import 'package:rafiq/features/doctor_discovery/domain/use_case/search_doctors_use_case.dart';
+import 'package:rafiq/features/doctor_discovery/presentation/controller/search_doctor_cubit/search_doctor_cubit.dart';
+import 'package:rafiq/features/doctor_discovery/presentation/screen/search_doctor_screen.dart';
+import 'package:rafiq/features/doctor_profile/presentation/screens/my_doctor_profile_screen.dart';
 import 'package:rafiq/features/groups/controllers/group_cubit/group_cubit.dart';
 import 'package:rafiq/features/groups/presentation/screens/all_groups_screen.dart';
 import 'package:rafiq/features/home/params/sidebar_tab_item.dart';
@@ -25,7 +26,7 @@ import 'package:rafiq/features/lab_test/presentation/screens/all_lab_tests_scree
 import 'package:rafiq/features/medications/controllers/medication_cubit/medication_cubit.dart';
 import 'package:rafiq/features/medications/controllers/selected_medication_cubit/selected_medication_cubit.dart';
 import 'package:rafiq/features/medications/presentation/screens/all_medications_screen.dart';
-import 'package:rafiq/features/schedule/presentation/bloc/schedule_bloc.dart';
+import 'package:rafiq/features/schedule/presentation/controller/schedule_bloc/schedule_bloc.dart';
 import 'package:rafiq/features/schedule/presentation/screens/weekly_schedule_page.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -50,6 +51,12 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: const SearchDoctorScreen(),
       ),
+    ),
+    SidebarTabItem(
+      icon: Icons.person_outline,
+      label: 'My Profile',
+      visibleFor: {UserRoleEnum.doctor},
+      builder: (_) => const MyDoctorProfileScreen(),
     ),
     SidebarTabItem(
       icon: Icons.medication_liquid,
@@ -90,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (_) => BlocProvider(
         create: (_) => ConsultationCubit(
           getIt<PatientConsultationUseCase>(),
-          getIt<CancelConsultation>(),
+          getIt<CancelConsultationUseCase>(),
         ),
         child: const PatientConsultationsScreen(),
       ),
@@ -100,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
       label: 'Chatbot',
       visibleFor: {UserRoleEnum.patient, UserRoleEnum.doctor},
       builder: (_) => BlocProvider(
-        create: (_) => ChatCubit(),
+        create: (_) => getIt<ChatCubit>(),
         child: const ChatbotScreen(),
       ),
     ),

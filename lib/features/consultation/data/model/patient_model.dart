@@ -1,0 +1,31 @@
+import 'package:rafiq/features/consultation/domain/entity/patient_entity.dart';
+
+class PatientModel {
+  final String id;
+  final String firstName;
+  final String lastName;
+
+  const PatientModel({
+    required this.id,
+    required this.firstName,
+    required this.lastName,
+  });
+
+  factory PatientModel.fromJson(Map<String, dynamic> json) {
+    return PatientModel(
+      id: json['id'] as String? ?? '',
+      firstName: json['firstName'] as String? ?? '',
+      lastName: json['lastName'] as String? ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'firstName': firstName,
+    'lastName': lastName,
+  };
+
+  PatientEntity toEntity() {
+    return PatientEntity(id: id, firstName: firstName, lastName: lastName);
+  }
+}

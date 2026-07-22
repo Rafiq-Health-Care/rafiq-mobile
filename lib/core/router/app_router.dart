@@ -3,28 +3,28 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rafiq/core/di/di.dart';
 import 'package:rafiq/core/networking/api_service.dart';
 import 'package:rafiq/core/router/router_strings.dart';
-import 'package:rafiq/features/Consultation/domain/entity/doctor_entity.dart';
-import 'package:rafiq/features/Consultation/domain/use_case/get_doctor_details_use_case.dart';
-import 'package:rafiq/features/Consultation/domain/use_case/patient_consultation_use_case.dart';
-import 'package:rafiq/features/Consultation/domain/use_case/patient_see_doctor_slots_use_case.dart';
-import 'package:rafiq/features/Consultation/domain/use_case/reserve_consultation_slot_use_case.dart';
-import 'package:rafiq/features/Consultation/domain/use_case/search_doctors_use_case.dart';
-import 'package:rafiq/features/Consultation/presentation/controller/booking_confirm_cubit/booking_confirm_cubit.dart';
-import 'package:rafiq/features/Consultation/presentation/controller/consultation_cubit/consultation_cubit.dart';
-import 'package:rafiq/features/Consultation/presentation/controller/consultation_details_cubit/consultation_details_cubit.dart';
-import 'package:rafiq/features/Consultation/presentation/controller/search_doctor_cubit/search_doctor_cubit.dart';
-import 'package:rafiq/features/Consultation/presentation/controller/doctor_details_cubit/doctor_details_cubit.dart';
-import 'package:rafiq/features/Consultation/presentation/controller/slot_cubit/slot_cubit.dart';
-import 'package:rafiq/features/Consultation/presentation/screen/booking_confirm_screen.dart';
-import 'package:rafiq/features/Consultation/presentation/screen/consultation_details_screen.dart';
-import 'package:rafiq/features/Consultation/presentation/screen/doctor_slots_screen.dart';
-import 'package:rafiq/features/Consultation/presentation/screen/patient_consultations_screen.dart';
-import 'package:rafiq/features/Consultation/presentation/screen/search_doctor_screen.dart';
-import 'package:rafiq/features/Consultation/presentation/screen/doctor_details_screen.dart';
+import 'package:rafiq/features/consultation/domain/use_case/cancel_consultation_use_case.dart';
+import 'package:rafiq/features/consultation/domain/use_case/patient_consultation_use_case.dart';
+import 'package:rafiq/features/consultation/presentation/controller/consultation_cubit/consultation_cubit.dart';
+import 'package:rafiq/features/consultation/presentation/controller/consultation_details_cubit/consultation_details_cubit.dart';
+import 'package:rafiq/features/consultation/presentation/controller/doctor_consultation_details_cubit/doctor_consultation_details_cubit.dart';
+import 'package:rafiq/features/consultation/presentation/screen/consultation_details_screen.dart';
+import 'package:rafiq/features/consultation/presentation/screen/doctor_consultation_details_screen.dart';
+import 'package:rafiq/features/consultation/presentation/screen/patient_consultations_screen.dart';
+import 'package:rafiq/features/doctor_discovery/domain/entity/doctor_details_entity.dart';
+import 'package:rafiq/features/doctor_discovery/domain/use_case/get_doctor_details_use_case.dart';
+import 'package:rafiq/features/doctor_discovery/domain/use_case/patient_see_doctor_slots_use_case.dart';
+import 'package:rafiq/features/doctor_discovery/domain/use_case/reserve_consultation_slot_use_case.dart';
+import 'package:rafiq/features/doctor_discovery/presentation/controller/booking_confirm_cubit/booking_confirm_cubit.dart';
+import 'package:rafiq/features/doctor_discovery/presentation/controller/doctor_details_cubit/doctor_details_cubit.dart';
+import 'package:rafiq/features/doctor_discovery/presentation/controller/slot_cubit/slot_cubit.dart';
+import 'package:rafiq/features/doctor_discovery/presentation/screen/booking_confirm_screen.dart';
+import 'package:rafiq/features/doctor_discovery/presentation/screen/doctor_details_screen.dart';
+import 'package:rafiq/features/doctor_discovery/presentation/screen/doctor_slots_screen.dart';
 import 'package:rafiq/features/auth/controllers/auth_cubit/auth_cubit.dart';
 import 'package:rafiq/features/auth/controllers/password_management_cubit/password_management_cubit.dart';
 import 'package:rafiq/features/auth/controllers/specialization_cubit/specialization_cubit.dart';
-import 'package:rafiq/features/auth/data/networking/repository/auth_repository.dart';
+import 'package:rafiq/features/auth/data/repository/auth_repository.dart';
 import 'package:rafiq/features/auth/presentation/screens/reset_password_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/check_email_screen.dart';
 import 'package:rafiq/features/auth/presentation/screens/doctor_id_upload_screen.dart';
@@ -46,11 +46,8 @@ import 'package:rafiq/features/call/presentation/controller/call_cubit/call_cubi
 import 'package:rafiq/features/call/presentation/screen/call_preview_screen.dart';
 import 'package:rafiq/features/call/presentation/screen/call_screen.dart';
 import 'package:rafiq/features/call/presentation/screen/consultation_ready_screen.dart';
-import 'package:rafiq/features/chat_bot/controller/chat_cubit.dart';
-import 'package:rafiq/features/chat_bot/screen/chatbot_screen.dart';
-import 'package:rafiq/features/consultation_details/domain/usecases/cancel_consultation.dart';
-import 'package:rafiq/features/consultation_details/presentation/consultation_details_cubit/consultation_details_cubit.dart';
-import 'package:rafiq/features/consultation_details/presentation/screen/consultation_details_screen.dart';
+import 'package:rafiq/features/feedback/presentation/controller/add_feedback_cubit/add_feedback_cubit.dart';
+import 'package:rafiq/features/feedback/presentation/screens/feedback_screen.dart';
 import 'package:rafiq/features/groups/controllers/group_details_cubit/group_details_cubit.dart';
 import 'package:rafiq/features/groups/presentation/screens/group_details_screen.dart';
 import 'package:rafiq/features/home/params/user_role_enum.dart';
@@ -60,7 +57,6 @@ import 'package:rafiq/features/landing/data/networking/landing_service.dart';
 import 'package:rafiq/features/landing/presentation/screens/landing_screen.dart';
 import 'package:rafiq/features/landing/presentation/screens/on_boarding_screen.dart';
 import 'package:rafiq/features/home/presentation/screens/home_screen.dart';
-import 'package:rafiq/features/lab_test/presentation/screens/all_lab_tests_screen.dart';
 import 'package:rafiq/features/lab_test/presentation/screens/lab_test_details_screen.dart';
 import 'package:rafiq/features/lab_test/presentation/screens/lab_test_processing_screen.dart';
 import 'package:rafiq/features/lab_test/presentation/screens/lab_test_uploading_screen.dart';
@@ -76,17 +72,20 @@ import 'package:rafiq/features/medications/controllers/search_medicine_name_cubi
 import 'package:rafiq/features/medications/controllers/selected_medication_cubit/selected_medication_cubit.dart';
 import 'package:rafiq/features/medications/data/models/medicines_details_model.dart';
 import 'package:rafiq/features/medications/data/repository/medication_repository.dart';
-import 'package:rafiq/features/medications/presentation/screens/all_medications_screen.dart';
 import 'package:rafiq/features/medications/presentation/screens/filter_screen.dart';
 import 'package:rafiq/features/groups/controllers/group_cubit/group_cubit.dart';
 import 'package:rafiq/features/groups/data/repository/group_repository.dart';
-import 'package:rafiq/features/groups/presentation/screens/all_groups_screen.dart';
 import 'package:rafiq/features/groups/presentation/screens/upsert_group_screen.dart';
 import 'package:rafiq/features/groups/data/models/group_content_model.dart';
 import 'package:rafiq/features/medications/presentation/screens/medicine_upsert_screen.dart';
 import 'package:rafiq/features/medications/presentation/screens/medication_details_screen.dart';
-import 'package:rafiq/features/schedule/presentation/bloc/schedule_bloc.dart';
-import 'package:rafiq/features/schedule/presentation/screens/weekly_schedule_page.dart';
+import 'package:rafiq/features/doctor_discovery/domain/entity/experience_entity.dart';
+import 'package:rafiq/features/doctor_profile/data/repository/doctor_profile_repository.dart';
+import 'package:rafiq/features/doctor_profile/presentation/controller/doctor_profile_edit_cubit/doctor_profile_edit_cubit.dart';
+import 'package:rafiq/features/doctor_profile/presentation/screens/edit_basic_info_screen.dart';
+import 'package:rafiq/features/doctor_profile/presentation/screens/edit_biography_screen.dart';
+import 'package:rafiq/features/doctor_profile/presentation/screens/edit_price_screen.dart';
+import 'package:rafiq/features/doctor_profile/presentation/screens/upsert_experience_screen.dart';
 
 class AppRouter {
   late AuthCubit authCubit;
@@ -211,15 +210,6 @@ class AppRouter {
           ),
         );
 
-      case RouterStrings.allLabTests:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => BlocProvider.value(
-            value: labTestCubit,
-            child: const AllLabTestsScreen(),
-          ),
-        );
-
       case RouterStrings.labTestDetails:
         final testId = settings.arguments as String;
         return MaterialPageRoute(
@@ -270,18 +260,6 @@ class AppRouter {
           builder: (_) => HomeScreen(role: role),
         );
 
-      case RouterStrings.medications:
-        return MaterialPageRoute(
-          builder: (_) => MultiBlocProvider(
-            providers: [
-              BlocProvider.value(value: medicationCubit),
-              BlocProvider.value(value: groupCubit),
-              BlocProvider(create: (context) => SelectedMedicationCubit()),
-            ],
-            child: const AllMedicationsScreen(),
-          ),
-        );
-
       case RouterStrings.filterMedications:
         return MaterialPageRoute(
           builder: (_) => MultiBlocProvider(
@@ -290,14 +268,6 @@ class AppRouter {
               BlocProvider.value(value: groupCubit),
             ],
             child: const FilterScreen(),
-          ),
-        );
-
-      case RouterStrings.groups:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider.value(
-            value: groupCubit,
-            child: const AllGroupsScreen(),
           ),
         );
 
@@ -356,30 +326,71 @@ class AppRouter {
           ),
         );
 
-      case RouterStrings.searchDoctor:
-        return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (_) => SearchDoctorCubit(
-              searchDoctorsUseCase: getIt<SearchDoctorsUseCase>(),
-            ),
-            child: const SearchDoctorScreen(),
-          ),
-        );
-
       case RouterStrings.doctorDetails:
-        final doctor = settings.arguments as DoctorEntity;
+        final doctorId = settings.arguments as String;
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => BlocProvider(
             create: (_) => DoctorDetailsCubit(
               getDoctorDetailsUseCase: getIt<GetDoctorDetailsUseCase>(),
-            )..getDoctorDetails(doctor.doctorId),
-            child: DoctorDetailsScreen(doctor: doctor),
+            )..getDoctorDetails(doctorId),
+            child: DoctorDetailsScreen(),
+          ),
+        );
+
+      case RouterStrings.editDoctorBasicInfo:
+        final current = settings.arguments as DoctorDetailsEntity;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(
+                create: (_) =>
+                    DoctorProfileEditCubit(getIt<DoctorProfileRepository>()),
+              ),
+              BlocProvider(
+                create: (_) => SpecializationCubit(getIt<AuthRepository>()),
+              ),
+            ],
+            child: EditBasicInfoScreen(current: current),
+          ),
+        );
+
+      case RouterStrings.editDoctorBiography:
+        final currentBiography = settings.arguments as String;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) =>
+                DoctorProfileEditCubit(getIt<DoctorProfileRepository>()),
+            child: EditBiographyScreen(currentBiography: currentBiography),
+          ),
+        );
+
+      case RouterStrings.editDoctorPrice:
+        final currentPrice = settings.arguments as double;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) =>
+                DoctorProfileEditCubit(getIt<DoctorProfileRepository>()),
+            child: EditPriceScreen(currentPrice: currentPrice),
+          ),
+        );
+
+      case RouterStrings.upsertDoctorExperience:
+        final existing = settings.arguments as ExperienceEntity?;
+        return MaterialPageRoute(
+          settings: settings,
+          builder: (_) => BlocProvider(
+            create: (_) =>
+                DoctorProfileEditCubit(getIt<DoctorProfileRepository>()),
+            child: UpsertExperienceScreen(existing: existing),
           ),
         );
 
       case RouterStrings.doctorSlots:
-        final doctor = settings.arguments as DoctorEntity;
+        final doctor = settings.arguments as DoctorDetailsEntity;
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => BlocProvider(
@@ -411,7 +422,7 @@ class AppRouter {
           builder: (_) => BlocProvider(
             create: (_) => ConsultationCubit(
               getIt<PatientConsultationUseCase>(),
-              getIt<CancelConsultation>(),
+              getIt<CancelConsultationUseCase>(),
             ),
             child: const PatientConsultationsScreen(),
           ),
@@ -443,21 +454,13 @@ class AppRouter {
               BlocProvider.value(value: callCubit, child: const CallScreen()),
         );
 
-      case RouterStrings.weeklySchedule:
+      case RouterStrings.feedbackScreen:
+        final consultationId = settings.arguments as String;
         return MaterialPageRoute(
           settings: settings,
           builder: (_) => BlocProvider(
-            create: (_) => getIt<ScheduleBloc>(),
-            child: WeeklySchedulePage(),
-          ),
-        );
-
-      case RouterStrings.chatbot:
-        return MaterialPageRoute(
-          settings: settings,
-          builder: (_) => BlocProvider(
-            create: (_) => ChatCubit(),
-            child: const ChatbotScreen(),
+            create: (_) => getIt<AddFeedbackCubit>(),
+            child: FeedbackScreen(consultationId: consultationId),
           ),
         );
 

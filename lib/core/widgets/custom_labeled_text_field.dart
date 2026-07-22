@@ -19,6 +19,7 @@ class CustomLabeledTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
   final void Function(String)? onFieldSubmitted;
+  final TextStyle? textFieldTextStyle;
   final TextStyle? labelTextStyle;
   final Color? fillColor;
 
@@ -39,6 +40,7 @@ class CustomLabeledTextField extends StatelessWidget {
     this.focusNode,
     this.textInputAction,
     this.onFieldSubmitted,
+    this.textFieldTextStyle,
     this.labelTextStyle,
     this.fillColor,
   });
@@ -97,7 +99,7 @@ class CustomLabeledTextField extends StatelessWidget {
               filled: true,
               prefixIcon: prefixIcon,
             ),
-            style: appTheme.textFieldTextStyle,
+            style: textFieldTextStyle ?? appTheme.textFieldTextStyle,
             keyboardType: keyboardType,
             inputFormatters: inputFormatters,
             expands: isTextArea,

@@ -24,7 +24,11 @@ final class CallSuccess extends CallState {
   final CallParams callParams;
   final String channelId;
 
-  const CallSuccess({required this.event, required this.callParams,required this.channelId});
+  const CallSuccess({
+    required this.event,
+    required this.callParams,
+    required this.channelId,
+  });
 
   CallSuccess copyWith({
     final AgoraCallEvent? event,
@@ -33,7 +37,7 @@ final class CallSuccess extends CallState {
     return CallSuccess(
       event: event ?? this.event,
       callParams: callParams ?? this.callParams,
-      channelId: channelId ,
+      channelId: channelId,
     );
   }
 
@@ -41,7 +45,14 @@ final class CallSuccess extends CallState {
   List<Object> get props => [event, callParams];
 }
 
-final class CallEnd extends CallState {}
+final class CallEnd extends CallState {
+  final String consultationId;
+
+  const CallEnd({required this.consultationId});
+
+  @override
+  List<Object> get props => [consultationId];
+}
 
 final class CallFailure extends CallState {
   final String message;

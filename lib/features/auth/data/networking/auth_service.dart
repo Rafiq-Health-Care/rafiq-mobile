@@ -141,6 +141,7 @@ class AuthService {
       await _api.post(ApiConstants.authLogout);
       await _api.clearCookies();
       await SessionManager.clearCurrentUserEmail();
+      await SessionManager.clearCurrentUserId();
       return right(null);
     } catch (e) {
       return left(e as Failure);

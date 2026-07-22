@@ -1,13 +1,10 @@
 class UserResponse {
-  final String roles;
+  final String userId;
+  final String role;
 
-  UserResponse({required this.roles});
+  UserResponse({required this.userId, required this.role});
 
   factory UserResponse.fromJson(Map<String, dynamic> json) {
-    return UserResponse(roles: json['role'] as String);
-  }
-
-  Map<String, dynamic> toJson() {
-    return {'role': roles};
+    return UserResponse(userId: json['userId'], role: json['role']);
   }
 }

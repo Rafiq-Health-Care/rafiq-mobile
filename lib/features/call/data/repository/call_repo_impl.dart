@@ -1,6 +1,5 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:rafiq/core/errors/call_failure.dart';
 import 'package:rafiq/core/errors/failure.dart';
 import 'package:rafiq/core/errors/server_failure.dart';
@@ -54,8 +53,8 @@ class CallRepositoryImpl implements CallRepository {
       return Left(
         CallFailure("Error on Agora Service with join call ${e.message}"),
       );
-    } on DioException catch (e) {
-      return Left(ServerFailure.fromDioError(e));
+    } on ServerFailure catch (e) {
+      return Left(e);
     } catch (e) {
       return Left(UnknownFailure("Unknown failure happen ${e.toString()}"));
     }
@@ -73,8 +72,8 @@ class CallRepositoryImpl implements CallRepository {
       return Left(
         CallFailure("Error on Agora Service with leave call ${e.message}"),
       );
-    } on DioException catch (e) {
-      return Left(ServerFailure.fromDioError(e));
+    } on ServerFailure catch (e) {
+      return Left(e);
     } catch (e) {
       return Left(UnknownFailure("Unknown failure happen ${e.toString()}"));
     }

@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rafiq/core/di/di.dart';
 import 'package:rafiq/core/router/router_strings.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
 import 'package:rafiq/core/utils/extensions/navigation_extension.dart';
 import 'package:rafiq/core/utils/responsive_utils.dart';
 import 'package:rafiq/features/schedule/domain/entities/slot_entity.dart';
-import 'package:rafiq/features/schedule/presentation/bloc/schedule_bloc.dart';
+import 'package:rafiq/features/schedule/presentation/controller/schedule_bloc/schedule_bloc.dart';
+import 'package:rafiq/features/schedule/presentation/controller/add_session_cubit/add_session_cubit.dart';
+import 'package:rafiq/features/schedule/presentation/screens/add_session_screen.dart';
 import 'package:rafiq/features/schedule/presentation/widgets/day_column.dart';
 import 'package:rafiq/features/schedule/presentation/widgets/schedule_header.dart';
 import 'package:rafiq/features/schedule/presentation/widgets/stats_bar.dart';
@@ -144,10 +147,19 @@ class _WeeklySchedulePageState extends State<WeeklySchedulePage> {
     );
   }
 
-  void _onAddSession(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Add Session tapped — hook up your flow here.')),
+  void _onAddSession(BuildContext context) async {
+    final scheduleBloc = context.read<ScheduleBloc>();
+    final created = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (_) => BlocProvider(
+          create: (_) => getIt<AddSessionCubit>(),
+          child: const AddSessionScreen(),
+        ),
+      ),
     );
+    if (created == true) {
+      scheduleBloc.add(const RefreshWeekRequested());
+    }
   }
 
   void _onJoinCall(BuildContext context, SlotEntity slot) {

@@ -51,5 +51,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Rafiq needs microphone access so you can send voice messages to your AI assistant.</string>
 </dict>
 </plist>

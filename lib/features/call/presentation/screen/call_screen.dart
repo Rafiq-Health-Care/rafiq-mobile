@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rafiq/core/router/router_strings.dart';
+import 'package:rafiq/core/utils/extensions/navigation_extension.dart';
 import 'package:rafiq/core/utils/extensions/snack_bar_extension.dart';
 import 'package:rafiq/features/call/presentation/controller/call_cubit/call_cubit.dart';
 import 'package:rafiq/features/call/presentation/widget/call_control_bar.dart';
@@ -40,14 +42,23 @@ class _CallScreenState extends State<CallScreen> {
             context.showErrorSnackBar(message: state.message);
           }
           if (state is CallEnd) {
-            Navigator.pop(context);
+            context.navigateBack();
+            context.navigateTo(
+              RouterStrings.feedbackScreen,
+              arguments: state.consultationId,
+            );
           }
         },
         builder: (context, state) {
           if (state is CallSuccess) {
             return Stack(
               children: [
-                Center(child: RemoteVideo(callEvent: state.event,channelId: state.channelId)),
+                Center(
+                  child: RemoteVideo(
+                    callEvent: state.event,
+                    channelId: state.channelId,
+                  ),
+                ),
                 Positioned(
                   top: kToolbarHeight.h,
                   right: 12.w,

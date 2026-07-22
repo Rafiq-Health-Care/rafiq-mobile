@@ -37,5 +37,12 @@ abstract class RouterStrings {
   static const String weeklySchedule = '/weekly_schedule';
   static const String chatbot = '/chatbot';
   static const String doctorConsultationDetails = '/doctor_consultation_details';
+  static const String feedbackScreen = '/feedback_screen';
 
+  // doctor self-profile editing
+  static const String myDoctorProfile = "/my_doctor_profile";
+  static const String editDoctorBasicInfo = "/edit_doctor_basic_info";
+  static const String editDoctorBiography = "/edit_doctor_biography";
+  static const String editDoctorPrice = "/edit_doctor_price";
+  static const String upsertDoctorExperience = "/upsert_doctor_experience";
 }
