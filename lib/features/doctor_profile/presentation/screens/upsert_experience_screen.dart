@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:rafiq/core/functions/snack_bar_message.dart';
 import 'package:rafiq/core/utils/extensions/get_app_theme.dart';
+import 'package:rafiq/core/utils/extensions/snack_bar_extension.dart';
 import 'package:rafiq/core/widgets/custom_app_bar.dart';
 import 'package:rafiq/core/widgets/custom_elevated_button.dart';
 import 'package:rafiq/core/widgets/custom_labeled_text_field.dart';
@@ -20,40 +21,42 @@ class UpsertExperienceScreen extends StatefulWidget {
   bool get isEditMode => existing != null;
 
   @override
-  State<UpsertExperienceScreen> createState() =>
-      _UpsertExperienceScreenState();
+  State<UpsertExperienceScreen> createState() => _UpsertExperienceScreenState();
 }
 
 class _UpsertExperienceScreenState extends State<UpsertExperienceScreen> {
   final _formKey = GlobalKey<FormState>();
-  late final TextEditingController _positionController =
-      TextEditingController(text: widget.existing?.position ?? '');
-  late final TextEditingController _hospitalController =
-      TextEditingController(text: widget.existing?.hospital ?? '');
+  late final TextEditingController _positionController = TextEditingController(
+    text: widget.existing?.position ?? '',
+  );
+  late final TextEditingController _hospitalController = TextEditingController(
+    text: widget.existing?.hospital ?? '',
+  );
   late final TextEditingController _descriptionController =
       TextEditingController(text: widget.existing?.description ?? '');
 
-  DateTime? _startDate;
-  DateTime? _endDate;
-  late bool _currentJob = widget.existing?.current ?? false;
-
-  @override
-  void initState() {
-    super.initState();
-    _startDate = widget.existing?.startDate;
-    _endDate = widget.existing?.endDate;
-  }
+  late final ValueNotifier<DateTime?> _startDateNotifier =
+      ValueNotifier<DateTime?>(widget.existing?.startDate);
+  late final ValueNotifier<DateTime?> _endDateNotifier =
+      ValueNotifier<DateTime?>(widget.existing?.endDate);
+  late final ValueNotifier<bool> _currentJobNotifier =
+      ValueNotifier<bool>(widget.existing?.current ?? false);
 
   @override
   void dispose() {
     _positionController.dispose();
     _hospitalController.dispose();
     _descriptionController.dispose();
+    _startDateNotifier.dispose();
+    _endDateNotifier.dispose();
+    _currentJobNotifier.dispose();
     super.dispose();
   }
 
   Future<void> _pickDate({required bool isStart}) async {
-    final initial = (isStart ? _startDate : _endDate) ?? DateTime.now();
+    final initial =
+        (isStart ? _startDateNotifier.value : _endDateNotifier.value) ??
+            DateTime.now();
     final picked = await showDatePicker(
       context: context,
       initialDate: initial,
@@ -61,26 +64,28 @@ class _UpsertExperienceScreenState extends State<UpsertExperienceScreen> {
       lastDate: DateTime.now(),
     );
     if (picked != null) {
-      setState(() {
-        if (isStart) {
-          _startDate = picked;
-        } else {
-          _endDate = picked;
-        }
-      });
+      if (isStart) {
+        _startDateNotifier.value = picked;
+      } else {
+        _endDateNotifier.value = picked;
+      }
     }
   }
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
-    if (_startDate == null) {
+    final startDate = _startDateNotifier.value;
+    final endDate = _endDateNotifier.value;
+    final currentJob = _currentJobNotifier.value;
+
+    if (startDate == null) {
       SnackBarMessage.showErrorSnackBar(
         context: context,
         message: 'Please select a start date',
       );
       return;
     }
-    if (!_currentJob && _endDate == null) {
+    if (!currentJob && endDate == null) {
       SnackBarMessage.showErrorSnackBar(
         context: context,
         message: 'Please select an end date',
@@ -91,16 +96,15 @@ class _UpsertExperienceScreenState extends State<UpsertExperienceScreen> {
     final request = UpsertExperienceRequest(
       position: _positionController.text.trim(),
       hospitalName: _hospitalController.text.trim(),
-      startDate: _startDate!,
-      endDate: _currentJob ? null : _endDate,
+      startDate: startDate,
+      endDate: currentJob ? null : endDate,
       description: _descriptionController.text.trim(),
-      currentJob: _currentJob,
+      currentJob: currentJob,
     );
 
-    DoctorProfileEditCubit.get(context).upsertExperience(
-      request,
-      experienceId: widget.existing?.id,
-    );
+    DoctorProfileEditCubit.get(
+      context,
+    ).upsertExperience(request, experienceId: widget.existing?.id);
   }
 
   @override
@@ -118,18 +122,14 @@ class _UpsertExperienceScreenState extends State<UpsertExperienceScreen> {
       body: BlocConsumer<DoctorProfileEditCubit, DoctorProfileEditState>(
         listener: (context, state) {
           if (state is DoctorProfileEditSuccess) {
-            SnackBarMessage.showSuccessSnackBar(
-              context: context,
+            context.showSuccessSnackBar(
               message: widget.isEditMode
                   ? 'Experience updated successfully'
                   : 'Experience added successfully',
             );
             Navigator.of(context).pop(true);
           } else if (state is DoctorProfileEditFailure) {
-            SnackBarMessage.showErrorSnackBar(
-              context: context,
-              message: state.message,
-            );
+            context.showErrorSnackBar(message: state.message);
           }
         },
         builder: (context, state) {
@@ -146,7 +146,8 @@ class _UpsertExperienceScreenState extends State<UpsertExperienceScreen> {
                     label: 'Position',
                     hint: 'e.g. Consultant Cardiologist',
                     controller: _positionController,
-                    validator: (value) => (value == null || value.trim().isEmpty)
+                    validator: (value) =>
+                        (value == null || value.trim().isEmpty)
                         ? 'Required'
                         : null,
                   ),
@@ -154,41 +155,63 @@ class _UpsertExperienceScreenState extends State<UpsertExperienceScreen> {
                     label: 'Hospital',
                     hint: 'e.g. Cairo University Hospital',
                     controller: _hospitalController,
-                    validator: (value) => (value == null || value.trim().isEmpty)
+                    validator: (value) =>
+                        (value == null || value.trim().isEmpty)
                         ? 'Required'
                         : null,
                   ),
-                  _DateField(
-                    label: 'Start Date',
-                    value: _startDate,
-                    formatted: _startDate != null
-                        ? dateFormat.format(_startDate!)
-                        : null,
-                    onTap: () => _pickDate(isStart: true),
+                  ValueListenableBuilder<DateTime?>(
+                    valueListenable: _startDateNotifier,
+                    builder: (context, startDate, child) {
+                      return _DateField(
+                        label: 'Start Date',
+                        value: startDate,
+                        formatted: startDate != null
+                            ? dateFormat.format(startDate)
+                            : null,
+                        onTap: () => _pickDate(isStart: true),
+                      );
+                    },
                   ),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _currentJob,
-                        activeColor: appTheme.deepDarkBlueColor,
-                        onChanged: (value) =>
-                            setState(() => _currentJob = value ?? false),
-                      ),
-                      Text(
-                        'I currently work here',
-                        style: appTheme.textFieldLabelTextStyle,
-                      ),
-                    ],
+                  ValueListenableBuilder<bool>(
+                    valueListenable: _currentJobNotifier,
+                    builder: (context, currentJob, child) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        spacing: 20,
+                        children: [
+                          Row(
+                            children: [
+                              Checkbox(
+                                value: currentJob,
+                                activeColor: appTheme.deepDarkBlueColor,
+                                onChanged: (value) =>
+                                    _currentJobNotifier.value = value ?? false,
+                              ),
+                              Text(
+                                'I currently work here',
+                                style: appTheme.textFieldLabelTextStyle,
+                              ),
+                            ],
+                          ),
+                          if (!currentJob)
+                            ValueListenableBuilder<DateTime?>(
+                              valueListenable: _endDateNotifier,
+                              builder: (context, endDate, child) {
+                                return _DateField(
+                                  label: 'End Date',
+                                  value: endDate,
+                                  formatted: endDate != null
+                                      ? dateFormat.format(endDate)
+                                      : null,
+                                  onTap: () => _pickDate(isStart: false),
+                                );
+                              },
+                            ),
+                        ],
+                      );
+                    },
                   ),
-                  if (!_currentJob)
-                    _DateField(
-                      label: 'End Date',
-                      value: _endDate,
-                      formatted: _endDate != null
-                          ? dateFormat.format(_endDate!)
-                          : null,
-                      onTap: () => _pickDate(isStart: false),
-                    ),
                   CustomLabeledTextField(
                     label: 'Description',
                     hint: 'What did you do in this role?',

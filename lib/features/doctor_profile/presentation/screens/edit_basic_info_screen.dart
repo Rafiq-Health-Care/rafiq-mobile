@@ -36,15 +36,17 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
     text: widget.current.yearsOfExperience.toString(),
   );
 
-  String? _selectedSpecialization;
-  List<String> _subSpecializations = [];
-  List<String> _languages = [];
+  late final ValueNotifier<String?> _selectedSpecializationNotifier =
+      ValueNotifier<String?>(widget.current.specialization);
+  late final ValueNotifier<List<String>> _subSpecializationsNotifier =
+      ValueNotifier<List<String>>([]);
+  late final ValueNotifier<List<String>> _languagesNotifier =
+      ValueNotifier<List<String>>([]);
 
   @override
   void initState() {
     super.initState();
     SpecializationCubit.get(context).getSpecializations();
-    _selectedSpecialization = widget.current.specialization;
   }
 
   @override
@@ -53,12 +55,16 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
     _lastNameController.dispose();
     _descriptionController.dispose();
     _yearsController.dispose();
+    _selectedSpecializationNotifier.dispose();
+    _subSpecializationsNotifier.dispose();
+    _languagesNotifier.dispose();
     super.dispose();
   }
 
   void _submit() {
     if (!_formKey.currentState!.validate()) return;
-    if (_selectedSpecialization == null) {
+    final selectedSpecialization = _selectedSpecializationNotifier.value;
+    if (selectedSpecialization == null) {
       SnackBarMessage.showErrorSnackBar(
         context: context,
         message: 'Please select a specialization',
@@ -68,9 +74,9 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
     final request = UpdateBasicInfoRequest(
       firstName: _firstNameController.text.trim(),
       lastName: _lastNameController.text.trim(),
-      specialization: _selectedSpecialization!,
-      subSpecializations: _subSpecializations,
-      languages: _languages,
+      specialization: selectedSpecialization,
+      subSpecializations: _subSpecializationsNotifier.value,
+      languages: _languagesNotifier.value,
       description: _descriptionController.text.trim(),
       yearsOfExperience: int.parse(_yearsController.text.trim()),
     );
@@ -143,32 +149,47 @@ class _EditBasicInfoScreenState extends State<EditBasicInfoScreen> {
                       final specializations =
                           (specState as SpecializationSuccess)
                               .specializations;
-                      var initialIndex = specializations.indexOf(
-                        _selectedSpecialization ?? '',
-                      );
-                      if (initialIndex == -1) initialIndex = 0;
-                      return SpecializationSelector(
-                        specializations: specializations,
-                        initialSpecializationIndex: initialIndex,
-                        onChanged: (index) => setState(
-                          () =>
-                              _selectedSpecialization = specializations[index],
-                        ),
+                      return ValueListenableBuilder<String?>(
+                        valueListenable: _selectedSpecializationNotifier,
+                        builder: (context, selectedSpec, child) {
+                          var initialIndex = specializations.indexOf(
+                            selectedSpec ?? '',
+                          );
+                          if (initialIndex == -1) initialIndex = 0;
+                          return SpecializationSelector(
+                            specializations: specializations,
+                            initialSpecializationIndex: initialIndex,
+                            onChanged: (index) =>
+                                _selectedSpecializationNotifier.value =
+                                    specializations[index],
+                          );
+                        },
                       );
                     },
                   ),
-                  TagChipInput(
-                    label: 'Sub-specializations',
-                    hint: 'Type and press +',
-                    tags: _subSpecializations,
-                    onChanged: (tags) =>
-                        setState(() => _subSpecializations = tags),
+                  ValueListenableBuilder<List<String>>(
+                    valueListenable: _subSpecializationsNotifier,
+                    builder: (context, subSpecs, child) {
+                      return TagChipInput(
+                        label: 'Sub-specializations',
+                        hint: 'Type and press +',
+                        tags: subSpecs,
+                        onChanged: (tags) =>
+                            _subSpecializationsNotifier.value = tags,
+                      );
+                    },
                   ),
-                  ChipMultiSelect(
-                    label: 'Languages',
-                    options: kDoctorProfileLanguageOptions,
-                    selected: _languages,
-                    onChanged: (langs) => setState(() => _languages = langs),
+                  ValueListenableBuilder<List<String>>(
+                    valueListenable: _languagesNotifier,
+                    builder: (context, languages, child) {
+                      return ChipMultiSelect(
+                        label: 'Languages',
+                        options: kDoctorProfileLanguageOptions,
+                        selected: languages,
+                        onChanged: (langs) =>
+                            _languagesNotifier.value = langs,
+                      );
+                    },
                   ),
                   CustomLabeledTextField(
                     label: 'About',

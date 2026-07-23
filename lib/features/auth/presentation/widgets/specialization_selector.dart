@@ -19,12 +19,23 @@ class SpecializationSelector extends StatefulWidget {
 }
 
 class _SpecializationSelectorState extends State<SpecializationSelector> {
-  late int _selectedSpecialization;
+  late final ValueNotifier<int> _selectedSpecializationNotifier =
+      ValueNotifier<int>(widget.initialSpecializationIndex);
 
   @override
-  void initState() {
-    super.initState();
-    _selectedSpecialization = widget.initialSpecializationIndex;
+  void didUpdateWidget(covariant SpecializationSelector oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.initialSpecializationIndex !=
+        widget.initialSpecializationIndex) {
+      _selectedSpecializationNotifier.value =
+          widget.initialSpecializationIndex;
+    }
+  }
+
+  @override
+  void dispose() {
+    _selectedSpecializationNotifier.dispose();
+    super.dispose();
   }
 
   @override
@@ -35,42 +46,50 @@ class _SpecializationSelectorState extends State<SpecializationSelector> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text('Specialization', style: appTheme.textFieldLabelTextStyle),
-        DropdownButtonFormField<int>(
-          value: _selectedSpecialization,
-          isExpanded: true,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Colors.grey),
-            ),
-            disabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Colors.grey),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: BorderSide(color: appTheme.accentBlueColor, width: 2),
-            ),
-          ),
-          style: appTheme.textFieldTextStyle,
-          onChanged: (int? newValue) {
-            if (newValue != null) {
-              setState(() {
-                _selectedSpecialization = newValue;
-              });
-              widget.onChanged(newValue);
-            }
-          },
-          items: List.generate(widget.specializations.length, (index) {
-            final specialization = widget.specializations[index];
-            return DropdownMenuItem(
-              value: index,
-              child: Text(
-                specialization.toReadableFormat(),
+        ValueListenableBuilder<int>(
+          valueListenable: _selectedSpecializationNotifier,
+          builder: (context, selectedSpecialization, child) {
+            return DropdownButtonFormField<int>(
+              value: selectedSpecialization,
+              isExpanded: true,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Colors.grey),
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: const BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(
+                    color: appTheme.accentBlueColor,
+                    width: 2,
+                  ),
+                ),
               ),
+              style: appTheme.textFieldTextStyle,
+              onChanged: (int? newValue) {
+                if (newValue != null) {
+                  _selectedSpecializationNotifier.value = newValue;
+                  widget.onChanged(newValue);
+                }
+              },
+              items: List.generate(widget.specializations.length, (index) {
+                final specialization = widget.specializations[index];
+                return DropdownMenuItem(
+                  value: index,
+                  child: Text(
+                    specialization.toReadableFormat(),
+                  ),
+                );
+              }),
             );
-          }),
+          },
         ),
       ],
     );
