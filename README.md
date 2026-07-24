@@ -21,6 +21,7 @@
 
 ## 📋 Table of Contents
 
+- [App Showcase](#-app-showcase)
 - [Features Breakdown](#-features-breakdown)
 - [Tech Stack & Dependencies](#-tech-stack--dependencies)
 - [Architecture Overview](#-architecture-overview)
@@ -29,6 +30,59 @@
 - [Getting Started](#-getting-started)
 - [Useful Commands](#-useful-commands)
 - [License](#-license)
+
+---
+
+## 📸 App Showcase
+
+<div align="center">
+
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <img src="https://i.postimg.cc/9fZM8h1y/auth.png" width="260"/><br/>
+      <sub><b>🔐 Auth & Onboarding</b></sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="https://i.postimg.cc/DfgW37ht/chat-bot.png" width="260"/><br/>
+      <sub><b>🤖 AI Chat Bot</b></sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="https://i.postimg.cc/zDjLYqN6/consultation.png" width="260"/><br/>
+      <sub><b>🩺 Consultation Flow</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="33%">
+      <img src="https://i.postimg.cc/QNbBZjsL/doctor-profile.png" width="260"/><br/>
+      <sub><b>👨‍⚕️ Doctor Profile</b></sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="https://i.postimg.cc/8kHFgTGn/video-call.png" width="260"/><br/>
+      <sub><b>🎥 Video Call (Agora)</b></sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="https://i.postimg.cc/kgVDS8SC/lab-test.png" width="260"/><br/>
+      <sub><b>🧪 Lab Test Hub</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="33%">
+      <img src="https://i.postimg.cc/7ZCbz7zr/medicine-all.png" width="260"/><br/>
+      <sub><b>💊 Medication Tracker</b></sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="https://i.postimg.cc/mgch9MHN/medicine-upsert.png" width="260"/><br/>
+      <sub><b>➕ Add / Edit Medication</b></sub>
+    </td>
+    <td align="center" width="33%">
+      <img src="https://i.postimg.cc/gktnr4nG/group.png" width="260"/><br/>
+      <sub><b>🗂️ Medication Groups</b></sub>
+    </td>
+  </tr>
+</table>
+
+</div>
 
 ---
 
@@ -42,9 +96,21 @@ Rafiq is equipped with a rich set of modules tailored for both **Patients** and 
 * **Real-time HD Video & Audio Calls:** Powered by the **Agora RTC Engine**, enabling seamless virtual appointments with preview controls (mute, camera toggle, flip).
 * **Slot Reservation System:** Real-time appointment booking with temporary slot holding and confirmation.
 
+<div align="center">
+  <img src="https://i.postimg.cc/QNbBZjsL/doctor-profile.png" width="260"/>
+  &nbsp;&nbsp;
+  <img src="https://i.postimg.cc/zDjLYqN6/consultation.png" width="260"/>
+  &nbsp;&nbsp;
+  <img src="https://i.postimg.cc/8kHFgTGn/video-call.png" width="260"/>
+</div>
+
 ### 🤖 AI Health Chatbot & Voice Assistant
 * **Interactive AI Assistant:** Built-in health bot to provide quick health answers and guidance.
 * **Voice Messaging:** Record, send, and playback audio messages natively using `record` and `audioplayers`.
+
+<div align="center">
+  <img src="https://i.postimg.cc/DfgW37ht/chat-bot.png" width="320"/>
+</div>
 
 ### 💊 Smart Medication Tracker & Reminders
 * **Offline Caching & Sync:** Local storage powered by **ObjectBox** and **Hive** for high-speed offline access.
@@ -52,9 +118,21 @@ Rafiq is equipped with a rich set of modules tailored for both **Patients** and 
 * **Group Management:** Organize medications into custom categories or treatment plans.
 * **Local Notifications & Background Tasks:** Schedules exact medication reminders via `flutter_local_notifications` and `workmanager`.
 
+<div align="center">
+  <img src="https://i.postimg.cc/7ZCbz7zr/medicine-all.png" width="260"/>
+  &nbsp;&nbsp;
+  <img src="https://i.postimg.cc/mgch9MHN/medicine-upsert.png" width="260"/>
+  &nbsp;&nbsp;
+  <img src="https://i.postimg.cc/gktnr4nG/group.png" width="260"/>
+</div>
+
 ### 🧪 Digital Lab Tests & Diagnostics Hub
 * **Lab Test Upload & Processing:** Upload digital lab reports and track test result histories.
 * **Diagnostic Confirmations:** Review, update, and manage diagnostic results directly in the app.
+
+<div align="center">
+  <img src="https://i.postimg.cc/kgVDS8SC/lab-test.png" width="320"/>
+</div>
 
 ### 💳 Secure Payments Integration
 * **Stripe Payment Gateway:** Fully integrated with `flutter_stripe` for safe consultation bookings and service payment flows.
@@ -63,6 +141,10 @@ Rafiq is equipped with a rich set of modules tailored for both **Patients** and 
 * **Multi-Role Authentication:** Dedicated onboarding flows for Patients and Doctors.
 * **Doctor Credential Verification:** Doctor ID upload step during signup for license verification.
 * **Authentication Options:** Google Sign-In, OTP verification via Pinput, and token/cookie management.
+
+<div align="center">
+  <img src="https://i.postimg.cc/9fZM8h1y/auth.png" width="320"/>
+</div>
 
 ### ⭐ Feedback & Ratings
 * **Patient Reviews:** Leave star ratings and written reviews after completed consultations.
